@@ -1,0 +1,598 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StakeMyGold — Leaderboard (Dark)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap">
+
+<style>
+:root{
+  --cream:#0f1829; --paper:#162035;
+  --navy:#080e1a; --navy-2:#0b1322;
+  --gold:#f0bd5e; --gold-lt:#f9dda0; --gold-pale:#3a2e14; --gold-dp:#c49320;
+  --ink:#f0ead8; --muted:#8896b0; --line:rgba(255,255,255,.1);
+  --bronze:#cd9b5a; --silver:#98a2b0; --plat:#7a8fa8;
+  --max:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);
+  font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+/* enforce hidden attribute over any display overrides */
+[hidden]{display:none!important}
+
+/* browser surface theming */
+::selection{background:rgba(240,189,94,.25);color:#fff}
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(240,189,94,.3);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+*{scrollbar-width:thin;scrollbar-color:rgba(240,189,94,.3) transparent}
+
+/* ---------- nav + seasons ---------- */
+.seasonbar{background:var(--navy);color:#fff;position:sticky;top:0;z-index:40}
+.seasonbar .wrap{display:flex;align-items:center;gap:26px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;white-space:nowrap}
+.brand .mark{width:26px;height:26px;border-radius:50%;
+  background:conic-gradient(from 210deg,var(--gold-dp),var(--gold),var(--gold-pale),var(--gold));
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.15)}
+.nav{display:flex;gap:20px;font-size:14px;color:rgba(255,255,255,.6)}
+.nav a{text-decoration:none}
+.nav a[aria-current]{color:#fff;font-weight:600}
+.nav a:hover{color:#fff}
+.connect-btn{appearance:none;border:1px solid var(--gold);background:var(--gold);
+  color:#2A2004;font:inherit;font-size:13.5px;font-weight:700;padding:8px 18px;border-radius:999px;
+  cursor:pointer;white-space:nowrap;transition:filter .16s,opacity .16s;margin-left:auto}
+.connect-btn:hover{filter:brightness(1.06)}
+.connect-btn:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
+.seasons{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.seasons::-webkit-scrollbar{display:none}
+.season{appearance:none;border:1px solid rgba(255,255,255,.16);background:transparent;
+  color:rgba(255,255,255,.62);font:inherit;font-size:13.5px;padding:8px 15px;border-radius:999px;
+  cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px;
+  transition:background .18s,color .18s,border-color .18s}
+.season:hover{color:#fff;border-color:rgba(255,255,255,.34)}
+.season[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#231A05;font-weight:600}
+.season .dot{width:6px;height:6px;border-radius:50%;background:#4ADE80;box-shadow:0 0 0 3px rgba(74,222,128,.22)}
+.season[data-state="ended"] .dot{background:rgba(255,255,255,.38);box-shadow:none}
+.season[aria-selected="true"][data-state="ended"] .dot{background:rgba(35,26,5,.38)}
+.season:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
+
+/* ---------- partners ---------- */
+.partners{background:var(--navy);overflow:hidden;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.partners .track{display:flex;gap:64px;align-items:center;padding:14px 0;
+  width:max-content;animation:slide 40s linear infinite}
+.partners .item{display:flex;align-items:center}
+.partners .logo{height:22px;width:auto;max-width:110px;object-fit:contain;
+  filter:brightness(0) invert(1);opacity:.4;transition:opacity .2s}
+.partners .logo:hover{opacity:.85}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:74px 0 210px;text-align:center;overflow:hidden}
+.hand{position:absolute;bottom:-6px;z-index:1;width:clamp(230px,29vw,390px);height:auto;
+  opacity:.88;pointer-events:none;
+  animation:reach 1.5s cubic-bezier(.16,.9,.3,1) both}
+.hand-l{left:-42px;animation-delay:.35s}
+.hand-r{right:-42px;animation-delay:.5s}
+@keyframes reach{from{opacity:0;transform:translateX(var(--from,-40px))}
+  to{opacity:.88;transform:translateX(0)}}
+.hand-l{--from:-56px}.hand-r{--from:56px}
+.spark{position:absolute;z-index:1;left:50%;bottom:118px;width:190px;height:190px;
+  transform:translate(-50%,50%);pointer-events:none;
+  background:radial-gradient(circle,rgba(245,231,190,.85) 0%,rgba(201,162,39,.35) 32%,transparent 68%);
+  opacity:0;animation:glow 2.6s ease-in-out 1.5s infinite}
+@keyframes glow{0%,100%{opacity:.25;transform:translate(-50%,50%) scale(.9)}
+  50%{opacity:.75;transform:translate(-50%,50%) scale(1.06)}}
+#dust{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
+/* halftone engraving field */
+.halftone{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.35;
+  background-image:radial-gradient(circle at center,rgba(240,189,94,.5) 1.15px,transparent 1.25px);
+  background-size:9px 9px;
+  -webkit-mask-image:radial-gradient(ellipse 62% 56% at 50% 46%,transparent 42%,#000 100%);
+  mask-image:radial-gradient(ellipse 62% 56% at 50% 46%,transparent 42%,#000 100%)}
+.hero .wrap{position:relative;z-index:2}
+.pill{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.07);
+  border:1px solid var(--line);border-radius:999px;padding:7px 16px 7px 12px;font-size:13px;
+  color:var(--muted);box-shadow:0 1px 2px rgba(0,0,0,.3)}
+.pill b{color:var(--ink);font-weight:600}
+.pill .live{display:flex;align-items:center;gap:6px;color:#15803D;font-weight:600}
+.pill .live i{width:7px;height:7px;border-radius:50%;background:#22C55E;display:block;
+  animation:pulse 2.4s ease-in-out infinite}
+.pill .ended{display:flex;align-items:center;gap:6px;color:var(--muted);font-weight:600}
+.pill .ended i{width:7px;height:7px;border-radius:50%;background:#C6BFB0;display:block}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+.wordmark{font-family:'Archivo Black',sans-serif;letter-spacing:-.035em;line-height:.86;
+  font-size:clamp(50px,11vw,132px);margin:24px 0 0;
+  color:#f0bd5e;
+  text-shadow:
+    0.0044em 0.0065em 0 rgb(228,171,60),
+    0.0088em 0.0131em 0 rgb(218,156,52),
+    0.0133em 0.0196em 0 rgb(208,142,45),
+    0.0177em 0.0262em 0 rgb(198,128,38),
+    0.0221em 0.0327em 0 rgb(188,114,31),
+    0.0265em 0.0392em 0 rgb(178,100,25),
+    0.0310em 0.0458em 0 rgb(166,88,20),
+    0.0354em 0.0523em 0 rgb(154,76,15),
+    0.0398em 0.0588em 0 rgb(142,65,11),
+    0.0442em 0.0654em 0 rgb(130,55,8),
+    0.0487em 0.0719em 0 rgb(118,46,6),
+    0.0531em 0.0785em 0 rgb(106,38,4),
+    0.0575em 0.0850em 0 rgb(94,30,3),
+    0.0619em 0.0915em 0 rgb(82,23,2),
+    0.0663em 0.0981em 0 rgb(70,17,1),
+    0.0708em 0.1046em 0 rgb(60,12,1),
+    0.0752em 0.1112em 0 rgb(50,8,0),
+    0.0796em 0.1177em 0 rgb(40,5,0),
+    0.0840em 0.1242em 0 rgb(32,3,0),
+    0.0885em 0.1308em 0 rgb(24,2,0),
+    0.0929em 0.1373em 0 rgb(18,1,0),
+    0.0973em 0.1438em 0 rgb(13,1,0),
+    0.1017em 0.1504em 0 rgb(9,0,0),
+    0.1062em 0.1569em 0 rgb(6,0,0),
+    0.1106em 0.1635em 0 rgb(4,0,0),
+    0.1150em 0.1700em 0 rgb(2,0,0),
+    0.1300em 0.1900em 0.22em rgba(0,0,0,.7)}
+.wordmark span{display:inline-block;transform:translateY(0);opacity:1}
+.wordmark.animate span{transform:translateY(.36em);opacity:0;
+  animation:rise .78s cubic-bezier(.19,1.02,.32,1) forwards}
+@keyframes rise{to{transform:translateY(0);opacity:1}}
+.tagline{max-width:40ch;margin:18px auto 0;color:var(--muted);font-size:16px}
+
+.archived-note{max-width:660px;margin:24px auto 0;background:rgba(240,189,94,.1);border:1px solid rgba(240,189,94,.25);
+  border-radius:12px;padding:14px 18px;font-size:14px;color:rgba(240,189,94,.9);text-align:left;
+  display:flex;gap:12px;align-items:flex-start}
+.archived-note .k{font-size:17px;line-height:1.3}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:40px}
+.stat{background:var(--paper);padding:21px 23px}
+.stat dt{font-size:12.5px;color:var(--muted);margin:0 0 7px}
+.stat dd{margin:0;font-family:'Playfair Display',serif;font-size:33px;font-weight:700;
+  color:#fff;letter-spacing:-.01em}
+.stat .sub{font-size:12.5px;color:var(--muted);margin-top:4px}
+.stat.me dd{color:var(--gold)}
+
+/* ---------- board ---------- */
+.board{background:var(--paper);border:1px solid var(--line);border-radius:18px;margin-top:22px;overflow:hidden}
+.board-head{display:flex;align-items:center;gap:14px;padding:15px 20px;
+  border-bottom:1px solid var(--line);flex-wrap:wrap}
+.segmented{display:flex;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:3px}
+.segmented button{appearance:none;border:0;background:transparent;font:inherit;font-size:13.5px;
+  padding:7px 14px;border-radius:7px;cursor:pointer;color:var(--muted)}
+.segmented button[aria-pressed="true"]{background:var(--navy);color:#fff;font-weight:600}
+.segmented button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.statustag{margin-left:auto;font-size:12.5px;color:var(--muted);border:1px solid var(--line);
+  border-radius:999px;padding:6px 13px;display:flex;align-items:center;gap:8px}
+.statustag i{width:6px;height:6px;border-radius:50%;background:#22C55E;display:block}
+.statustag[data-state="ended"] i{background:#C6BFB0}
+
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:20px}
+.pcard{border:1px solid var(--line);border-radius:14px;padding:18px;position:relative;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03))}
+.pcard.first{border-color:rgba(240,189,94,.45);background:linear-gradient(180deg,rgba(240,189,94,.12),rgba(240,189,94,.05));
+  box-shadow:0 2px 24px rgba(240,189,94,.12),0 1px 0 rgba(240,189,94,.1)}
+.pcard .rank{font-family:'Archivo Black',sans-serif;font-size:26px;letter-spacing:-.03em;
+  color:var(--gold);line-height:1}
+.pcard.first .rank{font-size:32px}
+.pcard .who{margin-top:14px;display:flex;align-items:center;gap:9px;font-weight:600;font-size:15px}
+.pcard .xp{font-family:'Playfair Display',serif;font-size:29px;font-weight:700;color:#fff;margin-top:4px}
+.pcard .xp small{font-family:Inter,sans-serif;font-size:13px;color:var(--muted);font-weight:400}
+.pcard .medal{position:absolute;top:16px;right:16px;width:26px;height:26px;border-radius:50%;
+  background:conic-gradient(from 200deg,var(--gold-dp),var(--gold-lt),var(--gold));opacity:.9}
+
+.av{width:26px;height:26px;border-radius:50%;flex:none;
+  background:linear-gradient(140deg,var(--gold-lt),var(--gold-dp));
+  display:grid;place-items:center;font-size:11px;font-weight:700;color:#2A2004}
+.tierbadge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);
+  border:1px solid var(--line);border-radius:6px;padding:4px 9px;margin-top:12px}
+.tierbadge i{width:8px;height:8px;border-radius:2px;display:block}
+.t-Bronze i{background:var(--bronze)}.t-Silver i{background:var(--silver)}
+.t-Gold i{background:var(--gold)}.t-Platinum i{background:var(--plat)}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{font-size:11.5px;color:var(--muted);font-weight:500;text-align:left;padding:10px 20px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
+tbody td{padding:12px 20px;border-bottom:1px solid var(--line)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right}
+.rk{font-family:'IBM Plex Mono',monospace;color:var(--muted);width:52px}
+.who{display:flex;align-items:center;gap:10px}
+.tiercell{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted)}
+.tiercell i{width:8px;height:8px;border-radius:2px;display:block}
+.xp{font-variant-numeric:tabular-nums;font-weight:600}
+.delta{font-variant-numeric:tabular-nums;font-size:13px}
+.delta.up{color:#15803D}.delta.down{color:#B91C1C}.delta.flat{color:#B7B0A0}
+tr.you td{background:rgba(240,189,94,.08)}
+tr.you .who{color:var(--gold);font-weight:700}
+tr.you td:first-child{padding-left:22px}
+
+.board-foot{display:flex;align-items:center;gap:18px;padding:15px 20px;border-top:1px solid var(--line);
+  background:rgba(255,255,255,.03);flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.board-foot b{color:var(--ink)}
+.btns{margin-left:auto;display:flex;gap:10px}
+.btn{appearance:none;font:inherit;font-size:13.5px;font-weight:600;border-radius:10px;padding:10px 16px;
+  cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--ink)}
+.btn:hover{background:rgba(255,255,255,.12)}
+.btn.gold{background:linear-gradient(180deg,var(--gold-lt),var(--gold));border-color:var(--gold);color:#0a0500}
+.btn.gold:hover{filter:brightness(1.04)}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* ---------- referral ---------- */
+.refer{margin-top:22px;background:var(--navy);color:#fff;border-radius:18px;padding:26px 28px;
+  display:flex;gap:26px;align-items:center;flex-wrap:wrap;position:relative;overflow:hidden}
+.refer::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;
+  background-image:radial-gradient(circle at center,var(--gold) 1.1px,transparent 1.2px);
+  background-size:8px 8px;
+  -webkit-mask-image:linear-gradient(100deg,transparent 52%,#000 100%);
+  mask-image:linear-gradient(100deg,transparent 52%,#000 100%)}
+.refer h3{font-family:'Playfair Display',serif;font-size:25px;font-weight:700;margin:0 0 6px}
+.refer p{margin:0;color:rgba(255,255,255,.68);font-size:14px;max-width:52ch}
+.refer .link{margin-left:auto;display:flex;gap:10px;align-items:center;position:relative;z-index:2}
+.refer code{font-family:'IBM Plex Mono',monospace;font-size:13px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:11px 14px;color:var(--gold-pale)}
+
+/* ---------- how it works ---------- */
+.how{margin:60px 0 88px}
+.how h2{font-family:'Playfair Display',serif;font-size:33px;font-weight:700;margin:0 0 6px}
+.how h2 em{font-style:italic;color:var(--gold)}
+.how p.lede{color:var(--muted);margin:0 0 24px;max-width:58ch}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.step{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:21px}
+.step .n{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);margin-bottom:11px}
+.step h3{font-size:16px;margin:0 0 6px}
+.step p{margin:0;font-size:13.5px;color:var(--muted)}
+
+footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color:var(--muted)}
+
+/* season transition */
+.season-content{transition:opacity .22s ease,transform .22s ease}
+.season-content.switching{opacity:0;transform:translateY(6px);pointer-events:none}
+
+@media (max-width:900px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr}
+  .podium{grid-template-columns:1fr}
+  .nav{display:none}
+  .brand span{display:none}
+  th.hide-sm,td.hide-sm{display:none}
+  .refer .link{margin-left:0;width:100%}
+  .hero{padding-bottom:150px}
+  .hand{width:190px;opacity:.7}
+  .spark{bottom:82px;width:130px;height:130px}
+}
+@media (max-width:560px){
+  .stats{grid-template-columns:1fr}
+  .btns{margin-left:0;width:100%}.btn{flex:1}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;scroll-behavior:auto}
+  .wordmark.animate span{opacity:1;transform:none}
+  .hand{opacity:.88;transform:none}
+  .spark{opacity:.45}
+}
+</style>
+
+<header class="seasonbar">
+  <div class="wrap">
+    <div class="brand"><span class="mark"></span><span>StakeMyGold</span></div>
+    <nav class="nav">
+      <a href="#" aria-current="page">Home</a><a href="#">Squads</a><a href="#">Profile</a>
+    </nav>
+    <div class="seasons" role="tablist" aria-label="Season">
+      <button class="season" role="tab" aria-selected="true" data-state="live" data-season="epoch">
+        <span class="dot"></span>Epoch One</button>
+      <button class="season" role="tab" aria-selected="false" data-state="ended" data-season="runner">
+        <span class="dot"></span>SMG Run a Reserve</button>
+    </div>
+    <button class="connect-btn" onclick="this.textContent='Connected ✓';this.style.background='var(--navy)';this.style.color='var(--gold-lt)';this.style.border='1px solid var(--navy)'">Connect</button>
+  </div>
+</header>
+
+<div class="partners" aria-label="Partners"><div class="track" id="ptrack"></div></div>
+
+<section class="hero">
+  <div class="halftone" aria-hidden="true"></div>
+  <img class="hand hand-l" alt="" aria-hidden="true" src="assets/images/hand-l.png">
+  <img class="hand hand-r" alt="" aria-hidden="true" src="assets/images/hand-r.png">
+  <span class="spark" aria-hidden="true"></span>
+  <canvas id="dust" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="pill" id="heroPill"></div>
+    <h1 class="wordmark" id="wordmark"></h1>
+    <p class="tagline">Points don't convert — they stand here until TGE.</p>
+    <div class="archived-note" id="archNote" hidden>
+      <span class="k">◆</span>
+      <div>SMG Run a Reserve has ended with 191 participants and 522.7K XP earned. Every point is held
+      on record and counts toward your key award — nothing was reset when Epoch One opened.</div>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="season-content" id="seasonContent">
+  <dl class="stats" id="stats"></dl>
+
+  <section class="board" aria-label="Standings">
+    <div class="board-head">
+      <div class="segmented" role="group" aria-label="Period">
+        <button aria-pressed="false" data-period="d7">7 days</button>
+        <button aria-pressed="false" data-period="d30">30 days</button>
+        <button aria-pressed="true" data-period="all">All-time</button>
+      </div>
+      <div class="statustag" id="statustag"><i></i><span>Live</span></div>
+    </div>
+
+    <div class="podium" id="podium"></div>
+
+    <table>
+      <thead><tr>
+        <th class="rk">#</th><th>Participant</th><th class="hide-sm">Tier</th>
+        <th class="num">XP</th><th class="num hide-sm">Quests</th><th class="num">24h</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+
+    <div class="board-foot" id="boardFoot"></div>
+  </section>
+
+  <section class="refer">
+    <div>
+      <h3>Bring someone in, both of you earn</h3>
+      <p>Your friend earns 20 XP on signup and so do you — then you take 2% of every quest
+      they complete for the rest of the season.</p>
+    </div>
+    <div class="link">
+      <code>stakemygold.xyz/r/ab41f9</code>
+      <button class="btn gold">Copy link</button>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2>How it <em>works</em></h2>
+    <p class="lede">Three ways to move up the board. Quests pay flat XP, referrals pay on your friend's
+    activity, and tier thresholds unlock badges as you climb.</p>
+    <div class="steps">
+      <div class="step"><div class="n">Step 1</div><h3>Pick a quest</h3>
+        <p>Follow on Twitter, join the Discord, hold a token. Each quest earns you XP.</p></div>
+      <div class="step"><div class="n">Step 2</div><h3>Climb the board</h3>
+        <p>Your rank moves the moment XP lands. Hit tier thresholds to earn badges.</p></div>
+      <div class="step"><div class="n">Step 3</div><h3>Refer your friends</h3>
+        <p>Share your link, your friend earns 20 XP and you earn 20 XP on signup, plus you take 2%
+        of every quest they complete.</p></div>
+    </div>
+  </section>
+  </div><!-- /season-content -->
+</main>
+
+<footer><div class="wrap">Showing <span id="footCount">203</span> ranked participants.
+Placeholder figures for Epoch One; SMG Run a Reserve reflects the season's final standings.</div></footer>
+
+<script>
+const PARTNERS=[
+  {name:'BitMart',    file:'bitmart.png'},
+  {name:'LiquidityLand', file:'liquidityland.svg'},
+  {name:'I-ON Digital',  file:'iondigital.png'},
+  {name:'SumSub',     file:'sumsub.png'},
+  {name:'Surgence',   file:'surgence.jpg'},
+  {name:'VanderGrid', file:'vandergrid.svg'},
+  {name:'CertiK',     file:'certik.svg'},
+  {name:'MEXC',       file:'mexc.png'},
+  {name:'XT',         file:'xt.svg'},
+  {name:'Uniswap',    file:'uniswap.png'},
+];
+
+/* xp: [all-time, 30d, 7d] */
+const SEASONS={
+  epoch:{
+    name:'EPOCH ONE', state:'live', prize:'Gold Carrot 10k',
+    stats:[['Participants','203','+16 this week'],['XP earned','214.6K','since 12 Aug'],
+           ['Active quests','6','3 rotate weekly'],['Your rank','#8','Silver']],
+    foot:['Your rank: <b>#8</b> of 203 · <b>Silver</b>','Next tier: <b>Gold</b> at 12,000 XP'],
+    rows:[
+      ['ABAB','Gold',[14820,5210,1340],38,0],
+      ['GIGian','Gold',[13960,4870,1180],36,1],
+      ['Maki Mura','Gold',[12740,5640,1520],34,-1],
+      ['solsticecap','Silver',[11380,3920,910],31,4],
+      ['heatwave','Silver',[10640,4180,1260],29,-1],
+      ['tesseraonchain','Silver',[9870,3410,780],27,0],
+      ['northwind52','Silver',[9120,3860,1090],26,2],
+      ['you','Silver',[8640,4020,1310],25,1],
+      ['earlybird','Silver',[8190,2740,620],23,0],
+      ['yield65','Bronze',[7460,3180,940],21,-2],
+      ['petal546','Bronze',[6980,2510,710],19,4],
+      ['goldrun','Bronze',[6420,2890,860],18,-2],
+      ['smgmaxi','Bronze',[5870,1940,480],16,3],
+      ['carrotop','Bronze',[5310,2260,690],15,-1],
+      ['vaultkeeper','Bronze',[4930,1780,520],14,-1]
+    ]
+  },
+  runner:{
+    name:'SMG RUN A RESERVE', state:'ended', prize:'Season closed',
+    stats:[['Participants','191','final'],['XP earned','522.7K','across 191 wallets'],
+           ['Active quests','0','season closed'],['Your rank','#12','Silver']],
+    foot:['Final rank: <b>#12</b> of 191 · <b>Silver</b>','Key award: <b>Silver key</b> · claimable at TGE'],
+    rows:[
+      ['ABAB','Silver',[11539,3980,0],52,0],
+      ['GIGian','Silver',[11217,4120,0],51,0],
+      ['Maki Mura','Silver',[11037,3760,0],50,0],
+      ['solsticecap','Silver',[10480,3510,0],48,0],
+      ['heatwave','Silver',[9960,3240,0],46,0],
+      ['tesseraonchain','Silver',[9410,3080,0],44,0],
+      ['northwind52','Bronze',[8870,2910,0],42,0],
+      ['earlybird','Bronze',[8340,2640,0],40,0],
+      ['yield65','Bronze',[7920,2480,0],38,0],
+      ['petal546','Bronze',[7510,2260,0],36,0],
+      ['goldrun','Bronze',[7080,2110,0],34,0],
+      ['you','Bronze',[6740,1980,0],33,0],
+      ['smgmaxi','Bronze',[6310,1840,0],31,0],
+      ['carrotop','Bronze',[5890,1690,0],29,0],
+      ['vaultkeeper','Bronze',[5460,1520,0],27,0]
+    ]
+  }
+};
+const PIDX={all:0,d30:1,d7:2};
+let current='epoch', period='all';
+
+document.getElementById('ptrack').innerHTML=[...PARTNERS,...PARTNERS]
+  .map(p=>`<div class="item"><img class="logo" src="assets/partners/${p.file}" alt="${p.name}"></div>`).join('');
+
+const fmt=n=>n.toLocaleString('en-US');
+const initials=n=>n.replace(/[^A-Za-z ]/g,'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const avColor=n=>{let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))&0xffff;return`hsl(${h%360},50%,50%)`;};
+
+function renderWordmark(text){
+  const el=document.getElementById('wordmark');
+  el.classList.remove('animate');
+  el.innerHTML='';
+  const maxPx=Math.min(132,Math.floor(1100/(text.length*0.70)));
+  el.style.fontSize=`clamp(32px,${(maxPx/14.4).toFixed(1)}vw,${maxPx}px)`;
+  [...text].forEach((ch,i)=>{
+    const s=document.createElement('span');
+    s.textContent = ch===' ' ? '\u00A0' : ch;
+    s.style.animationDelay=(i*34)+'ms'; el.appendChild(s);
+  });
+  /* trigger entrance animation after a rAF so spans are visible first */
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('animate')));
+}
+
+function render(){
+  const s=SEASONS[current], i=PIDX[period];
+
+  document.getElementById('heroPill').innerHTML = s.state==='live'
+    ? `<span class="live"><i></i>Live</span> · <b>${s.prize}</b> · 203 participants`
+    : `<span class="ended"><i></i>Ended</span> · <b>191 participants</b> · 522.7K XP`;
+
+  renderWordmark(s.name);
+  /* show the "points preserved" note on the live (Epoch One) season —
+     it reassures SMG Run a Reserve participants their XP carries over */
+  document.getElementById('archNote').hidden = s.state !== 'live';
+
+  document.getElementById('stats').innerHTML = s.stats.map(([k,v,sub],n)=>
+    `<div class="stat${n===3?' me':''}"><dt>${k}</dt><dd>${v}</dd><div class="sub">${sub}</div></div>`).join('');
+
+  const tag=document.getElementById('statustag');
+  tag.dataset.state=s.state;
+  tag.querySelector('span').textContent = s.state==='live'?'Live':'Ended';
+  document.getElementById('footCount').textContent=s.stats[0][1];
+
+  const sorted=[...s.rows].sort((a,b)=>b[2][i]-a[2][i]);
+
+  document.getElementById('podium').innerHTML=sorted.slice(0,3).map((r,n)=>`
+    <div class="pcard${n===0?' first':''}">
+      <div class="rank">0${n+1}</div><div class="medal"></div>
+      <div class="who"><span class="av" style="background:${avColor(r[0])}">${initials(r[0])}</span>${r[0]}</div>
+      <div class="xp">${fmt(r[2][i])} <small>XP</small></div>
+      <div class="tierbadge t-${r[1]}"><i></i>${r[1]}</div>
+    </div>`).join('');
+
+  document.getElementById('rows').innerHTML=sorted.slice(3).map((r,n)=>{
+    const rank=n+4, d=r[4], me=r[0]==='you';
+    const dc=d>0?'up':d<0?'down':'flat', dt=d>0?`▲${d}`:d<0?`▼${Math.abs(d)}`:'–';
+    return `<tr class="${me?'you':''}">
+      <td class="rk">${String(rank).padStart(2,'0')}</td>
+      <td><div class="who"><span class="av" style="background:${me?'var(--gold)':avColor(r[0])}">${me?'★':initials(r[0])}</span>${r[0]}</div></td>
+      <td class="hide-sm"><span class="tiercell t-${r[1]}"><i></i>${r[1]}</span></td>
+      <td class="num xp">${fmt(r[2][i])}</td>
+      <td class="num hide-sm">${r[3]}</td>
+      <td class="num delta ${dc}">${dt}</td></tr>`;
+  }).join('');
+
+  document.getElementById('boardFoot').innerHTML =
+    s.foot.map(f=>`<div>${f}</div>`).join('') +
+    `<div class="btns">
+      <button class="btn" onclick="document.querySelector('tr.you')?.scrollIntoView({block:'center'})">Jump to my row</button>
+      ${s.state==='live'?'<button class="btn gold">Go to quests</button>':''}</div>`;
+}
+
+function switchSeason(newSeason){
+  const sc = document.getElementById('seasonContent');
+  sc.classList.add('switching');
+  setTimeout(()=>{
+    current = newSeason; render();
+    sc.classList.remove('switching');
+  }, 180);
+}
+
+document.querySelectorAll('.season').forEach(b=>b.addEventListener('click',()=>{
+  if(b.dataset.season === current) return;
+  document.querySelectorAll('.season').forEach(x=>x.setAttribute('aria-selected','false'));
+  b.setAttribute('aria-selected','true');
+  switchSeason(b.dataset.season);
+}));
+document.querySelectorAll('.segmented button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.segmented button').forEach(x=>x.setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true'); period=b.dataset.period; render();
+}));
+
+/* ensure wordmark renders even before fonts load */
+document.fonts.ready.then(()=>{ render(); });
+render();
+
+/* ---------- gold dust ---------- */
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c=document.getElementById('dust'), x=c.getContext('2d');
+  let W,H,dpr,parts=[],mx=.5,my=.5;
+
+  function shard(depth){
+    const pts=[],n=4+((Math.random()*3)|0);
+    for(let i=0;i<n;i++){
+      const a=(i/n)*Math.PI*2+Math.random()*.5, rr=.55+Math.random()*.45;
+      pts.push([Math.cos(a)*rr,Math.sin(a)*rr]);
+    }
+    const base=depth===0?2.4:depth===1?6.5:14;
+    return{x:Math.random()*W,y:Math.random()*H,d:depth,s:base*(.6+Math.random()*.9),pts,
+      rot:Math.random()*Math.PI*2,vr:(Math.random()-.5)*(depth===2?.011:.019),
+      vy:-(0.08+Math.random()*.12)*(depth+1)*.5,vx:(0.03+Math.random()*.05)*(depth+1)*.45,
+      ph:Math.random()*Math.PI*2,a:depth===0?.28:depth===1?.6:.48};
+  }
+  function build(){
+    const total=W<640?38:W<1000?64:88; parts=[];
+    for(let i=0;i<total;i++) parts.push(shard(i<total*.42?0:i<total*.82?1:2));
+  }
+  function size(){
+    dpr=Math.min(devicePixelRatio||1,2);
+    const r=c.parentElement.getBoundingClientRect();
+    W=r.width;H=r.height;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);build();
+  }
+  function centreFade(p){
+    const cx=Math.abs(p.x-W/2)/(W/2), cy=Math.abs(p.y-H/2)/(H/2);
+    return Math.min(1,.08+Math.pow(Math.max(cx,cy*1.15),1.95)*1.5);
+  }
+  function draw(t){
+    x.clearRect(0,0,W,H);
+    for(const p of parts){
+      p.rot+=p.vr; p.y+=p.vy; p.x+=p.vx+Math.sin(t*0.0004+p.ph)*0.11;
+      if(p.y<-40){p.y=H+30;p.x=Math.random()*W}
+      if(p.x>W+40)p.x=-30;
+      const px=p.x+(mx-.5)*(p.d+1)*-14, py=p.y+(my-.5)*(p.d+1)*-9;
+      const wob=Math.abs(Math.cos(p.rot)), alpha=p.a*centreFade(p);
+      if(alpha<=.02) continue;
+      x.save(); x.translate(px,py); x.rotate(p.rot); x.scale(1,.35+wob*.65);
+      x.globalAlpha=p.d===0?alpha*.8:alpha;
+      const g=x.createLinearGradient(-p.s,-p.s,p.s,p.s);
+      g.addColorStop(0,'#8A6A24'); g.addColorStop(.42,'#C9A227');
+      g.addColorStop(.58,'#F5E7BE'); g.addColorStop(1,'#A67F26');
+      x.fillStyle=g; x.beginPath();
+      p.pts.forEach(([a,b],i)=> i?x.lineTo(a*p.s,b*p.s):x.moveTo(a*p.s,b*p.s));
+      x.closePath(); x.fill();
+      if(p.d===2){x.strokeStyle='rgba(90,68,18,.35)';x.lineWidth=.6;x.stroke()}
+      x.restore();
+    }
+    requestAnimationFrame(draw);
+  }
+  addEventListener('resize',size);
+  addEventListener('pointermove',e=>{
+    const r=c.getBoundingClientRect();
+    mx=(e.clientX-r.left)/r.width; my=(e.clientY-r.top)/r.height;
+  });
+  size(); requestAnimationFrame(draw);
+})();
+</script>
