@@ -67,11 +67,11 @@ html::-webkit-scrollbar{display:none}
   transform:translateY(-100%);transition:transform .36s cubic-bezier(.4,0,.2,1);
   display:flex;flex-direction:column}
 .mob-nav.open{transform:translateY(0)}
-.mob-nav-inner{display:flex;flex-direction:column;justify-content:center;
+.mob-nav-inner{display:flex;flex-direction:column;justify-content:center;align-items:center;
   flex:1;padding:80px 32px 56px;gap:4px}
 .mob-nav a{display:block;padding:18px 0;font-size:30px;font-weight:700;
-  color:rgba(255,255,255,.4);text-decoration:none;letter-spacing:-.03em;
-  border-bottom:1px solid rgba(255,255,255,.08);transition:color .15s}
+  color:rgba(255,255,255,.4);text-decoration:none;letter-spacing:-.03em;text-align:center;
+  width:100%;border-bottom:1px solid rgba(255,255,255,.08);transition:color .15s}
 .mob-nav a:first-child{border-top:1px solid rgba(255,255,255,.08)}
 .mob-nav a[aria-current]{color:#fff}
 .mob-nav a:active{color:var(--gold-lt)}
