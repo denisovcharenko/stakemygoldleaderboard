@@ -34,7 +34,7 @@ html::-webkit-scrollbar{display:none}
 .sp-body::-webkit-scrollbar-thumb{background:var(--gold-pale);border-radius:99px}
 
 /* ---------- nav + seasons ---------- */
-.seasonbar{background:var(--navy);color:#fff;position:sticky;top:0;z-index:40}
+.seasonbar{background:var(--navy);color:#fff;position:sticky;top:0;z-index:210}
 .seasonbar .wrap{display:flex;align-items:center;height:56px;padding:0 30px;max-width:none;margin:0}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;white-space:nowrap}
 .brand .mark{width:28px;height:28px;flex:none;display:flex;align-items:center;justify-content:center}
@@ -59,15 +59,18 @@ html::-webkit-scrollbar{display:none}
 .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .burger:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
 /* mobile nav drawer */
-.mob-nav{background:var(--navy);overflow:hidden;
-  max-height:0;transition:max-height .3s cubic-bezier(.4,0,.2,1)}
-.mob-nav.open{max-height:180px}
-.mob-nav a{display:block;padding:13px 20px;font-size:15px;font-weight:500;
-  color:rgba(255,255,255,.65);text-decoration:none;letter-spacing:-.02em;
-  border-top:1px solid rgba(255,255,255,.07);transition:color .15s,background .15s}
-.mob-nav a:first-child{border-top:1px solid rgba(255,255,255,.12)}
-.mob-nav a[aria-current]{color:#fff;font-weight:600}
-.mob-nav a:active{background:rgba(255,255,255,.06)}
+.mob-nav{background:var(--navy);position:fixed;top:0;left:0;right:0;height:100dvh;z-index:199;
+  transform:translateY(-100%);transition:transform .36s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column}
+.mob-nav.open{transform:translateY(0)}
+.mob-nav-inner{display:flex;flex-direction:column;justify-content:center;
+  flex:1;padding:80px 32px 56px;gap:4px}
+.mob-nav a{display:block;padding:18px 0;font-size:30px;font-weight:700;
+  color:rgba(255,255,255,.4);text-decoration:none;letter-spacing:-.03em;
+  border-bottom:1px solid rgba(255,255,255,.08);transition:color .15s}
+.mob-nav a:first-child{border-top:1px solid rgba(255,255,255,.08)}
+.mob-nav a[aria-current]{color:#fff}
+.mob-nav a:active{color:var(--gold-lt)}
 .seasons{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .seasons::-webkit-scrollbar{display:none}
 .season{appearance:none;border:1px solid transparent;background:transparent;
@@ -712,9 +715,11 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
     </button>
   </div>
   <nav class="mob-nav" id="mobNav" aria-hidden="true">
-    <a href="#" data-page="home" aria-current="page" onclick="navigate('home');return false">Home</a>
-    <a href="#" data-page="squads" onclick="navigate('squads');return false">Squads</a>
-    <a href="#" data-page="profile" onclick="navigate('profile');return false">Profile</a>
+    <div class="mob-nav-inner">
+      <a href="#" data-page="home" aria-current="page" onclick="navigate('home');return false">Home</a>
+      <a href="#" data-page="squads" onclick="navigate('squads');return false">Squads</a>
+      <a href="#" data-page="profile" onclick="navigate('profile');return false">Profile</a>
+    </div>
   </nav>
 </header>
 
