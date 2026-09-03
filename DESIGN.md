@@ -36,15 +36,15 @@ typography:
     lineHeight: 1
     letterSpacing: "-0.02em"
   body:
-    fontFamily: "Inter, system-ui, sans-serif"
+    fontFamily: "Figtree, system-ui, sans-serif"
     fontSize: "15px"
     fontWeight: 400
     lineHeight: 1.5
   label:
     fontFamily: "'IBM Plex Mono', monospace"
-    fontSize: "9.5px"
+    fontSize: "11px"
     fontWeight: 500
-    letterSpacing: "0.1em"
+    letterSpacing: "0.08em"
 rounded:
   pill: "999px"
   card-lg: "18px"
@@ -110,7 +110,7 @@ StakeMyGold is a leaderboard where participation is a bet on future value — XP
 
 The surface layer — cream, paper, near-white — keeps the day-to-day experience warm and legible. Navy is reserved for command surfaces (the header, the referral block, the mobile nav). Gold appears exactly as often as it should: to mark live status, to highlight the user's own rank, to crown the podium leader. Its restraint is its power.
 
-Typography operates in three registers: Archivo Black for the wordmark alone (a stamp, not a label), Playfair Display for editorial weight (section headings, large stat numbers — these feel cast, not typed), and IBM Plex Mono for data precision (rank positions, step labels, stat axis labels — this is the ledger typeface). Inter handles everything else: approachable, neutral, fast to scan.
+Typography operates in three registers: Archivo Black for the wordmark alone (a stamp, not a label), Playfair Display for editorial weight (section headings, large stat numbers — these feel cast, not typed), and IBM Plex Mono for data precision (rank positions, step labels, stat axis labels — this is the ledger typeface). Figtree handles everything else: approachable, neutral, fast to scan.
 
 **Key Characteristics:**
 - Navy + warm gold as the only authority pairing — not gradient-washed, not glassy
@@ -156,19 +156,19 @@ A treasury palette: deep authority, warm precious metal, cream warmth — and no
 **Display Font:** Archivo Black (sans-serif fallback)
 **Serif/Data Font:** Playfair Display (Georgia, serif fallback)
 **Label/Mono Font:** IBM Plex Mono (monospace fallback)
-**Body Font:** Inter (system-ui, sans-serif fallback)
+**Body Font:** Figtree (system-ui, sans-serif fallback)
 
-**Character:** A deliberate four-voice system where every role is non-negotiable. Archivo Black stamps identity; Playfair Display casts weight on numbers and headings that need to feel solid; IBM Plex Mono reads data as a ledger; Inter keeps the copy fast and undecorated. No font is interchangeable with another.
+**Character:** A deliberate four-voice system where every role is non-negotiable. Archivo Black stamps identity; Playfair Display casts weight on numbers and headings that need to feel solid; IBM Plex Mono reads data as a ledger; Figtree keeps the copy fast and undecorated. No font is interchangeable with another.
 
 ### Hierarchy
 - **Display** (Black, clamp(50px–132px), line-height 0.86, tracking -0.035em): The wordmark only. Never used for section headings or body labels.
 - **Headline** (Playfair Display 700, 33px, line-height 1.2): Section headings in the "How it Works" block. The serif lends editorial authority — a heading that feels written, not generated.
 - **Title / Stat** (Playfair Display 700, 36px, line-height 1.0, tracking -0.02em): Large data numbers in stat cards. These numbers feel cast in metal, not printed on a screen.
-- **Body** (Inter 400, 15px, line-height 1.5): All copy, metadata, table content, navigation labels. Measure: 65–75ch on prose; no max-width on tabular data.
+- **Body** (Figtree 400, 15px, line-height 1.5): All copy, metadata, table content, navigation labels. Measure: 65–75ch on prose; no max-width on tabular data.
 - **Label** (IBM Plex Mono 500, 9.5–11px, tracking +0.1em, uppercase): Stat axis labels (dt), step numbers, rank positions, leaderboard column headers. The ledger voice — always uppercase, always measured.
 
 ### Named Rules
-**The Three-Register Rule.** Playfair for editorial weight. IBM Plex Mono for data precision. Inter for everything readable. Archivo Black for the wordmark alone. Mixing these — using Mono for headings, or Playfair for body copy — breaks the register system.
+**The Three-Register Rule.** Playfair for editorial weight. IBM Plex Mono for data precision. Figtree for everything readable. Archivo Black for the wordmark alone. Mixing these — using Mono for headings, or Playfair for body copy — breaks the register system.
 
 **The Tracking Inversion Rule.** Display and title type tracks tightly (negative). Label type tracks openly (positive). Body type tracks neutrally. This inversion is structural: tight tracking = large and present; open tracking = small and precise.
 
@@ -231,7 +231,7 @@ The hero wordmark uses `overflow:hidden` to animate letter entrance. The page it
 
 ### Chips / Selectors
 
-Pill-shaped (`999px`), 12.5px Inter, `--muted` text by default. Active: `1.5px solid --navy`, `--ink` text, 600 weight. Used for season selectors in the board header and view-mode segmented controls. The width change on active state (1px → 1.5px border) is the selection signal.
+Pill-shaped (`999px`), 12.5px Figtree, `--muted` text by default. Active: `1.5px solid --navy`, `--ink` text, 600 weight. Used for season selectors in the board header and view-mode segmented controls. The width change on active state (1px → 1.5px border) is the selection signal.
 
 ### Cards / Containers
 
@@ -261,16 +261,16 @@ Pill-shaped (`999px`), 12.5px Inter, `--muted` text by default. Active: `1.5px s
 
 ### Navigation
 
-**Desktop (>900px):** Inline flex row, centered, 14px Inter, `rgba(255,255,255,.6)` default, white hover/active, letter-spacing -0.025em. No underlines, no indicators — purely weight and color shift.
+**Desktop (>900px):** Inline flex row, centered, 14px Figtree, `rgba(255,255,255,.6)` default, white hover/active, letter-spacing -0.025em. No underlines, no indicators — purely weight and color shift.
 
-**Mobile (≤900px):** Full-height overlay below the 56px header. Navy background, 30px 700 Inter links, centered. Burger morphs to × via CSS transform on three spans. The header remains visible (sticky) while the nav slides down from below it.
+**Mobile (≤900px):** Full-height overlay below the 56px header. Navy background, 30px 700 Figtree links, centered. Burger morphs to × via CSS transform on three spans. The header remains visible (sticky) while the nav slides down from below it.
 
 **The Brand Block:** SVG logo mark + "StakeMyGold" wordmark. Brand text hides (not the logo) when the mobile menu is open, keeping the mark as spatial anchor while reducing visual competition.
 
 ### Leaderboard Table
 
 - `thead`: IBM Plex Mono 500, 11.5px, uppercase, `--muted` text, warm near-white background (`#FDFBF6`)
-- `tbody`: Inter 13.5–14.5px, with rank column in IBM Plex Mono
+- `tbody`: Figtree 13.5–14.5px, with rank column in IBM Plex Mono
 - `tr.you`: highlighted with gold-dp text on name, gold-pale left border (`3px`)
 - Hover: `rgba(248,246,242,.8)` row tint — cream wash, not a hard highlight
 
@@ -283,7 +283,7 @@ The three-card podium is the visual centerpiece of the leaderboard. The first-pl
 ### Do:
 - **Do** use gold (#F0BD5E) at ≤15% visible surface coverage. It is a signal, not a theme.
 - **Do** use IBM Plex Mono in uppercase with 0.1em letter-spacing for all data labels, rank positions, and axis labels.
-- **Do** use Playfair Display for section headings and large data numbers — this is the "weight" register, not Inter Bold.
+- **Do** use Playfair Display for section headings and large data numbers — this is the "weight" register, not Figtree Bold.
 - **Do** keep all neutral colors warm-toned. If a gray doesn't have an ochre or amber undertone, it is out of palette.
 - **Do** use 999px radius for all interactive controls (buttons, chips, tags) and 14–18px radius for content containers. No middle ground.
 - **Do** let shadows appear only on hover, focus, or explicit structural elevation (podium first card, FAB). Surfaces are flat at rest.
@@ -292,7 +292,7 @@ The three-card podium is the visual centerpiece of the leaderboard. The first-pl
 ### Don't:
 - **Don't** use gradient text. Emphasis comes from size, weight, or the Playfair Display register — not a gradient fill on text.
 - **Don't** add a colored `border-left` above 1px on general content cards. The `.stat.me` left accent (3px) is the single permitted exception, because it signals "your own data" — a semantic distinction, not decoration.
-- **Don't** use Inter Bold or Inter Black for headings that should use Playfair Display. The serif register exists precisely to avoid Inter at display sizes.
+- **Don't** use Figtree Bold or Figtree Black for headings that should use Playfair Display. The serif register exists precisely to avoid Figtree at display sizes.
 - **Don't** use cool-toned grays. `#7C7768` (Warm Muted) is the floor for secondary text — anything cooler breaks the palette's thermal consistency.
 - **Don't** apply box shadows to surfaces at rest. A shadow at rest is a hierarchy claim that erodes the system's flat-by-default integrity.
 - **Don't** use Archivo Black for anything except the wordmark. It is the stamp; using it elsewhere dilutes it.
