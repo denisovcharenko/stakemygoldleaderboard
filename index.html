@@ -58,24 +58,28 @@ html::-webkit-scrollbar{display:none}
 .burger{display:none;appearance:none;background:transparent;border:0;
   padding:6px;margin-left:10px;cursor:pointer;flex:none;
   flex-direction:column;justify-content:center;gap:5.5px;width:36px;height:36px;border-radius:6px}
-.burger span{display:block;height:1.5px;background:rgba(255,255,255,.85);border-radius:2px}
+.burger span{display:block;height:1.5px;background:rgba(255,255,255,.85);border-radius:2px;
+  transition:transform .25s ease,opacity .25s ease}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0;transform:scaleX(0)}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .burger:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
-/* mobile nav drawer */
-.mob-nav{background:var(--navy);position:fixed;top:0;left:0;right:0;height:100dvh;z-index:199;
+/* mobile nav — full height below header, header stays visible */
+.mob-nav{background:var(--navy);position:fixed;top:56px;left:0;right:0;bottom:0;z-index:209;
   transform:translateY(-100%);transition:transform .20s cubic-bezier(.4,0,.2,1);
   display:flex;flex-direction:column}
 .mob-nav.open{transform:translateY(0)}
-.mob-nav-close{position:absolute;top:10px;right:18px;background:none;border:none;
-  color:rgba(255,255,255,.7);cursor:pointer;padding:8px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;transition:color .15s}
-.mob-nav-close:hover{color:#fff}
 .mob-nav-inner{display:flex;flex-direction:column;justify-content:center;align-items:center;
-  flex:1;padding:80px 32px 56px;gap:4px}
+  flex:1;gap:4px}
 .mob-nav a{display:block;padding:18px 0;font-size:30px;font-weight:700;
   color:rgba(255,255,255,.4);text-decoration:none;letter-spacing:-.03em;text-align:center;
   width:100%;transition:color .15s}
 .mob-nav a[aria-current]{color:#fff}
 .mob-nav a:active{color:var(--gold-lt)}
+/* hide brand text + connect btn when menu is open */
+.seasonbar:has(#burger[aria-expanded="true"]) .brand span:not(.mark){display:none}
+.seasonbar:has(#burger[aria-expanded="true"]) .connect-btn{display:none}
+.seasonbar:has(#burger[aria-expanded="true"]) .burger{margin-left:auto}
 .seasons{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .seasons::-webkit-scrollbar{display:none}
 .season{appearance:none;border:1px solid transparent;background:transparent;
@@ -93,12 +97,11 @@ html::-webkit-scrollbar{display:none}
 .partners{background:var(--cream);overflow:hidden;
   border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .partners .track{display:flex;gap:64px;align-items:center;padding:14px 0;
-  width:max-content;animation:slide 40s linear infinite}
+  width:max-content;will-change:transform}
 .partners .item{display:flex;align-items:center}
 .partners .logo{height:22px;width:auto;max-width:110px;object-fit:contain;
   filter:grayscale(1);opacity:.45;transition:filter .2s,opacity .2s}
 .partners .logo:hover{filter:grayscale(0);opacity:1}
-@keyframes slide{to{transform:translateX(-50%)}}
 
 /* ---------- hero ---------- */
 .hero{position:relative;padding:108px 0 70px;text-align:center;overflow:hidden}
@@ -271,7 +274,7 @@ html::-webkit-scrollbar{display:none}
 
 /* ---------- stats ---------- */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
-  border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:40px}
+  border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:40px;margin-bottom:0}
 .stat{background:var(--paper);padding:21px 23px}
 .stat dt{font-size:12.5px;color:var(--muted);margin:0 0 7px}
 .stat dd{margin:0;font-family:'Playfair Display',serif;font-size:33px;font-weight:700;
@@ -280,7 +283,7 @@ html::-webkit-scrollbar{display:none}
 .stat.me dd{color:var(--gold-dp)}
 
 /* ---------- board ---------- */
-.board{background:var(--paper);border:1px solid var(--line);border-radius:18px;margin-top:22px;overflow:hidden}
+.board{background:var(--paper);border:1px solid var(--line);border-radius:18px;margin-top:10px;overflow:hidden}
 .board-head{display:flex;align-items:center;gap:14px;padding:15px 20px;
   border-bottom:1px solid var(--line);flex-wrap:wrap}
 .segmented{display:flex;gap:2px}
@@ -355,7 +358,7 @@ html::-webkit-scrollbar{display:none}
 .profile-empty svg{opacity:.25}
 .profile-empty h2{font-size:28px;font-weight:700;color:var(--navy);margin:0;letter-spacing:-.025em}
 .profile-empty p{color:var(--muted);font-size:15.5px;max-width:34ch;margin:0;line-height:1.6}
-.profile-empty .connect-btn{margin-top:6px}
+.profile-empty .connect-btn{margin-top:6px;width:auto;align-self:center}
 /* stage wrap + side dust canvases */
 .stage-wrap{position:relative;overflow:hidden}
 .board-dust{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;display:block}
@@ -581,7 +584,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
   .podium{grid-template-columns:1fr}
   .nav{display:none}
   .burger{display:flex}
-  .connect-btn{margin-left:auto;min-width:auto;padding:8px 14px}
+  .seasonbar .connect-btn{margin-left:auto;min-width:auto;padding:8px 14px}
   th.hide-sm,td.hide-sm{display:none}
   .refer .link{margin-left:0;width:100%}
   .hero{padding:80px 0 120px}
@@ -602,8 +605,10 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
   .tagline{font-size:14.5px;max-width:28ch;margin-left:auto;margin-right:auto}
   .archived-note.v1 .an-facts{flex-wrap:wrap;justify-content:center;gap:4px 24px}
   .archived-note.v1 .an-fact{text-align:center;min-width:72px}
-  .stats{grid-template-columns:1fr}
-  .stat{padding:16px 16px 14px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat{padding:16px 14px 14px}
+  .stat dd{font-size:26px}
+  .stat dt{font-size:11.5px}
   .how{margin:36px 0 52px}
   .how h2{font-size:26px}
   .how p.lede{font-size:14px}
@@ -721,7 +726,7 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
 
 <header class="seasonbar">
   <div class="wrap">
-    <div class="brand"><span class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 44 44" fill="none"><path d="M44 22C44 34.1503 34.1503 44 22 44C9.84974 44 0 34.1503 0 22C0 9.84974 9.84974 0 22 0C34.1503 0 44 9.84974 44 22ZM2.74528 22C2.74528 32.6341 11.3659 41.2547 22 41.2547C32.6341 41.2547 41.2547 32.6341 41.2547 22C41.2547 11.3659 32.6341 2.74528 22 2.74528C11.3659 2.74528 2.74528 11.3659 2.74528 22Z" fill="white"/><path d="M30.2451 23.9742L15.3634 38.9024C27.1136 42.9052 34.9018 35.5906 37.489 30.9364C37.6146 30.7105 37.5682 30.4319 37.3851 30.2492L31.0917 23.973C30.8578 23.7396 30.4783 23.7402 30.2451 23.9742Z" fill="white"/><path d="M25.0183 27.2178L20.3442 31.7778L15.8249 27.314C15.5876 27.0797 15.5888 26.697 15.8275 26.4642L19.6186 22.7656C19.851 22.5389 20.2224 22.5389 20.4547 22.7656L25.0183 27.2178Z" fill="white"/><path d="M18.6814 33.3577L12.8487 27.626C12.6852 27.4654 12.4226 27.4659 12.2599 27.6272L7.88849 31.961C7.66432 32.1833 7.6291 32.5341 7.81718 32.7875C9.79038 35.4455 12.7336 37.3785 14.0183 38.0379L18.6814 33.3577Z" fill="white"/><path d="M13.5699 11.3577C8.14166 16.5566 7.223 21.9106 7.44221 23.9377C9.71393 19.8835 13.1315 16.2267 14.5564 14.9051C15.483 15.2033 15.3933 15.2629 16.3498 14.3686C17.3064 13.4743 17.4259 13.1762 17.0075 12.4905C20.1401 9.10406 24.8888 6.78681 26.8716 6.05149C24.6995 5.65402 18.9982 6.15881 13.5699 11.3577Z" fill="white"/><path d="M11.8607 11.3204L26.4232 25.6667L27.858 24.1762L13.7662 9.47436C13.6745 9.3787 13.5222 9.37578 13.4269 9.46786L11.8624 10.9794C11.766 11.0725 11.7653 11.2264 11.8607 11.3204Z" fill="white"/></svg></span><span>StakeMyGold</span></div>
+    <div class="brand" role="button" style="cursor:pointer" onclick="navigate('home')" aria-label="Go to home"><span class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 44 44" fill="none"><path d="M44 22C44 34.1503 34.1503 44 22 44C9.84974 44 0 34.1503 0 22C0 9.84974 9.84974 0 22 0C34.1503 0 44 9.84974 44 22ZM2.74528 22C2.74528 32.6341 11.3659 41.2547 22 41.2547C32.6341 41.2547 41.2547 32.6341 41.2547 22C41.2547 11.3659 32.6341 2.74528 22 2.74528C11.3659 2.74528 2.74528 11.3659 2.74528 22Z" fill="white"/><path d="M30.2451 23.9742L15.3634 38.9024C27.1136 42.9052 34.9018 35.5906 37.489 30.9364C37.6146 30.7105 37.5682 30.4319 37.3851 30.2492L31.0917 23.973C30.8578 23.7396 30.4783 23.7402 30.2451 23.9742Z" fill="white"/><path d="M25.0183 27.2178L20.3442 31.7778L15.8249 27.314C15.5876 27.0797 15.5888 26.697 15.8275 26.4642L19.6186 22.7656C19.851 22.5389 20.2224 22.5389 20.4547 22.7656L25.0183 27.2178Z" fill="white"/><path d="M18.6814 33.3577L12.8487 27.626C12.6852 27.4654 12.4226 27.4659 12.2599 27.6272L7.88849 31.961C7.66432 32.1833 7.6291 32.5341 7.81718 32.7875C9.79038 35.4455 12.7336 37.3785 14.0183 38.0379L18.6814 33.3577Z" fill="white"/><path d="M13.5699 11.3577C8.14166 16.5566 7.223 21.9106 7.44221 23.9377C9.71393 19.8835 13.1315 16.2267 14.5564 14.9051C15.483 15.2033 15.3933 15.2629 16.3498 14.3686C17.3064 13.4743 17.4259 13.1762 17.0075 12.4905C20.1401 9.10406 24.8888 6.78681 26.8716 6.05149C24.6995 5.65402 18.9982 6.15881 13.5699 11.3577Z" fill="white"/><path d="M11.8607 11.3204L26.4232 25.6667L27.858 24.1762L13.7662 9.47436C13.6745 9.3787 13.5222 9.37578 13.4269 9.46786L11.8624 10.9794C11.766 11.0725 11.7653 11.2264 11.8607 11.3204Z" fill="white"/></svg></span><span>StakeMyGold</span></div>
     <nav class="nav">
       <a href="#" data-page="home" aria-current="page" onclick="navigate('home');return false">Home</a><a href="#" data-page="squads" onclick="navigate('squads');return false">Squads</a><a href="#" data-page="profile" onclick="navigate('profile');return false">Profile</a>
     </nav>
@@ -730,17 +735,14 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
       <span></span><span></span><span></span>
     </button>
   </div>
-  <nav class="mob-nav" id="mobNav" aria-hidden="true">
-    <button class="mob-nav-close" id="mobNavClose" aria-label="Close menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-    <div class="mob-nav-inner">
-      <a href="#" data-page="home" aria-current="page" onclick="navigate('home');return false">Home</a>
-      <a href="#" data-page="squads" onclick="navigate('squads');return false">Squads</a>
-      <a href="#" data-page="profile" onclick="navigate('profile');return false">Profile</a>
-    </div>
-  </nav>
 </header>
+<nav class="mob-nav" id="mobNav" aria-hidden="true">
+  <div class="mob-nav-inner">
+    <a href="#" data-page="home" aria-current="page" onclick="navigate('home');return false">Home</a>
+    <a href="#" data-page="squads" onclick="navigate('squads');return false">Squads</a>
+    <a href="#" data-page="profile" onclick="navigate('profile');return false">Profile</a>
+  </div>
+</nav>
 
 <div class="partners" aria-label="Partners"><div class="track" id="ptrack"></div></div>
 
@@ -1019,6 +1021,27 @@ let current='epoch', period='all';
 
 document.getElementById('ptrack').innerHTML=[...PARTNERS,...PARTNERS]
   .map(p=>`<div class="item"><img class="logo" src="assets/partners/${p.file}" alt="${p.name}"></div>`).join('');
+
+/* partners smooth speed control */
+(function(){
+  const track=document.getElementById('ptrack');
+  const partners=document.querySelector('.partners');
+  if(!track||!partners) return;
+  const SPEED_NORMAL=0.4; // px per frame
+  const SPEED_SLOW=0.1;
+  let x=0, speed=SPEED_NORMAL, hovered=false;
+  function getHalfW(){return track.scrollWidth/2;}
+  function tick(){
+    speed+=(( hovered?SPEED_SLOW:SPEED_NORMAL)-speed)*0.05;
+    x-=speed;
+    if(Math.abs(x)>=getHalfW()) x=0;
+    track.style.transform=`translateX(${x}px)`;
+    requestAnimationFrame(tick);
+  }
+  partners.addEventListener('mouseenter',()=>hovered=true);
+  partners.addEventListener('mouseleave',()=>hovered=false);
+  tick();
+})();
 
 const fmt=n=>n.toLocaleString('en-US');
 const initials=n=>n.replace(/[^A-Za-z ]/g,'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
@@ -1511,6 +1534,7 @@ function initSettingsPanel(){
 
   const DEFAULTS = {
     lhx:-6,lhy:404,lhs:112, rhx:-19,rhy:202,rhs:106,
+    mLhx:-10,mLhb:445, mRhx:-10,mRhb:294,
     wmFace:'#dcad56',wmFaceOp:100,
     wmNear:'#eabc66',wmNearOp:100,
     wmFar:'#FFF8D6', wmFarOp:59,
@@ -1696,8 +1720,8 @@ function initSettingsPanel(){
     [handL,handR].forEach(h=>{h.style.animation='';h.style.transform='';});
     const vw=window.innerWidth;
     if(vw<=640){
-      handL.style.left='-10px'; handL.style.bottom='400px';
-      handR.style.right='-10px'; handR.style.bottom='290px';
+      handL.style.left=S.mLhx+'px'; handL.style.bottom=S.mLhb+'px';
+      handR.style.right=S.mRhx+'px'; handR.style.bottom=S.mRhb+'px';
     } else if(vw<=900){
       handL.style.left=S.lhx+'px'; handL.style.bottom=Math.round(S.lhy*.38)+'px';
       handR.style.right=S.rhx+'px'; handR.style.bottom=Math.round(S.rhy*.42)+'px';
@@ -1788,7 +1812,8 @@ function initSettingsPanel(){
     el.addEventListener('input',()=>{
       S[key]=+el.value;
       vl.textContent=(fmt?fmt(+el.value):el.value)+suffix;
-      if(['lhx','lhy','lhs','rhx','rhy','rhs'].includes(key)) applyHands();
+      if(['mLhx','mLhb','mRhx','mRhb'].includes(key)) initHands();
+      else if(['lhx','lhy','lhs','rhx','rhy','rhs'].includes(key)) applyHands();
       else applyWordmark();
     });
   }
@@ -1824,6 +1849,8 @@ function initSettingsPanel(){
   /* wire all controls */
   wire('spLhx','lhx','spLhxV','px'); wire('spLhy','lhy','spLhyV','px'); wire('spLhs','lhs','spLhsV','%');
   wire('spRhx','rhx','spRhxV','px'); wire('spRhy','rhy','spRhyV','px'); wire('spRhs','rhs','spRhsV','%');
+  wire('spMLhx','mLhx','spMLhxV','px'); wire('spMLhb','mLhb','spMLhbV','px');
+  wire('spMRhx','mRhx','spMRhxV','px'); wire('spMRhb','mRhb','spMRhbV','px');
   wire('spWmSize','wmSize','spWmSizeV','px');
   wire('spWmLs','wmLs','spWmLsV','em',v=>(v/1000).toFixed(3));
   wire('spWmSx','wmSx','spWmSxV','%');
@@ -1860,6 +1887,7 @@ function initSettingsPanel(){
     // simpler: map id → key
     const idKeyMap = {
       spLhx:'lhx',spLhy:'lhy',spLhs:'lhs',spRhx:'rhx',spRhy:'rhy',spRhs:'rhs',
+      spMLhx:'mLhx',spMLhb:'mLhb',spMRhx:'mRhx',spMRhb:'mRhb',
       spWmSize:'wmSize',spWmLs:'wmLs',spWmSx:'wmSx'
     };
     Object.entries(idKeyMap).forEach(([id,key])=>{
@@ -1871,6 +1899,10 @@ function initSettingsPanel(){
     document.getElementById('spRhxV').textContent=S.rhx+'px';
     document.getElementById('spRhyV').textContent=S.rhy+'px';
     document.getElementById('spRhsV').textContent=S.rhs+'%';
+    document.getElementById('spMLhxV').textContent=S.mLhx+'px';
+    document.getElementById('spMLhbV').textContent=S.mLhb+'px';
+    document.getElementById('spMRhxV').textContent=S.mRhx+'px';
+    document.getElementById('spMRhbV').textContent=S.mRhb+'px';
     document.getElementById('spWmSizeV').textContent=S.wmSize+'px';
     document.getElementById('spWmLsV').textContent=(S.wmLs/1000).toFixed(3)+'em';
     document.getElementById('spWmSxV').textContent=S.wmSx+'%';
@@ -1907,6 +1939,7 @@ function initSettingsPanel(){
   document.getElementById('spCopy').addEventListener('click',function(){
     const out=JSON.stringify({
       hands:{leftX:S.lhx,leftY:S.lhy,leftScale:S.lhs,rightX:S.rhx,rightY:S.rhy,rightScale:S.rhs},
+      mobileHands:{leftX:S.mLhx,leftBottom:S.mLhb,rightX:S.mRhx,rightBottom:S.mRhb},
       text:{size:S.wmSize,letterSpacing:(S.wmLs/1000).toFixed(3)+'em',scaleX:S.wmSx+'%'},
       wordmark:{face:S.wmFace,faceOp:S.wmFaceOp,shadowNear:S.wmNear,nearOp:S.wmNearOp,shadowFar:S.wmFar,farOp:S.wmFarOp},
       goldMaterial:{metallic:S.gmMetallic,specular:S.gmSpecular,roughness:S.gmRoughness,highlight:S.gmHighlight,contrast:S.gmContrast,warmth:S.gmWarmth},
@@ -2025,7 +2058,6 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
 (function(){
   const burger=document.getElementById('burger');
   const mobNav=document.getElementById('mobNav');
-  const closeBtn=document.getElementById('mobNavClose');
   if(!burger||!mobNav) return;
   const closeMob=()=>{
     mobNav.classList.remove('open');
@@ -2037,7 +2069,6 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
     burger.setAttribute('aria-expanded',open);
     mobNav.setAttribute('aria-hidden',!open);
   });
-  if(closeBtn) closeBtn.addEventListener('click',closeMob);
   mobNav.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMob));
   document.addEventListener('click',e=>{
     if(!burger.contains(e.target)&&!mobNav.contains(e.target)) closeMob();
@@ -2123,6 +2154,30 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
       <div class="sp-row">
         <label>Scale <span id="spRhsV">100%</span></label>
         <input type="range" id="spRhs" min="30" max="220" value="100">
+      </div>
+    </div>
+
+    <div class="sp-section">
+      <div class="sp-section-title">Mobile Left Hand</div>
+      <div class="sp-row">
+        <label>Horizontal <span id="spMLhxV">-10px</span></label>
+        <input type="range" id="spMLhx" min="-60" max="60" value="-10">
+      </div>
+      <div class="sp-row">
+        <label>Vertical (bottom) <span id="spMLhbV">445px</span></label>
+        <input type="range" id="spMLhb" min="100" max="800" value="445">
+      </div>
+    </div>
+
+    <div class="sp-section">
+      <div class="sp-section-title">Mobile Right Hand</div>
+      <div class="sp-row">
+        <label>Horizontal <span id="spMRhxV">-10px</span></label>
+        <input type="range" id="spMRhx" min="-60" max="60" value="-10">
+      </div>
+      <div class="sp-row">
+        <label>Vertical (bottom) <span id="spMRhbV">294px</span></label>
+        <input type="range" id="spMRhb" min="100" max="800" value="294">
       </div>
     </div>
 
