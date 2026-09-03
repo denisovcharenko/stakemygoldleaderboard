@@ -48,6 +48,26 @@ html::-webkit-scrollbar{display:none}
   cursor:pointer;white-space:nowrap;transition:filter .16s,opacity .16s;min-width:118px;text-align:center}
 .connect-btn:hover{filter:brightness(1.06)}
 .connect-btn:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
+/* burger */
+.burger{display:none;appearance:none;background:transparent;border:0;
+  padding:6px;margin-left:10px;cursor:pointer;flex:none;
+  flex-direction:column;justify-content:center;gap:5.5px;width:36px;height:36px;border-radius:6px}
+.burger span{display:block;height:1.5px;background:rgba(255,255,255,.85);border-radius:2px;
+  transition:transform .22s cubic-bezier(.4,0,.2,1),opacity .16s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0;transform:scaleX(.3)}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.burger:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
+/* mobile nav drawer */
+.mob-nav{background:var(--navy);overflow:hidden;
+  max-height:0;transition:max-height .3s cubic-bezier(.4,0,.2,1)}
+.mob-nav.open{max-height:180px}
+.mob-nav a{display:block;padding:13px 20px;font-size:15px;font-weight:500;
+  color:rgba(255,255,255,.65);text-decoration:none;letter-spacing:-.02em;
+  border-top:1px solid rgba(255,255,255,.07);transition:color .15s,background .15s}
+.mob-nav a:first-child{border-top:1px solid rgba(255,255,255,.12)}
+.mob-nav a[aria-current]{color:#fff;font-weight:600}
+.mob-nav a:active{background:rgba(255,255,255,.06)}
 .seasons{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .seasons::-webkit-scrollbar{display:none}
 .season{appearance:none;border:1px solid transparent;background:transparent;
@@ -509,7 +529,8 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
   .steps{grid-template-columns:1fr}
   .podium{grid-template-columns:1fr}
   .nav{display:none}
-  .brand span{display:none}
+  .burger{display:flex}
+  .connect-btn{margin-left:auto;min-width:auto;padding:8px 14px}
   th.hide-sm,td.hide-sm{display:none}
   .refer .link{margin-left:0;width:100%}
   .hero{padding:80px 0 120px}
@@ -573,7 +594,15 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
       <a href="#" aria-current="page">Home</a><a href="#">Squads</a><a href="#">Profile</a>
     </nav>
     <button class="connect-btn" onclick="this.textContent='Connected ✓';this.style.background='var(--navy)';this.style.color='var(--gold-lt)';this.style.border='1px solid var(--navy)'">Connect</button>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+  <nav class="mob-nav" id="mobNav" aria-hidden="true">
+    <a href="#" aria-current="page">Home</a>
+    <a href="#">Squads</a>
+    <a href="#">Profile</a>
+  </nav>
 </header>
 
 <div class="partners" aria-label="Partners"><div class="track" id="ptrack"></div></div>
@@ -1252,11 +1281,11 @@ function initSettingsPanel(){
       });
     }
     wm.style.textShadow=buildShadow();
-    // Fluid size: clamp scales smoothly; S.wmSize is the desktop cap
-    wm.style.fontSize=`clamp(42px, 10.8vw, ${S.wmSize}px)`;
+    // 22.5vw ≈ 88px at 390px — fills ~94% of hero without clipping
+    wm.style.fontSize=`clamp(68px, 22.5vw, ${S.wmSize}px)`;
     wm.style.letterSpacing=(S.wmLs/1000).toFixed(3)+'em';
-    // Skip horizontal stretch on small screens (overflow risk)
-    wm.style.transform=window.innerWidth>=640?`scaleX(${S.wmSx/100})`:'scaleX(1)';
+    // scaleX stretch only on desktop (≥900px) — avoids horizontal overflow
+    wm.style.transform=window.innerWidth>=900?`scaleX(${S.wmSx/100})`:'scaleX(1)';
     wm.style.transformOrigin='center center';
     applyNoise();
   }
@@ -1445,6 +1474,31 @@ function initSettingsPanel(){
     });
   });
 } // end initSettingsPanel
+
+/* burger menu */
+(function(){
+  const burger=document.getElementById('burger');
+  const mobNav=document.getElementById('mobNav');
+  if(!burger||!mobNav) return;
+  burger.addEventListener('click',()=>{
+    const open=mobNav.classList.toggle('open');
+    burger.setAttribute('aria-expanded',open);
+    mobNav.setAttribute('aria-hidden',!open);
+  });
+  mobNav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    mobNav.classList.remove('open');
+    burger.setAttribute('aria-expanded','false');
+    mobNav.setAttribute('aria-hidden','true');
+  }));
+  // Close on outside click
+  document.addEventListener('click',e=>{
+    if(!burger.contains(e.target)&&!mobNav.contains(e.target)){
+      mobNav.classList.remove('open');
+      burger.setAttribute('aria-expanded','false');
+      mobNav.setAttribute('aria-hidden','true');
+    }
+  });
+})();
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute" aria-hidden="true">
