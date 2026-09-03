@@ -1304,7 +1304,7 @@ document.fonts.ready.then(()=>{ renderWordmark(activeSeason.name); });
 render();
 
 /* ---------- gold dust global controls ---------- */
-window.__dust={count:1,speed:1,size:1,opacity:1,shimmer:1,_builders:[],
+window.__dust={count:1.45,speed:3,size:1,opacity:2.5,shimmer:1.58,_builders:[],
   rebuild(){this._builders.forEach(fn=>fn());}};
 
 /* ---------- gold dust ---------- */
@@ -2212,24 +2212,24 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
     <div class="sp-section">
       <div class="sp-section-title">Gold Dust</div>
       <div class="sp-row">
-        <label>Density <span id="spDustCountV">100%</span></label>
-        <input type="range" id="spDustCount" min="10" max="300" value="100">
+        <label>Density <span id="spDustCountV">145%</span></label>
+        <input type="range" id="spDustCount" min="10" max="300" value="145">
       </div>
       <div class="sp-row">
-        <label>Speed <span id="spDustSpeedV">100%</span></label>
-        <input type="range" id="spDustSpeed" min="10" max="300" value="100">
+        <label>Speed <span id="spDustSpeedV">300%</span></label>
+        <input type="range" id="spDustSpeed" min="10" max="300" value="300">
       </div>
       <div class="sp-row">
         <label>Size <span id="spDustSizeV">1.0×</span></label>
         <input type="range" id="spDustSize" min="30" max="300" value="100">
       </div>
       <div class="sp-row">
-        <label>Opacity <span id="spDustOpacityV">100%</span></label>
-        <input type="range" id="spDustOpacity" min="0" max="250" value="100">
+        <label>Opacity <span id="spDustOpacityV">250%</span></label>
+        <input type="range" id="spDustOpacity" min="0" max="250" value="250">
       </div>
       <div class="sp-row">
-        <label>Shimmer <span id="spDustShimmerV">100%</span></label>
-        <input type="range" id="spDustShimmer" min="0" max="200" value="100">
+        <label>Shimmer <span id="spDustShimmerV">158%</span></label>
+        <input type="range" id="spDustShimmer" min="0" max="200" value="158">
       </div>
     </div>
 
