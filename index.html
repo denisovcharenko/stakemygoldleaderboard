@@ -654,6 +654,9 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
 .p-stat dd small{font-size:13px;font-weight:500;color:var(--muted)}
 .p-stat.delta-up dd{color:#15803D}
 .p-stat.delta-dn dd{color:#B91C1C}
+.p-stat dd{display:flex;align-items:baseline;gap:5px}
+.delta-icon{font-size:11px;line-height:1;position:relative;top:-1px}
+.delta-num{font-size:22px;font-weight:700;letter-spacing:-.03em}
 .p-squads{padding:24px 0 60px}
 .p-squads h3{font-size:16px;font-weight:700;color:var(--navy);margin:0 0 12px;letter-spacing:-.02em}
 @media(max-width:640px){
@@ -1040,7 +1043,10 @@ function navigateToParticipant(row, rank){
     ? `<span class="participant-av"><img src="${url}" alt="${name}"></span>`
     : `<span class="participant-av" style="background:${avColor(name)}">${initials(name)}</span>`;
   const dc = delta>0?'up':delta<0?'dn':'flat';
-  const dt = delta>0?`▲${delta}`:delta<0?`▼${Math.abs(delta)}`:'–';
+  const dtIcon = delta>0
+    ? `<span class="delta-icon">▲</span>`
+    : delta<0 ? `<span class="delta-icon">▼</span>` : '';
+  const dt = delta!==0 ? `${dtIcon}<span class="delta-num">${Math.abs(delta)}</span>` : '–';
   document.getElementById('participantDetailBody').innerHTML=`
     <div class="participant-hero">
       ${avLg}
