@@ -45,9 +45,13 @@ html::-webkit-scrollbar{display:none}
 .nav a:hover{color:#fff}
 .connect-btn{appearance:none;border:1px solid var(--gold);background:var(--gold);
   color:#2A2004;font:inherit;font-size:13.5px;font-weight:700;padding:8px 18px;border-radius:999px;
-  cursor:pointer;white-space:nowrap;transition:filter .16s,opacity .16s;min-width:118px;text-align:center}
+  cursor:pointer;white-space:nowrap;transition:filter .16s,background .2s,color .2s,border-color .2s;
+  min-width:118px;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:7px}
 .connect-btn:hover{filter:brightness(1.06)}
 .connect-btn:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
+.connect-btn.connected{background:transparent;border-color:rgba(255,255,255,.18);color:var(--gold-lt);filter:none;cursor:default}
+.connect-btn.connected:hover{filter:none}
+.connect-btn.connected svg{flex:none}
 /* burger */
 .burger{display:none;appearance:none;background:transparent;border:0;
   padding:6px;margin-left:10px;cursor:pointer;flex:none;
@@ -712,7 +716,7 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
     <nav class="nav">
       <a href="#" data-page="home" aria-current="page" onclick="navigate('home');return false">Home</a><a href="#" data-page="squads" onclick="navigate('squads');return false">Squads</a><a href="#" data-page="profile" onclick="navigate('profile');return false">Profile</a>
     </nav>
-    <button class="connect-btn" onclick="this.textContent='Connected ✓';this.style.background='var(--navy)';this.style.color='var(--gold-lt)';this.style.border='1px solid var(--navy)'">Connect</button>
+    <button class="connect-btn" onclick="connectWallet(this)">Connect</button>
     <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -866,7 +870,7 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       <h2>Connect your wallet</h2>
       <p>Link your wallet to see your rank, XP history, referral stats, and tier progress.</p>
-      <button class="connect-btn" onclick="this.textContent='Connected ✓';this.style.background='var(--navy)';this.style.color='var(--gold-lt)';this.style.border='1px solid var(--navy)'">Connect wallet</button>
+      <button class="connect-btn" onclick="connectWallet(this)">Connect wallet</button>
     </div>
   </div>
 </main>
@@ -1883,6 +1887,14 @@ function initSettingsPanel(){
     });
   });
 } // end initSettingsPanel
+
+/* connect wallet */
+const CHECK_SVG=`<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 7 5.5 10.5 11 3.5"/></svg>`;
+function connectWallet(btn){
+  btn.innerHTML=CHECK_SVG+'Connected';
+  btn.classList.add('connected');
+  btn.disabled=true;
+}
 
 /* back buttons */
 document.getElementById('backToSquads').addEventListener('click',()=>navigate('squads'));
