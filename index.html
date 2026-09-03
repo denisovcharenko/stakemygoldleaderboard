@@ -320,9 +320,6 @@ html::-webkit-scrollbar{display:none}
 .av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 .pcard .av{width:34px;height:34px;font-size:12px}
 /* squads */
-.squads-head{padding:32px 0 20px}
-.squads-head h2{font-size:28px;font-weight:700;color:var(--navy);margin:0 0 8px;letter-spacing:-.025em}
-.squads-head .lede{color:var(--muted);font-size:15px;margin:0}
 .squads-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-bottom:56px}
 .squad-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;
   padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;
@@ -623,6 +620,20 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
   .hand{opacity:.88;transform:none}
   .spark{opacity:.45}
 }
+/* sub-pages hide hero + partners strip */
+body[data-page=squads] .hero,
+body[data-page=squads] .partners,
+body[data-page=profile] .hero,
+body[data-page=profile] .partners{display:none}
+/* inner page header */
+.inner-head{display:flex;align-items:center;gap:14px;padding:28px 0 24px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;
+  color:var(--muted);background:none;border:none;padding:0;cursor:pointer;
+  letter-spacing:-.01em;transition:color .15s}
+.back-btn:hover{color:var(--navy)}
+.back-btn svg{flex:none;transition:transform .15s}
+.back-btn:hover svg{transform:translateX(-2px)}
+.inner-head h2{font-size:22px;font-weight:700;color:var(--navy);margin:0;letter-spacing:-.025em}
 </style>
 
 <header class="seasonbar">
@@ -732,15 +743,26 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
 
   <!-- Squads page -->
   <div class="page-view" id="pageSquads" hidden>
-    <div class="squads-head">
+    <div class="inner-head">
+      <button class="back-btn" onclick="navigate('home');return false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
       <h2>Squads</h2>
-      <p class="lede">Join a squad to multiply your XP and compete for squad-level prizes.</p>
     </div>
+    <p class="lede" style="margin:0 0 20px;color:var(--muted);font-size:15px">Join a squad to multiply your XP and compete for squad-level prizes.</p>
     <div class="squads-grid" id="squadsGrid"></div>
   </div>
 
   <!-- Profile page -->
   <div class="page-view" id="pageProfile" hidden>
+    <div class="inner-head">
+      <button class="back-btn" onclick="navigate('home');return false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <h2>Profile</h2>
+    </div>
     <div class="profile-empty">
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       <h2>Connect your wallet</h2>
@@ -973,13 +995,13 @@ function navigate(page){
     const el=document.getElementById(id);
     if(el) el.hidden=(k!==page);
   });
-  document.querySelectorAll('[data-page]').forEach(a=>{
+  document.querySelectorAll('a[data-page]').forEach(a=>{
     const isCurrent=a.dataset.page===page;
     if(isCurrent) a.setAttribute('aria-current','page');
     else a.removeAttribute('aria-current');
   });
+  document.body.dataset.page=page;
   if(page==='squads') renderSquads();
-  // close mob-nav
   const mobNav=document.getElementById('mobNav');
   const burger=document.getElementById('burger');
   if(mobNav&&burger){
@@ -987,7 +1009,7 @@ function navigate(page){
     burger.setAttribute('aria-expanded','false');
     mobNav.setAttribute('aria-hidden','true');
   }
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'instant'});
 }
 
 document.querySelectorAll('.season').forEach(b=>b.addEventListener('click',()=>{
