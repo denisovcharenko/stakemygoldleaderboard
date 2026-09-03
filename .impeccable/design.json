@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-03T00:00:00.000Z",
+  "title": "Design System: StakeMyGold",
+  "extensions": {
+    "colorMeta": {
+      "navy":      { "role": "primary",  "displayName": "Midnight Vault",   "canonical": "#0E1729", "tonalRamp": ["#050A14","#0A1220","#0E1729","#1B2942","#2A3F60","#3D5882","#6B8BB8","#A8BFDA","#D5E3F2","#EEF4FB"] },
+      "navy-2":    { "role": "primary",  "displayName": "Navy Depth",        "canonical": "#1B2942", "tonalRamp": ["#0A1220","#111C32","#1B2942","#253A57","#344E70","#4D698E","#7D96B8","#ADBFD5","#D4E1EE","#EEF3F9"] },
+      "gold":      { "role": "secondary","displayName": "Alchemist's Gold",  "canonical": "#F0BD5E", "tonalRamp": ["#3D2A00","#6B4A00","#9A6A0A","#C48C1A","#E8A830","#F0BD5E","#F5CE84","#F9DDA0","#FDF0CC","#FFFAED"] },
+      "gold-lt":   { "role": "secondary","displayName": "Light Gold",         "canonical": "#F9DDA0", "tonalRamp": ["#6B4A00","#9A6A0A","#C48C1A","#E8A830","#F0BD5E","#F5CE84","#F9DDA0","#FCE9BC","#FDF0CC","#FFFAED"] },
+      "gold-pale": { "role": "secondary","displayName": "Gold Pale",          "canonical": "#FDF0CC", "tonalRamp": ["#C48C1A","#E8A830","#F0BD5E","#F5CE84","#F9DDA0","#FCE9BC","#FDF0CC","#FEF6E2","#FFFBF0","#FFFEF9"] },
+      "gold-dp":   { "role": "secondary","displayName": "Deep Gold",          "canonical": "#9A6A0A", "tonalRamp": ["#3D2A00","#5A3C00","#7A5005","#9A6A0A","#B88020","#D4A040","#E8B860","#F0CC88","#F9E4B8","#FFF5E2"] },
+      "ink":       { "role": "neutral",  "displayName": "Near-Black Ink",    "canonical": "#12161F", "tonalRamp": ["#060709","#0C0F14","#12161F","#1E2430","#2C3445","#3E4A5E","#6B7A92","#9AAAB8","#C5CDD8","#E8ECF0"] },
+      "muted":     { "role": "neutral",  "displayName": "Warm Muted",        "canonical": "#7C7768", "tonalRamp": ["#1A1812","#302D25","#453F34","#5E5749","#7C7768","#9B958A","#B5B0A7","#CEC9C3","#E5E1DB","#F4F2EE"] },
+      "line":      { "role": "neutral",  "displayName": "Parchment Line",    "canonical": "#E7E0D2", "tonalRamp": ["#5A5040","#7A6E5A","#9C8E78","#BEB09A","#D8CFC2","#E7E0D2","#EFEBE3","#F5F2EC","#FAF8F4","#FEFDF9"] },
+      "paper":     { "role": "neutral",  "displayName": "Paper",             "canonical": "#FFFFFF", "tonalRamp": ["#CCCCCC","#D8D8D8","#E4E4E4","#EEEEEE","#F5F5F5","#F9F9F9","#FBFBFB","#FDFDFD","#FEFEFE","#FFFFFF"] },
+      "cream":     { "role": "neutral",  "displayName": "Cream",             "canonical": "#F8F6F2", "tonalRamp": ["#4A4438","#6A6050","#8C806A","#AFA28E","#CCC4B4","#E0DAD0","#EEEAE2","#F4F2EC","#F8F6F2","#FEFDF9"] },
+      "bg":        { "role": "neutral",  "displayName": "Page Warm White",   "canonical": "#FDFCFA", "tonalRamp": ["#4A4844","#6A6866","#8A8886","#A8A6A4","#C8C6C4","#DDD9D4","#EEECE8","#F6F5F2","#FDFCFA","#FFFFFF"] },
+      "bronze":    { "role": "tertiary", "displayName": "Bronze",            "canonical": "#A9763F", "tonalRamp": ["#2A1800","#4A2C00","#6B4010","#8B5828","#A9763F","#C49268","#D8B090","#E8CDB4","#F4E4D4","#FCF4EE"] },
+      "silver":    { "role": "tertiary", "displayName": "Silver",            "canonical": "#98A2B0", "tonalRamp": ["#252E38","#384450","#4E5E6E","#6A7A8A","#8494A4","#98A2B0","#B0BAC6","#C8D0D8","#DEE4EA","#F0F3F6"] },
+      "plat":      { "role": "tertiary", "displayName": "Platinum",          "canonical": "#6E7B8B", "tonalRamp": ["#1A2028","#28343E","#384654","#4C5E6E","#6E7B8B","#8895A4","#A4AEB8","#C0CAD4","#DCE2E8","#EEF2F5"] }
+    },
+    "typographyMeta": {
+      "display":  { "displayName": "Display / Wordmark", "purpose": "The wordmark only — Archivo Black. Never reused for section headings or labels." },
+      "headline": { "displayName": "Headline / Section", "purpose": "Section headings that need editorial weight — Playfair Display. 'How it Works' h2 and similar." },
+      "title":    { "displayName": "Title / Stat Number", "purpose": "Large data numbers in stat cards and podium XP — Playfair Display 700. Cast-in-metal feel." },
+      "body":     { "displayName": "Body / UI Copy",      "purpose": "All readable copy, metadata, table cells, nav, taglines — Inter 15px." },
+      "label":    { "displayName": "Label / Mono Data",   "purpose": "Axis labels, rank positions, step numbers, column headers — IBM Plex Mono uppercase +0.1em tracking." }
+    },
+    "shadows": [
+      { "name": "whisper",      "value": "0 1px 2px rgba(20,16,4,.04)",         "purpose": "Pill at rest. Barely-there material hint." },
+      { "name": "float",        "value": "0 1px 8px rgba(0,0,0,.05)",           "purpose": "Light card float — archived notes, subtle surface lift." },
+      { "name": "hover-lift",   "value": "0 4px 18px rgba(20,16,4,.07)",        "purpose": "Card hover state — step cards, squad cards. Surface rises to meet cursor." },
+      { "name": "strong-hover", "value": "0 6px 24px rgba(20,16,4,.07)",        "purpose": "Step card hover — slightly deeper than standard hover." },
+      { "name": "gold-haze",    "value": "0 4px 18px rgba(200,158,20,.10)",     "purpose": "First-place podium card only. The system's one chromatic shadow." },
+      { "name": "fab",          "value": "0 4px 18px rgba(0,0,0,.45)",          "purpose": "Settings FAB at rest. Full elevation — the one always-floating element." },
+      { "name": "fab-hover",    "value": "0 6px 24px rgba(0,0,0,.55)",          "purpose": "Settings FAB hover." }
+    ],
+    "motion": [
+      { "name": "state-fast",    "value": "0.15s ease",                              "purpose": "Color/border transitions on hover — links, chips, segmented controls." },
+      { "name": "state-std",     "value": "0.20s ease",                              "purpose": "Standard state change — button backgrounds, card borders." },
+      { "name": "menu-slide",    "value": "0.20s cubic-bezier(.4,0,.2,1)",           "purpose": "Mobile nav open/close. Material standard easing." },
+      { "name": "burger-morph",  "value": "0.25s ease",                              "purpose": "Burger → × transform on spans." },
+      { "name": "hand-reach",    "value": "1.5s cubic-bezier(.16,.9,.3,1)",          "purpose": "Hand images entering on page load. Exponential ease-out from off-screen." },
+      { "name": "hand-float",    "value": "8s ease-in-out infinite",                 "purpose": "Idle float animation on hands after entry." },
+      { "name": "word-rise",     "value": "0.78s cubic-bezier(.19,1.02,.32,1)",      "purpose": "Wordmark letter entrance — slight overshoot for presence." },
+      { "name": "glint",         "value": "12s cubic-bezier(.4,0,.2,1) 3.5s infinite","purpose": "Wordmark glint sweep — periodic, subtle, 12s period." },
+      { "name": "pulse",         "value": "2.4s ease-in-out infinite",               "purpose": "Live indicator dot breathing animation." }
+    ],
+    "breakpoints": [
+      { "name": "tablet", "value": "900px",  "note": "Burger appears, desktop nav hides." },
+      { "name": "mobile", "value": "640px",  "note": "2-col stats grid, reduced padding, mobile hand positions." },
+      { "name": "small",  "value": "420px",  "note": "Further padding reduction, collapsed archived-note facts." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary CTA Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Gold-filled pill button. Used for Connect Wallet and the hero CTA. Gold is the only filled color in light surfaces.",
+      "html": "<button class=\"ds-btn-primary\">Connect Wallet</button>",
+      "css": ".ds-btn-primary { appearance: none; background: #F0BD5E; color: #2A2004; border: 1px solid #F0BD5E; border-radius: 999px; padding: 8px 18px; font-family: Inter, system-ui, sans-serif; font-size: 13.5px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: filter .16s, background .2s, color .2s, border-color .2s; } .ds-btn-primary:hover { filter: brightness(1.05); } .ds-btn-primary:focus-visible { outline: 2px solid #F9DDA0; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Neutral outline pill button. Board footer pagination, secondary actions. Never competes with the gold primary.",
+      "html": "<button class=\"ds-btn-ghost\">Load more</button>",
+      "css": ".ds-btn-ghost { appearance: none; background: #FFFFFF; color: #12161F; border: 1px solid #E7E0D2; border-radius: 999px; padding: 10px 24px; font-family: Inter, system-ui, sans-serif; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: border-color .15s, color .15s; } .ds-btn-ghost:hover { border-color: #c0b8ac; color: #12161F; } .ds-btn-ghost:focus-visible { outline: 2px solid #F0BD5E; outline-offset: 2px; }"
+    },
+    {
+      "name": "Gold Gradient Button",
+      "kind": "button",
+      "refersTo": "button-gold-gradient",
+      "description": "Gradient gold pill button for secondary CTAs with more visual weight — copy referral link, share actions.",
+      "html": "<button class=\"ds-btn-gold-grad\">Copy link</button>",
+      "css": ".ds-btn-gold-grad { appearance: none; background: linear-gradient(180deg, #F9DDA0, #F0BD5E); color: #2A2004; border: 1px solid #F0BD5E; border-radius: 999px; padding: 10px 24px; font-family: Inter, system-ui, sans-serif; font-size: 13.5px; font-weight: 700; cursor: pointer; transition: filter .15s, background .2s, color .2s; } .ds-btn-gold-grad:hover { filter: brightness(1.04); } .ds-btn-gold-grad:focus-visible { outline: 2px solid #F0BD5E; outline-offset: 2px; }"
+    },
+    {
+      "name": "Season Chip",
+      "kind": "chip",
+      "refersTo": null,
+      "description": "Pill-shaped season selector. Inactive: muted text, light border. Active: navy 1.5px border, ink text, 600 weight.",
+      "html": "<div class=\"ds-chip-wrap\"><button class=\"ds-chip ds-chip--active\">Season 1</button><button class=\"ds-chip\">Season 0</button></div>",
+      "css": ".ds-chip-wrap { display: flex; gap: 6px; } .ds-chip { appearance: none; background: transparent; color: #7C7768; font-family: Inter, system-ui, sans-serif; font-size: 12.5px; padding: 5px 12px; border-radius: 999px; border: 1px solid transparent; cursor: pointer; transition: color .15s, border-color .15s; } .ds-chip:hover { color: #12161F; border-color: #E7E0D2; } .ds-chip--active { color: #12161F; font-weight: 600; border: 1.5px solid #0E1729; }"
+    },
+    {
+      "name": "Stat Card",
+      "kind": "card",
+      "refersTo": "stat-card",
+      "description": "One cell of the 4-up stats grid. IBM Plex Mono label (dt), Playfair Display number (dd). The 'me' variant glows gold.",
+      "html": "<div class=\"ds-stat\"><dt class=\"ds-stat__label\">Total XP</dt><dd class=\"ds-stat__value\">12,450</dd><div class=\"ds-stat__sub\">+180 this week</div></div>",
+      "css": ".ds-stat { background: #FFFFFF; padding: 21px 23px; } .ds-stat__label { margin: 0 0 10px; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: #7C7768; } .ds-stat__value { margin: 0; font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #0E1729; letter-spacing: -.02em; line-height: 1; } .ds-stat__sub { font-size: 12px; color: #7C7768; margin-top: 5px; }"
+    },
+    {
+      "name": "Podium Card – First Place",
+      "kind": "card",
+      "refersTo": "podium-card-first",
+      "description": "Hero podium card for rank #1. Gold gradient background, gold ambient haze, larger XP type, 3px gold top stripe.",
+      "html": "<div class=\"ds-pcard ds-pcard--first\"><div class=\"ds-pcard__rank\">#1 RANK</div><div class=\"ds-pcard__name\">cryptoking.eth</div><div class=\"ds-pcard__xp\">48,220 <small>XP</small></div></div>",
+      "css": ".ds-pcard--first { position: relative; overflow: hidden; border: 1px solid rgba(240,189,94,.5); border-radius: 14px; background: linear-gradient(160deg, #FFFEF8, #FFFAEC); box-shadow: 0 4px 18px rgba(200,158,20,.10); padding: 24px 22px 28px; display: flex; flex-direction: column; } .ds-pcard--first::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #9A6A0A, #F0BD5E, #9A6A0A); } .ds-pcard__rank { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: #A07800; margin-bottom: 14px; } .ds-pcard__name { font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 600; color: #12161F; } .ds-pcard__xp { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: #0E1729; letter-spacing: -.025em; line-height: 1; margin-top: auto; padding-top: 16px; } .ds-pcard__xp small { font-family: Inter, sans-serif; font-size: 11px; color: #7C7768; }"
+    },
+    {
+      "name": "Step Card",
+      "kind": "card",
+      "refersTo": null,
+      "description": "How-it-works step card. Top stripe signals step rank (gold/silver/bronze). IBM Plex Mono step label, Inter body copy.",
+      "html": "<div class=\"ds-step ds-step--1\"><div class=\"ds-step__n\">Step 1</div><h3 class=\"ds-step__h\">Pick a quest</h3><p class=\"ds-step__p\">Choose the active campaign and start earning XP for every eligible action.</p></div>",
+      "css": ".ds-step { position: relative; overflow: hidden; background: #FFFFFF; border: 1px solid #E7E0D2; border-radius: 16px; padding: 24px 22px; display: flex; flex-direction: column; transition: box-shadow .2s, border-color .2s; } .ds-step:hover { box-shadow: 0 6px 24px rgba(20,16,4,.07); border-color: #cfc5b4; } .ds-step::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #8B6040, #C49070, #8B6040); } .ds-step--1::before { background: linear-gradient(90deg, #9A6A0A, #F0BD5E, #9A6A0A); } .ds-step--2::before { background: linear-gradient(90deg, #8A9099, #BCC4CC, #8A9099); } .ds-step__n { display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; color: #7C7768; margin-bottom: 14px; } .ds-step__h { font-size: 18px; font-weight: 700; margin: 0 0 10px; color: #12161F; line-height: 1.3; } .ds-step__p { margin: 0; font-size: 13.5px; color: #7C7768; line-height: 1.65; }"
+    },
+    {
+      "name": "Live Pill",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Season status indicator in the hero. Fully rounded, paper background, pulsing green dot for live state.",
+      "html": "<div class=\"ds-pill\"><span class=\"ds-pill__live\"><i class=\"ds-pill__dot\"></i>Live</span> · <b>50,000 USDT</b> · 203 participants</div>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid #E7E0D2; border-radius: 999px; padding: 7px 16px 7px 12px; font-family: Inter, system-ui, sans-serif; font-size: 13px; color: #7C7768; box-shadow: 0 1px 2px rgba(20,16,4,.04); } .ds-pill b { color: #12161F; font-weight: 600; } .ds-pill__live { display: flex; align-items: center; gap: 6px; color: #15803D; font-weight: 600; } .ds-pill__dot { display: block; width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: ds-pulse 2.4s ease-in-out infinite; } @keyframes ds-pulse { 0%,100%{opacity:1} 50%{opacity:.35} }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Gilded Vault",
+    "overview": "StakeMyGold is a leaderboard where participation is a bet on future value — XP accumulates like gold in a vault, and this interface communicates that gravity. The visual system pairs a deep navy that reads as sealed, authoritative darkness with a warm, measured gold that signals real achievement rather than decoration. These are not 'cool crypto colors' — they are the palette of a treasury: serious, considered, earned.\n\nThe surface layer — cream, paper, near-white — keeps the day-to-day experience warm and legible. Navy is reserved for command surfaces (the header, the referral block, the mobile nav). Gold appears exactly as often as it should: to mark live status, to highlight the user's own rank, to crown the podium leader. Its restraint is its power.\n\nTypography operates in three registers: Archivo Black for the wordmark alone (a stamp, not a label), Playfair Display for editorial weight (section headings, large stat numbers — these feel cast, not typed), and IBM Plex Mono for data precision (rank positions, step labels, stat axis labels — this is the ledger typeface). Inter handles everything else: approachable, neutral, fast to scan.",
+    "keyCharacteristics": [
+      "Navy + warm gold as the only authority pairing — not gradient-washed, not glassy",
+      "Three-typeface system with strict role assignment: stamped / cast / measured / readable",
+      "Gold used as certification, not wallpaper — scarcity maintained across every surface",
+      "Flat-by-default depth with state-responsive shadows (hover, elevation, focus)",
+      "Podium ranking inherits real metal semantics: gold / silver / bronze, not arbitrary hues"
+    ],
+    "rules": [
+      { "name": "The One Voice Rule",          "body": "Gold (#F0BD5E) marks exactly one thing per context: the active state, the ranked leader, the live signal, the primary CTA. When two gold elements compete for attention on the same screen, one of them is wrong.", "section": "colors" },
+      { "name": "The Warm Neutrals Rule",      "body": "No cool grays. Every neutral — from the page background to the divider line to secondary text — has a warm undertone. If a gray reads as 'digital' or 'cool', it is out of palette.", "section": "colors" },
+      { "name": "The Three-Register Rule",     "body": "Playfair for editorial weight. IBM Plex Mono for data precision. Inter for everything readable. Archivo Black for the wordmark alone. Mixing these — using Mono for headings, or Playfair for body copy — breaks the register system.", "section": "typography" },
+      { "name": "The Tracking Inversion Rule", "body": "Display and title type tracks tightly (negative). Label type tracks openly (positive). Body type tracks neutrally. Tight tracking = large and present; open tracking = small and precise.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule",    "body": "Shadows exist only as a response to interaction (hover) or a structural hierarchy decision (the FAB, the first podium card). A shadow at rest is a hierarchy claim the element must earn.", "section": "elevation" },
+      { "name": "The Gold Haze Exception",     "body": "The first-place podium card earns a warm chromatic shadow. It is the only card with a colored shadow — all other hover shadows are near-black tinted warm. The exception is the rule.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use gold (#F0BD5E) at ≤15% visible surface coverage. It is a signal, not a theme.",
+      "Do use IBM Plex Mono in uppercase with 0.1em letter-spacing for all data labels, rank positions, and axis labels.",
+      "Do use Playfair Display for section headings and large data numbers — this is the 'weight' register, not Inter Bold.",
+      "Do keep all neutral colors warm-toned. If a gray doesn't have an ochre or amber undertone, it is out of palette.",
+      "Do use 999px radius for all interactive controls (buttons, chips, tags) and 14–18px radius for content containers. No middle ground.",
+      "Do let shadows appear only on hover, focus, or explicit structural elevation (podium first card, FAB). Surfaces are flat at rest.",
+      "Do reserve the navy (#0E1729) for command surfaces: header, referral CTA block, mobile nav. Never use it for content cards."
+    ],
+    "donts": [
+      "Don't use gradient text. Emphasis comes from size, weight, or the Playfair Display register — not a gradient fill on text.",
+      "Don't add a colored border-left above 1px on general content cards. The .stat.me left accent (3px) is the single permitted exception.",
+      "Don't use Inter Bold or Inter Black for headings that should use Playfair Display. The serif register exists precisely to avoid Inter at display sizes.",
+      "Don't use cool-toned grays. #7C7768 (Warm Muted) is the floor for secondary text — anything cooler breaks the palette's thermal consistency.",
+      "Don't apply box shadows to surfaces at rest. A shadow at rest is a hierarchy claim that erodes the system's flat-by-default integrity.",
+      "Don't use Archivo Black for anything except the wordmark. It is the stamp; using it elsewhere dilutes it.",
+      "Don't introduce a fourth neutral background color. The system has three: --bg (#FDFCFA), --cream (#F8F6F2), --paper (#FFFFFF)."
+    ]
+  }
+}
