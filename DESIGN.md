@@ -19,27 +19,40 @@ colors:
   plat: "#6E7B8B"
 typography:
   display:
-    fontFamily: "'Archivo Black', sans-serif"
+    fontFamily: "'ZalandoSans', system-ui, sans-serif"
     fontSize: "clamp(50px, 11vw, 132px)"
-    fontWeight: 900
+    fontWeight: 800
     lineHeight: 0.86
     letterSpacing: "-0.035em"
   headline:
-    fontFamily: "'Playfair Display', serif"
+    fontFamily: "'ZalandoSans', sans-serif"
     fontSize: "33px"
-    fontWeight: 700
-    lineHeight: 1.2
+    fontWeight: 500
+    lineHeight: 1.15
+    letterSpacing: "-0.025em"
+  subheading:
+    fontFamily: "'ZalandoSans', sans-serif"
+    fontSize: "25px"
+    fontWeight: 500
+    lineHeight: 1.1
+    letterSpacing: "-0.02em"
+  card-heading:
+    fontFamily: "'ZalandoSans', sans-serif"
+    fontSize: "18px"
+    fontWeight: 600
+    lineHeight: 1.25
+    letterSpacing: "-0.02em"
   title:
-    fontFamily: "'Playfair Display', serif"
+    fontFamily: "'Times New Roman', Times, serif"
     fontSize: "36px"
     fontWeight: 700
     lineHeight: 1
     letterSpacing: "-0.02em"
   body:
-    fontFamily: "Figtree, system-ui, sans-serif"
-    fontSize: "15px"
+    fontFamily: "'ZalandoSans', system-ui, sans-serif"
+    fontSize: "16px"
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.55
   label:
     fontFamily: "'IBM Plex Mono', monospace"
     fontSize: "11px"
