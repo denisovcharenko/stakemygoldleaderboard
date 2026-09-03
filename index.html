@@ -1434,7 +1434,8 @@ window.__dust={count:1.45,speed:3,size:1,opacity:2.5,shimmer:1.58,_builders:[],
     }
     requestAnimationFrame(draw);
   }
-  addEventListener('resize',size);
+  // ResizeObserver so canvas stays synced when page navigation changes stage-wrap height
+  new ResizeObserver(size).observe(c.parentElement);
   size(); requestAnimationFrame(draw);
 })();
 
