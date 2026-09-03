@@ -331,7 +331,7 @@ html::-webkit-scrollbar{display:none}
   border-radius:999px;border:1px solid;white-space:nowrap;flex:none;margin-top:1px}
 .sq-status.active{color:#15803D;border-color:#BBF7D0;background:#F0FDF4}
 .sq-status.forming{color:#92400E;border-color:#FDE68A;background:#FFFBEB}
-.squad-desc{font-size:13px;color:var(--muted);line-height:1.55;margin:0;
+.squad-desc{font-size:13px;color:var(--muted);line-height:1.55;margin:2px 0 6px;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .squad-meta{display:flex;align-items:center;justify-content:space-between;
   font-size:12.5px;color:var(--muted);margin-top:auto;padding-top:4px}
@@ -624,7 +624,41 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
 body[data-page=squads] .hero,
 body[data-page=squads] .partners,
 body[data-page=profile] .hero,
-body[data-page=profile] .partners{display:none}
+body[data-page=profile] .partners,
+body[data-page=squad-detail] .hero,
+body[data-page=squad-detail] .partners{display:none}
+/* squad card hover */
+.squad-card{cursor:pointer}
+/* squad detail page */
+.squad-detail-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:28px 0 22px;border-bottom:1px solid var(--line)}
+.squad-detail-meta{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.squad-detail-meta .dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex:none}
+.squad-detail-name{font-size:clamp(26px,4vw,38px);font-weight:800;color:var(--navy);margin:0 0 10px;letter-spacing:-.03em;line-height:1.1}
+.squad-detail-desc{font-size:15px;color:var(--muted);line-height:1.6;margin:0 0 18px;max-width:54ch}
+.squad-detail-cta{font-size:13.5px;color:var(--muted);margin:0}
+.squad-detail-stats{text-align:right;flex:none}
+.squad-detail-xp{font-size:clamp(28px,3.5vw,42px);font-weight:800;color:var(--navy);letter-spacing:-.04em;line-height:1}
+.squad-detail-sub{font-size:13px;color:var(--muted);margin-top:5px}
+.squad-members{margin-top:28px;padding-bottom:60px}
+.squad-members h3{font-size:18px;font-weight:700;color:var(--navy);margin:0 0 16px;letter-spacing:-.02em}
+.members-table{width:100%;border-collapse:collapse}
+.members-table thead th{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:9px 14px;text-align:left;border-bottom:1px solid var(--line)}
+.members-table thead th:last-child{text-align:right}
+.members-table tbody td{padding:11px 14px;font-size:13.5px;color:var(--navy);border-bottom:1px solid var(--line)}
+.members-table tbody td:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.members-table tbody tr:hover td{background:rgba(0,0,0,.02)}
+.mem-role{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.04em;margin-left:6px;padding:2px 7px;border-radius:999px;border:1px solid var(--line);vertical-align:middle}
+.mem-role.leader{color:var(--gold-dp);border-color:rgba(200,158,20,.3);background:rgba(200,158,20,.06)}
+/* slide transition */
+.page-slide-wrap{overflow:hidden;position:relative}
+@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+.slide-from-right{animation:slideInRight .24s cubic-bezier(.22,.68,0,1.1) both}
+.slide-from-left{animation:slideInLeft .24s cubic-bezier(.22,.68,0,1.1) both}
+@media(max-width:640px){
+  .squad-detail-hero{flex-direction:column;gap:12px}
+  .squad-detail-stats{text-align:left}
+}
 /* inner page header */
 .inner-head{display:flex;align-items:center;gap:14px;padding:28px 0 24px;border-bottom:1px solid var(--line);margin-bottom:28px}
 .back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;
@@ -754,6 +788,17 @@ body[data-page=profile] .partners{display:none}
     <div class="squads-grid" id="squadsGrid"></div>
   </div>
 
+  <!-- Squad detail page -->
+  <div class="page-view" id="pageSquadDetail" hidden>
+    <div class="inner-head">
+      <button class="back-btn" id="backToSquads">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Squads
+      </button>
+    </div>
+    <div id="squadDetailBody"></div>
+  </div>
+
   <!-- Profile page -->
   <div class="page-view" id="pageProfile" hidden>
     <div class="inner-head">
@@ -861,17 +906,38 @@ const AVATARS={
 };
 
 const SQUADS=[
-  {name:'Muddy Crabs',    members:44,max:50,xp:147105,access:'OPEN',  tier:'ELITE',   status:'active'},
-  {name:'The Goldiggers', members:5, max:50,xp:38508, access:'OPEN',  tier:'ELITE',   status:'active'},
-  {name:'Monarchs of Gold',members:6,max:25,xp:37540, access:'OPEN',  tier:'ELITE',   status:'active'},
-  {name:'Goldfish',       members:3, max:50,xp:16713, access:'OPEN',  tier:'ELITE',   status:'active'},
-  {name:'Monkey D Luffy', members:3, max:20,xp:8539,  access:'OPEN',  tier:'ELITE',   status:'active'},
-  {name:'Gold Squad',     members:5, max:20,xp:3392,  access:'OPEN',  tier:'VETERAN', status:'active'},
-  {name:'Royal Gold',     members:1, max:25,xp:10842, access:'INVITE',tier:'ELITE',   status:'forming'},
-  {name:'The Goldiggers', members:1, max:20,xp:7999,  access:'INVITE',tier:'ELITE',   status:'forming'},
-  {name:'Captain web3',   members:1, max:20,xp:7456,  access:'INVITE',tier:'ELITE',   status:'forming'},
-  {name:'Gold princess',  members:1, max:20,xp:7446,  access:'INVITE',tier:'ELITE',   status:'forming'},
-  {name:'Dynamic',        members:1, max:20,xp:7446,  access:'INVITE',tier:'ELITE',   status:'forming'},
+  {name:'Muddy Crabs',     members:44,max:50,xp:147105,access:'OPEN',  tier:'ELITE',   status:'active',
+   desc:'A squad for all the elite giga chads of Goldfish.',
+   roster:[
+     {name:'Librozz',role:'leader',xp:4201},{name:'Rikhavs',role:'member',xp:6302},
+     {name:'RahulKumar',role:'member',xp:3400},{name:'M E E K A',role:'member',xp:6319},
+     {name:'Gian',role:'member',xp:11217},{name:'Va$paN Xchge',role:'member',xp:932},
+     {name:'Drank | ILITY (✱,✱)|Zetarium |.sand',role:'member',xp:8156},
+     {name:'Jarmiu⊙',role:'member',xp:10091},{name:'Fisayo',role:'member',xp:1528},
+     {name:'Debbie Mira',role:'member',xp:360},{name:'Omo.j',role:'member',xp:null},
+     {name:'Shah',role:'member',xp:null},{name:'BG',role:'member',xp:null},
+     {name:'brasilcript',role:'member',xp:288},
+   ]},
+  {name:'The Goldiggers',  members:5, max:50,xp:38508, access:'OPEN',  tier:'ELITE',   status:'active',
+   desc:"We don't wait for XP to drop — we dig for it. Grinding daily, stacking gains, and striking gold one $GFIN at a time."},
+  {name:'Monarchs of Gold',members:6, max:25,xp:37540, access:'OPEN',  tier:'ELITE',   status:'active',
+   desc:'Welcome Monarch 🏆 — a squad built for those who participate to win. We complete every StakeMyGold campaign together.'},
+  {name:'Goldfish',        members:3, max:50,xp:16713, access:'OPEN',  tier:'ELITE',   status:'active',
+   desc:'On-chain gold.'},
+  {name:'Monkey D Luffy',  members:3, max:20,xp:8539,  access:'OPEN',  tier:'ELITE',   status:'active',
+   desc:'Join now and be a winner.'},
+  {name:'Gold Squad',      members:5, max:20,xp:3392,  access:'OPEN',  tier:'VETERAN', status:'active',
+   desc:'Join us.'},
+  {name:'Royal Gold',      members:1, max:25,xp:10842, access:'INVITE',tier:'ELITE',   status:'forming',
+   desc:'We earn together, rise together, reign together — forging legends through loyalty, excellence, and unity.'},
+  {name:'The Goldiggers',  members:1, max:20,xp:7999,  access:'INVITE',tier:'ELITE',   status:'forming',
+   desc:"We don't wait for XP to drop — we dig for it. Grinding daily, stacking gains, and striking gold one $GFIN at a time."},
+  {name:'Captain web3',    members:1, max:20,xp:7456,  access:'INVITE',tier:'ELITE',   status:'forming',
+   desc:null},
+  {name:'Gold princess',   members:1, max:20,xp:7446,  access:'INVITE',tier:'ELITE',   status:'forming',
+   desc:"Gold isn't found by those who wait. It's found by those who dig. No excuses."},
+  {name:'Dynamic',         members:1, max:20,xp:7446,  access:'INVITE',tier:'ELITE',   status:'forming',
+   desc:null},
 ];
 
 const PIDX={all:0,d30:1,d7:2};
@@ -965,14 +1031,63 @@ function switchSeason(newSeason){
   }, 180);
 }
 
+function navigateToSquad(squad){
+  const body=document.getElementById('squadDetailBody');
+  const memberRows=squad.roster?squad.roster.map(m=>`
+    <tr>
+      <td><div class="who">${avHTML(m.name)}<span>${m.name}</span></div></td>
+      <td><span class="mem-role ${m.role}">${m.role}</span></td>
+      <td>${m.xp!=null?fmt(m.xp):'—'}</td>
+    </tr>`).join(''):'';
+  body.innerHTML=`
+    <div class="squad-detail-hero">
+      <div>
+        <div class="squad-detail-meta">
+          <span>${squad.status.toUpperCase()}</span><span class="dot"></span><span>${squad.access}</span>
+        </div>
+        <h2 class="squad-detail-name">${squad.name}</h2>
+        ${squad.desc?`<p class="squad-detail-desc">${squad.desc}</p>`:''}
+        <p class="squad-detail-cta">Connect your wallet to join this squad.</p>
+      </div>
+      <div class="squad-detail-stats">
+        <div class="squad-detail-xp">${fmt(squad.xp)}</div>
+        <div class="squad-detail-sub">total XP · ${squad.members}/${squad.max} members</div>
+        <div style="margin-top:10px;display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap">
+          <span class="sq-tag">${squad.access}</span>
+          <span class="sq-tag ${squad.tier.toLowerCase()}">${squad.tier} TIER</span>
+        </div>
+      </div>
+    </div>
+    <div class="squad-members">
+      <h3>Members</h3>
+      ${squad.roster?`<table class="members-table">
+        <thead><tr><th>Member</th><th>Role</th><th style="text-align:right">Contribution XP</th></tr></thead>
+        <tbody>${memberRows}</tbody>
+      </table>`:`<p style="color:var(--muted);font-size:14px">Connect your wallet to view the full member list.</p>`}
+    </div>`;
+
+  // hide all other pages, show detail with slide-in
+  ['seasonContent','pageSquads','pageProfile'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.hidden=true;
+  });
+  const detail=document.getElementById('pageSquadDetail');
+  detail.hidden=false;
+  detail.classList.remove('slide-from-right','slide-from-left');
+  void detail.offsetWidth; // reflow
+  detail.classList.add('slide-from-right');
+  document.body.dataset.page='squad-detail';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
 function renderSquads(){
   const active=SQUADS.filter(s=>s.status==='active');
   const forming=SQUADS.filter(s=>s.status==='forming');
-  const card=s=>`<div class="squad-card">
+  const card=(s,idx)=>`<div class="squad-card" data-squad-idx="${idx}">
     <div class="squad-top">
       <div class="squad-name">${s.name}</div>
       <span class="sq-status ${s.status}">${s.status==='active'?'Active':'Forming'}</span>
     </div>
+    ${s.desc?`<p class="squad-desc">${s.desc}</p>`:''}
     <div class="squad-meta">
       <span><b>${s.members}</b>/${s.max} members</span>
       <span><b>${fmt(s.xp)}</b> XP</span>
@@ -982,15 +1097,19 @@ function renderSquads(){
       <span class="sq-tag ${s.tier.toLowerCase()}">${s.tier}</span>
     </div>
   </div>`;
-  document.getElementById('squadsGrid').innerHTML=
+  const grid=document.getElementById('squadsGrid');
+  grid.innerHTML=
     `<div style="grid-column:1/-1;font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding-bottom:2px">Active</div>`+
-    active.map(card).join('')+
+    active.map((s,i)=>card(s,SQUADS.indexOf(s))).join('')+
     `<div style="grid-column:1/-1;font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding-top:12px;padding-bottom:2px">Forming</div>`+
-    forming.map(card).join('');
+    forming.map((s,i)=>card(s,SQUADS.indexOf(s))).join('');
+  grid.querySelectorAll('.squad-card').forEach(card=>{
+    card.addEventListener('click',()=>navigateToSquad(SQUADS[+card.dataset.squadIdx]));
+  });
 }
 
 function navigate(page){
-  const pages={home:'seasonContent',squads:'pageSquads',profile:'pageProfile'};
+  const pages={home:'seasonContent',squads:'pageSquads',profile:'pageProfile','squad-detail':'pageSquadDetail'};
   Object.entries(pages).forEach(([k,id])=>{
     const el=document.getElementById(id);
     if(el) el.hidden=(k!==page);
@@ -1001,7 +1120,14 @@ function navigate(page){
     else a.removeAttribute('aria-current');
   });
   document.body.dataset.page=page;
-  if(page==='squads') renderSquads();
+  if(page==='squads'){
+    renderSquads();
+    // slide in from left when coming back from detail
+    const pg=document.getElementById('pageSquads');
+    pg.classList.remove('slide-from-right','slide-from-left');
+    void pg.offsetWidth;
+    pg.classList.add('slide-from-left');
+  }
   const mobNav=document.getElementById('mobNav');
   const burger=document.getElementById('burger');
   if(mobNav&&burger){
@@ -1637,6 +1763,9 @@ function initSettingsPanel(){
     });
   });
 } // end initSettingsPanel
+
+/* back-to-squads */
+document.getElementById('backToSquads').addEventListener('click',()=>navigate('squads'));
 
 /* burger menu */
 (function(){
