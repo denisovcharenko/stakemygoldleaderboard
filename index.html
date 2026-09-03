@@ -52,6 +52,8 @@ html::-webkit-scrollbar{display:none}
 .connect-btn.connected{background:transparent;border-color:rgba(255,255,255,.18);color:var(--gold-lt);filter:none;cursor:default}
 .connect-btn.connected:hover{filter:none}
 .connect-btn.connected svg{flex:none}
+/* connected state on light bg (profile page) */
+.profile-empty .connect-btn.connected{border-color:rgba(195,157,64,.35);color:var(--gold)}
 /* burger */
 .burger{display:none;appearance:none;background:transparent;border:0;
   padding:6px;margin-left:10px;cursor:pointer;flex:none;
@@ -359,6 +361,24 @@ html::-webkit-scrollbar{display:none}
 .profile-empty h2{font-size:28px;font-weight:700;color:var(--navy);margin:0;letter-spacing:-.025em}
 .profile-empty p{color:var(--muted);font-size:15.5px;max-width:34ch;margin:0;line-height:1.6}
 .profile-empty .connect-btn{margin-top:6px}
+/* stage wrap + floating gold coins */
+.stage-wrap{position:relative;overflow:hidden}
+.gc{position:absolute;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle at 35% 30%,#F5D97A 0%,#C39D40 45%,#8A6820 100%);
+  box-shadow:0 2px 8px rgba(195,157,64,.35),inset 0 1px 2px rgba(255,240,160,.5)}
+/* left side coins */
+.gc1{width:44px;height:44px;left:2%;top:15%;animation:gc-float1 7s ease-in-out 0s infinite}
+.gc2{width:28px;height:28px;left:4%;top:42%;animation:gc-float2 9s ease-in-out 1.2s infinite}
+.gc3{width:18px;height:18px;left:1.5%;top:68%;animation:gc-float3 11s ease-in-out 2.7s infinite;opacity:.55}
+/* right side coins */
+.gc4{width:36px;height:36px;right:2%;top:22%;animation:gc-float2 8s ease-in-out .6s infinite}
+.gc5{width:22px;height:22px;right:4%;top:52%;animation:gc-float1 10s ease-in-out 1.9s infinite}
+.gc6{width:14px;height:14px;right:2%;top:77%;animation:gc-float3 12s ease-in-out 3.4s infinite;opacity:.5}
+@keyframes gc-float1{0%,100%{transform:translateY(0) rotate(0deg)}38%{transform:translateY(-18px) rotate(-6deg)}70%{transform:translateY(-8px) rotate(3deg)}}
+@keyframes gc-float2{0%,100%{transform:translateY(0) rotate(0deg)}30%{transform:translateY(-10px) rotate(5deg)}65%{transform:translateY(-22px) rotate(-4deg)}}
+@keyframes gc-float3{0%,100%{transform:translateY(0) rotate(0deg)}45%{transform:translateY(-14px) rotate(8deg)}75%{transform:translateY(-5px) rotate(-5deg)}}
+/* hide coins on mobile (not enough side space) */
+@media(max-width:900px){.gc{display:none}}
 /* page transitions */
 .page-view{animation:fadeUp .22s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -663,7 +683,7 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
 .p-stat.delta-up dd{color:#15803D}
 .p-stat.delta-dn dd{color:#B91C1C}
 .p-stat dd{display:flex;align-items:baseline;gap:5px}
-.delta-icon{font-size:11px;line-height:1;position:relative;top:-1px}
+.delta-icon{font-size:16px;line-height:1;position:relative;top:-1px}
 .delta-num{font-size:22px;font-weight:700;letter-spacing:-.03em}
 .p-squads{padding:24px 0 60px}
 .p-squads h3{font-size:16px;font-weight:700;color:var(--navy);margin:0 0 12px;letter-spacing:-.02em}
@@ -762,6 +782,13 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
   </div>
 </section>
 
+<div class="stage-wrap">
+<span class="gc gc1" aria-hidden="true"></span>
+<span class="gc gc2" aria-hidden="true"></span>
+<span class="gc gc3" aria-hidden="true"></span>
+<span class="gc gc4" aria-hidden="true"></span>
+<span class="gc gc5" aria-hidden="true"></span>
+<span class="gc gc6" aria-hidden="true"></span>
 <main class="wrap">
   <div class="season-content" id="seasonContent">
   <dl class="stats" id="stats"></dl>
@@ -881,6 +908,7 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
     </div>
   </div>
 </main>
+</div><!-- /stage-wrap -->
 
 <footer><div class="wrap">Showing <span id="footCount">203</span> ranked participants.
 Placeholder figures for Epoch One; SMG Run a Reserve reflects the season's final standings.</div></footer>
