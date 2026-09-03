@@ -1458,23 +1458,17 @@ window.__dust={count:1,speed:1,size:1,opacity:1,shimmer:1,sideW:160,_builders:[]
     get radius(){return CR},set radius(v){CR=v},
     get speed(){return LERP},set speed(v){LERP=v}};
 
-  // gold color [240,189,94] used for cursor-proximity tint
-  const GOLD=[240,189,94];
-  function dotBaseRGB(){
-    return document.documentElement.dataset.theme==='dark'?[240,189,94]:[14,23,41];
-  }
   function dotOpacity(x,y){
     const yf=y/H;
     const lAlpha=yf<.55?1:(yf>.92?0:1-(yf-.55)/.37);
-    return lAlpha*(document.documentElement.dataset.theme==='dark'?.3:.5);
+    // same gold dots in both modes; light bg needs slightly higher opacity to match visual weight
+    const isDark=document.documentElement.dataset.theme==='dark';
+    return lAlpha*(isDark?.30:.42);
   }
   function draw(){
     if(!W) return requestAnimationFrame(draw);
-    // slow lerp — dots drag behind the cursor
     if(tx>-999){ cmx+=(tx-cmx)*LERP; cmy+=(ty-cmy)*LERP; }
     ctx.clearRect(0,0,W,H);
-    const [br,bg,bb]=dotBaseRGB();
-    const isDark=document.documentElement.dataset.theme==='dark';
     const cols=Math.ceil(W/GRID)+1, rows=Math.ceil(H/GRID)+1;
     for(let r=0;r<=rows;r++){
       for(let c=0;c<=cols;c++){
@@ -1487,13 +1481,8 @@ window.__dust={count:1,speed:1,size:1,opacity:1,shimmer:1,sideW:160,_builders:[]
         const inf2=inf*inf;
         const rad=DOT_BASE+(DOT_MAX-DOT_BASE)*inf2;
         const finalA=Math.min(.55, a + inf2*.48);
-        // near cursor: lerp base color toward gold
-        const t=isDark?0:inf2;  // in dark mode dots are already gold; in light, lerp to gold
-        const rr=Math.round(br+(GOLD[0]-br)*t);
-        const gg=Math.round(bg+(GOLD[1]-bg)*t);
-        const bb2=Math.round(bb+(GOLD[2]-bb)*t);
         ctx.globalAlpha=finalA;
-        ctx.fillStyle=`rgb(${rr},${gg},${bb2})`;
+        ctx.fillStyle=`rgb(240,189,94)`;  // gold in both modes
         ctx.beginPath();
         ctx.arc(x,y,rad,0,Math.PI*2);
         ctx.fill();
