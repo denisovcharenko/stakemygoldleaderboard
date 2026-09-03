@@ -388,8 +388,9 @@ tr.you td:first-child{padding-left:22px}
 .btn{appearance:none;font:inherit;font-size:13.5px;font-weight:600;border-radius:10px;padding:10px 16px;
   cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
 .btn:hover{background:var(--cream)}
-.btn.gold{background:linear-gradient(180deg,var(--gold-lt),var(--gold));border-color:var(--gold);color:#2A2004}
+.btn.gold{background:linear-gradient(180deg,var(--gold-lt),var(--gold));border-color:var(--gold);color:#2A2004;transition:filter .15s,background .2s,color .2s}
 .btn.gold:hover{filter:brightness(1.04)}
+.btn.gold.copied{background:linear-gradient(180deg,#6ee7b7,#10b981);border-color:#10b981;color:#fff;filter:none}
 .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 /* ---------- referral ---------- */
@@ -784,7 +785,14 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
     </div>
     <div class="link">
       <code>stakemygold.xyz/r/ab41f9</code>
-      <button class="btn gold">Copy link</button>
+      <button class="btn gold" id="copyLinkBtn" onclick="
+        navigator.clipboard.writeText('https://stakemygold.xyz/r/ab41f9').then(()=>{
+          const b=document.getElementById('copyLinkBtn');
+          b.textContent='✓ Link copied';
+          b.classList.add('copied');
+          setTimeout(()=>{b.textContent='Copy link';b.classList.remove('copied');},2200);
+        });
+      ">Copy link</button>
     </div>
   </section>
 
@@ -811,7 +819,6 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         Back
       </button>
-      <h2>Squads</h2>
     </div>
     <p class="lede" style="margin:0 0 20px;color:var(--muted);font-size:15px">Join a squad to multiply your XP and compete for squad-level prizes.</p>
     <div class="squads-grid" id="squadsGrid"></div>
@@ -846,7 +853,6 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         Back
       </button>
-      <h2>Profile</h2>
     </div>
     <div class="profile-empty">
       <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
