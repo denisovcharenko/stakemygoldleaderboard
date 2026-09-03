@@ -1162,8 +1162,7 @@ function render(){
   document.getElementById('boardFoot').innerHTML =
     s.foot.map(f=>`<div>${f}</div>`).join('') +
     `<div class="btns">
-      <button class="btn" onclick="jumpToMyRow()">Jump to my row</button>
-      ${s.state==='live'?`<button class="btn gold" onclick="window.open('https://stakemygold.onsend.xyz/quests','_blank')">Go to quests</button>`:''}</div>`;
+      <button class="btn" onclick="jumpToMyRow()">Jump to my row</button></div>`;
 }
 
 function switchSeason(newSeason){
