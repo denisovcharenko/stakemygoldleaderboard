@@ -1604,8 +1604,8 @@ function initSettingsPanel(){
     [handL,handR].forEach(h=>{h.style.animation='';h.style.transform='';});
     const vw=window.innerWidth;
     if(vw<=640){
-      handL.style.left='-10px'; handL.style.bottom='260px';
-      handR.style.right='-10px'; handR.style.bottom='260px';
+      handL.style.left='-10px'; handL.style.bottom='320px';
+      handR.style.right='-10px'; handR.style.bottom='320px';
     } else if(vw<=900){
       handL.style.left=S.lhx+'px'; handL.style.bottom=Math.round(S.lhy*.38)+'px';
       handR.style.right=S.rhx+'px'; handR.style.bottom=Math.round(S.rhy*.42)+'px';
