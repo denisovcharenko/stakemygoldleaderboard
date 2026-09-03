@@ -627,6 +627,35 @@ body[data-page=profile] .hero,
 body[data-page=profile] .partners,
 body[data-page=squad-detail] .hero,
 body[data-page=squad-detail] .partners{display:none}
+body[data-page=participant] .hero,
+body[data-page=participant] .partners{display:none}
+/* participant detail */
+.pcard{cursor:pointer;transition:box-shadow .18s,border-color .18s}
+.pcard:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);border-color:rgba(0,0,0,.14)}
+tbody tr:not(.you){cursor:pointer}
+tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
+.participant-hero{display:flex;align-items:center;gap:20px;padding:28px 0 26px;border-bottom:1px solid var(--line)}
+.participant-av{width:72px;height:72px;border-radius:50%;overflow:hidden;flex:none;
+  background:linear-gradient(140deg,var(--gold-lt),var(--gold-dp));
+  display:grid;place-items:center;font-size:26px;font-weight:700;color:#2A2004}
+.participant-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.participant-info{flex:1;min-width:0}
+.participant-name{font-size:clamp(22px,3.5vw,34px);font-weight:800;color:var(--navy);margin:0 0 8px;letter-spacing:-.03em;line-height:1.1}
+.participant-tier{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.participant-rank{font-size:14px;color:var(--muted);margin-top:6px}
+.p-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:24px 0 0}
+.p-stat{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px 14px}
+.p-stat dt{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.p-stat dd{font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.03em;margin:0}
+.p-stat dd small{font-size:13px;font-weight:500;color:var(--muted)}
+.p-stat.delta-up dd{color:#15803D}
+.p-stat.delta-dn dd{color:#B91C1C}
+.p-squads{padding:24px 0 60px}
+.p-squads h3{font-size:16px;font-weight:700;color:var(--navy);margin:0 0 12px;letter-spacing:-.02em}
+@media(max-width:640px){
+  .p-stats-grid{grid-template-columns:repeat(2,1fr)}
+  .participant-av{width:54px;height:54px;font-size:20px}
+}
 /* squad card hover */
 .squad-card{cursor:pointer}
 /* squad detail page */
@@ -786,6 +815,17 @@ body[data-page=squad-detail] .partners{display:none}
     </div>
     <p class="lede" style="margin:0 0 20px;color:var(--muted);font-size:15px">Join a squad to multiply your XP and compete for squad-level prizes.</p>
     <div class="squads-grid" id="squadsGrid"></div>
+  </div>
+
+  <!-- Participant detail page -->
+  <div class="page-view" id="pageParticipant" hidden>
+    <div class="inner-head">
+      <button class="back-btn" id="backToBoard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+    </div>
+    <div id="participantDetailBody"></div>
   </div>
 
   <!-- Squad detail page -->
@@ -981,6 +1021,55 @@ function renderWordmark(text){
   }));
 }
 
+function navigateToParticipant(row, rank){
+  const [name, tier, xp, quests, delta] = row;
+  const squadsIn = SQUADS.filter(s=>s.roster&&s.roster.some(m=>m.name===name||m.name.startsWith(name)));
+  const url = AVATARS[name];
+  const avLg = url
+    ? `<span class="participant-av"><img src="${url}" alt="${name}"></span>`
+    : `<span class="participant-av" style="background:${avColor(name)}">${initials(name)}</span>`;
+  const dc = delta>0?'up':delta<0?'dn':'flat';
+  const dt = delta>0?`▲${delta}`:delta<0?`▼${Math.abs(delta)}`:'–';
+  document.getElementById('participantDetailBody').innerHTML=`
+    <div class="participant-hero">
+      ${avLg}
+      <div class="participant-info">
+        <div class="participant-name">${name}</div>
+        <div class="participant-tier"><span class="tierbadge t-${tier}"><i></i>${tier}</span></div>
+        <div class="participant-rank">Rank #${String(rank).padStart(2,'0')} · ${quests} quests completed</div>
+      </div>
+    </div>
+    <dl class="p-stats-grid">
+      <div class="p-stat"><dt>All-time XP</dt><dd>${fmt(xp[0])}</dd></div>
+      <div class="p-stat"><dt>Last 30 days</dt><dd>${fmt(xp[1])}</dd></div>
+      <div class="p-stat"><dt>Last 7 days</dt><dd>${fmt(xp[2])}</dd></div>
+      <div class="p-stat"><dt>Quests</dt><dd>${quests}</dd></div>
+      <div class="p-stat ${dc==='up'?'delta-up':dc==='dn'?'delta-dn':''}"><dt>Rank change</dt><dd>${dt}</dd></div>
+      <div class="p-stat"><dt>Tier</dt><dd><small style="font-size:15px;font-weight:600;color:var(--navy)">${tier}</small></dd></div>
+    </dl>
+    ${squadsIn.length?`<div class="p-squads">
+      <h3>Squad</h3>
+      ${squadsIn.map(s=>`<div class="squad-card" style="cursor:default;max-width:360px">
+        <div class="squad-top"><div class="squad-name">${s.name}</div><span class="sq-status ${s.status}">${s.status==='active'?'Active':'Forming'}</span></div>
+        <div class="squad-meta"><span><b>${s.members}</b>/${s.max} members</span><span><b>${fmt(s.xp)}</b> XP</span></div>
+        <div class="squad-tags"><span class="sq-tag ${s.tier.toLowerCase()}">${s.tier}</span></div>
+      </div>`).join('')}
+    </div>`:''}`
+  ;
+  // show page
+  ['seasonContent','pageSquads','pageSquadDetail','pageProfile'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.hidden=true;
+  });
+  document.querySelectorAll('a[data-page]').forEach(a=>a.removeAttribute('aria-current'));
+  const pg=document.getElementById('pageParticipant');
+  pg.hidden=false;
+  pg.classList.remove('slide-from-right','slide-from-left');
+  void pg.offsetWidth;
+  pg.classList.add('slide-from-right');
+  document.body.dataset.page='participant';
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
 function render(){
   const s=SEASONS[current], i=PIDX[period];
 
@@ -995,7 +1084,7 @@ function render(){
   const sorted=[...s.rows].sort((a,b)=>b[2][i]-a[2][i]);
 
   document.getElementById('podium').innerHTML=sorted.slice(0,3).map((r,n)=>`
-    <div class="pcard${n===0?' first':''}">
+    <div class="pcard${n===0?' first':''}" data-rank="${n+1}" data-name="${r[0]}">
       <div class="rank">0${n+1}</div>
       <div class="who">${avHTML(r[0])}${r[0]}</div>
       <div class="xp">${fmt(r[2][i])} <small>XP</small></div>
@@ -1006,7 +1095,7 @@ function render(){
     const rank=n+4, d=r[4], me=r[0]==='you';
     const dc=d>0?'up':d<0?'down':'flat', dt=d>0?`▲${d}`:d<0?`▼${Math.abs(d)}`:'–';
     const meAv=`<span class="av" style="background:var(--gold)">★</span>`;
-    return `<tr class="${me?'you':''}">
+    return `<tr class="${me?'you':''}" data-rank="${rank}" data-name="${r[0]}">
       <td class="rk">${String(rank).padStart(2,'0')}</td>
       <td><div class="who">${me?meAv:avHTML(r[0])}${r[0]}</div></td>
       <td class="hide-sm"><span class="tiercell t-${r[1]}"><i></i>${r[1]}</span></td>
@@ -1014,6 +1103,18 @@ function render(){
       <td class="num hide-sm">${r[3]}</td>
       <td class="num delta ${dc}">${dt}</td></tr>`;
   }).join('');
+
+  // wire clicks
+  document.querySelectorAll('#podium .pcard').forEach(card=>{
+    const name=card.dataset.name, rank=+card.dataset.rank;
+    const row=sorted.find(r=>r[0]===name);
+    if(row) card.addEventListener('click',()=>navigateToParticipant(row,rank));
+  });
+  document.querySelectorAll('#rows tr:not(.you)').forEach(tr=>{
+    const name=tr.dataset.name, rank=+tr.dataset.rank;
+    const row=sorted.find(r=>r[0]===name);
+    if(row) tr.addEventListener('click',()=>navigateToParticipant(row,rank));
+  });
 
   document.getElementById('boardFoot').innerHTML =
     s.foot.map(f=>`<div>${f}</div>`).join('') +
@@ -1109,7 +1210,7 @@ function renderSquads(){
 }
 
 function navigate(page){
-  const pages={home:'seasonContent',squads:'pageSquads',profile:'pageProfile','squad-detail':'pageSquadDetail'};
+  const pages={home:'seasonContent',squads:'pageSquads',profile:'pageProfile','squad-detail':'pageSquadDetail',participant:'pageParticipant'};
   Object.entries(pages).forEach(([k,id])=>{
     const el=document.getElementById(id);
     if(el) el.hidden=(k!==page);
@@ -1764,8 +1865,15 @@ function initSettingsPanel(){
   });
 } // end initSettingsPanel
 
-/* back-to-squads */
+/* back buttons */
 document.getElementById('backToSquads').addEventListener('click',()=>navigate('squads'));
+document.getElementById('backToBoard').addEventListener('click',()=>{
+  navigate('home');
+  const pg=document.getElementById('seasonContent');
+  pg.classList.remove('slide-from-right','slide-from-left');
+  void pg.offsetWidth;
+  pg.classList.add('slide-from-left');
+});
 
 /* burger menu */
 (function(){
