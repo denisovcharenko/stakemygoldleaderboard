@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>StakeMyGold — Leaderboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,7 +58,7 @@ html::-webkit-scrollbar{display:none}
 .season[aria-selected="true"]{color:var(--ink);font-weight:600;border-color:var(--navy);border-width:1.5px}
 .bh-sep{width:1px;height:20px;background:var(--line);flex-shrink:0;margin:0 6px}
 .season .dot{display:none}
-@keyframes live-ping{0%{transform:scale(1);opacity:.65}65%{transform:scale(3.2);opacity:0}100%{transform:scale(3.2);opacity:0}}
+@keyframes live-ping{0%{transform:scale(1);opacity:.65}65%{transform:scale(1.6);opacity:0}100%{transform:scale(1.6);opacity:0}}
 .season:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
 
 /* ---------- partners ---------- */
@@ -73,28 +73,41 @@ html::-webkit-scrollbar{display:none}
 @keyframes slide{to{transform:translateX(-50%)}}
 
 /* ---------- hero ---------- */
-.hero{position:relative;padding:74px 0 210px;text-align:center;overflow:hidden}
+.hero{position:relative;padding:108px 0 70px;text-align:center;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:160px;
+  background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:1}
 .hand{position:absolute;bottom:-6px;z-index:3;width:clamp(230px,29vw,390px);height:auto;
-  opacity:.88;pointer-events:none;
-  animation:reach 1.5s cubic-bezier(.16,.9,.3,1) both}
-.hand-l{left:-42px;animation-delay:.35s}
-.hand-r{right:-42px;animation-delay:.5s}
-@keyframes reach{from{opacity:0;transform:translateX(var(--from,-40px))}
-  to{opacity:.88;transform:translateX(0)}}
-.hand-l{--from:-56px}.hand-r{--from:56px}
-.spark{position:absolute;z-index:1;left:50%;bottom:100px;width:320px;height:320px;
-  transform:translate(-50%,50%);pointer-events:none;
-  background:radial-gradient(circle,rgba(245,231,190,.28) 0%,rgba(201,162,39,.07) 38%,transparent 65%);
-  opacity:0;animation:glow 3.2s ease-in-out 1.8s infinite}
-@keyframes glow{0%,100%{opacity:0;transform:translate(-50%,50%) scale(.88)}
-  50%{opacity:1;transform:translate(-50%,50%) scale(1.0)}}
-#dust{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
-/* halftone engraving field — the X-post texture, kept to the corners */
-.halftone{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
-  background-image:radial-gradient(circle at center,#0E1729 1.15px,transparent 1.25px);
-  background-size:9px 9px;
-  -webkit-mask-image:radial-gradient(ellipse 62% 56% at 50% 46%,transparent 42%,#000 100%);
-  mask-image:radial-gradient(ellipse 62% 56% at 50% 46%,transparent 42%,#000 100%)}
+  opacity:.88;pointer-events:none}
+.hand-l{left:-42px;transform-origin:bottom left;
+  animation:reach 1.5s cubic-bezier(.16,.9,.3,1) .35s both, float-l 8s ease-in-out 1.9s infinite}
+.hand-r{right:-42px;transform-origin:bottom right;
+  animation:reach 1.5s cubic-bezier(.16,.9,.3,1) .5s both, float-r 9s ease-in-out 2.1s infinite}
+.hand-l{--from:-64px}.hand-r{--from:64px}
+@keyframes reach{
+  from{opacity:0;transform:translateX(var(--from)) scale(.95)}
+  to{opacity:.88;transform:translateX(0) scale(1)}}
+@keyframes float-l{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  40%{transform:translateY(-10px) rotate(-1.4deg)}
+  70%{transform:translateY(-4px) rotate(.4deg)}}
+@keyframes float-r{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  30%{transform:translateY(-5px) rotate(.6deg)}
+  62%{transform:translateY(-12px) rotate(-.9deg)}}
+/* blur haze behind hands — blurs dots at edges, hands stay sharp above */
+.hand-haze{position:absolute;top:0;bottom:0;z-index:1;pointer-events:none;
+  width:clamp(300px,40vw,540px);
+  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px)}
+.hand-haze-l{left:0;
+  mask-image:linear-gradient(to right,rgba(0,0,0,.9) 0%,rgba(0,0,0,.6) 45%,transparent 88%);
+  -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,.9) 0%,rgba(0,0,0,.6) 45%,transparent 88%)}
+.hand-haze-r{right:0;
+  mask-image:linear-gradient(to left,rgba(0,0,0,.9) 0%,rgba(0,0,0,.6) 45%,transparent 88%);
+  -webkit-mask-image:linear-gradient(to left,rgba(0,0,0,.9) 0%,rgba(0,0,0,.6) 45%,transparent 88%)}
+.spark{display:none}
+#dust{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:4}
+/* halftone engraving field — canvas-driven so dots respond to cursor */
+.halftone{position:absolute;inset:0;z-index:0;pointer-events:none;display:block;width:100%;height:100%}
 .hero .wrap{position:relative;z-index:2}
 .pill{display:inline-flex;align-items:center;gap:10px;background:var(--paper);
   border:1px solid var(--line);border-radius:999px;padding:7px 16px 7px 12px;font-size:13px;
@@ -108,7 +121,7 @@ html::-webkit-scrollbar{display:none}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 
 .wordmark{font-family:'Archivo Black',sans-serif;letter-spacing:-.035em;line-height:.86;
-  font-size:clamp(50px,11vw,132px);margin:24px 0 0;
+  font-size:clamp(50px,11vw,132px);margin:24px 0 0;padding:.14em 0 .18em;position:relative;overflow:hidden;
   color:#dcad56;
   text-shadow:
     0.0044em 0.0065em 0 rgb(203,165,45),
@@ -138,18 +151,95 @@ html::-webkit-scrollbar{display:none}
     0.1106em 0.1635em 0 rgb(247,232,193),
     0.1150em 0.1700em 0 rgb(248,234,199)}
 .wordmark span{display:inline-block;transform:translateY(0);opacity:1}
-/* gm-active: spans handle their own background-clip so no gold blob on parent h1 */
+/* gm-active: gradient per-span with zoomed backgroundSize so each char shows the bright core zone */
 .wordmark.gm-active span{-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+/* glint sweep: ::after overlay with mix-blend-mode, only when metallic gradient active */
+.wordmark.gm-active::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:linear-gradient(108deg,transparent 35%,rgba(255,253,228,.28) 50%,transparent 65%);
+  transform:translateX(-110%);
+  animation:wm-glint 12s cubic-bezier(.4,0,.2,1) 3.5s infinite;
+  mix-blend-mode:overlay}
 .wordmark.animate span{transform:translateY(.36em);opacity:0;
   animation:rise .78s cubic-bezier(.19,1.02,.32,1) forwards}
 @keyframes rise{to{transform:translateY(0);opacity:1}}
+@keyframes wm-glint{
+  0%  {transform:translateX(-110%)}
+  20% {transform:translateX(110%)}
+  100%{transform:translateX(110%)}}
 .tagline{max-width:40ch;margin:18px auto 0;color:var(--muted);font-size:16px}
 
 
-.archived-note{max-width:660px;margin:24px auto 0;background:#FFF9E8;border:1px solid #F0E0B0;
-  border-radius:12px;padding:14px 18px;font-size:14px;color:#5C4B18;text-align:left;
-  display:flex;gap:12px;align-items:flex-start}
-.archived-note .k{font-size:17px;line-height:1.3}
+/* ── archived note: shared base ── */
+.archived-note{max-width:680px;margin:32px auto 0;text-align:center}
+
+/* ── V1 · Editorial — ruled header + Playfair numbers ── */
+.archived-note.v1 .an-season{font-size:10.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold-dp);margin-bottom:14px;
+  display:flex;align-items:center;justify-content:center;gap:8px}
+.archived-note.v1 .an-season::before,.archived-note.v1 .an-season::after{
+  content:'';flex:1;height:1px;max-width:60px;
+  background:linear-gradient(to var(--d,right),transparent,rgba(218,200,155,.7))}
+.archived-note.v1 .an-season::after{--d:left}
+.archived-note.v1 .an-facts{display:flex;align-items:flex-start;justify-content:center}
+.archived-note.v1 .an-fact{display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:0 28px;border-right:1px solid rgba(218,200,155,.5)}
+.archived-note.v1 .an-fact:last-child{border-right:none}
+.archived-note.v1 .an-fact b{font-family:'Playfair Display',serif;font-size:28px;
+  font-weight:700;color:var(--navy);line-height:1}
+.archived-note.v1 .an-fact span{font-size:11px;color:var(--muted)}
+
+/* ── V2 · Pill ticker — one-liner ── */
+.archived-note.v2{max-width:700px;background:rgba(255,255,255,.88);
+  border:1px solid var(--line);border-radius:999px;padding:10px 26px;
+  display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
+.archived-note.v2 .an-season{font-size:12px;font-weight:600;color:var(--ink);
+  margin:0;padding-right:16px;border-right:1px solid var(--line);margin-right:16px}
+.archived-note.v2 .an-season::before,.archived-note.v2 .an-season::after{display:none}
+.archived-note.v2 .an-facts{display:flex;align-items:center;gap:6px}
+.archived-note.v2 .an-fact{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted)}
+.archived-note.v2 .an-fact b{color:var(--ink);font-weight:700;font-size:13px;font-family:inherit}
+.archived-note.v2 .an-fact:not(:last-child)::after{content:'·';margin-left:6px;color:var(--line)}
+.archived-note.v2 .an-fact span{font-size:12.5px}
+
+/* ── V3 · Floating cards — 3 separate mini-cards ── */
+.archived-note.v3 .an-season{font-size:10.5px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+  display:flex;justify-content:center}
+.archived-note.v3 .an-season::before,.archived-note.v3 .an-season::after{display:none}
+.archived-note.v3 .an-facts{display:flex;gap:10px}
+.archived-note.v3 .an-fact{flex:1;background:rgba(255,255,255,.9);
+  border:1px solid var(--line);border-radius:12px;padding:14px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.archived-note.v3 .an-fact b{font-family:'Playfair Display',serif;font-size:22px;
+  font-weight:700;color:var(--navy);line-height:1}
+.archived-note.v3 .an-fact span{font-size:11px;color:var(--muted)}
+
+/* ── V4 · Dark compact — navy bg, gold accents ── */
+.archived-note.v4{max-width:620px;background:var(--navy);border-radius:14px;
+  padding:16px 24px;display:flex;align-items:center;gap:20px}
+.archived-note.v4 .an-season{font-size:12px;font-weight:600;color:var(--gold);
+  margin:0;flex-shrink:0;text-align:left;padding-right:20px;
+  border-right:1px solid rgba(255,255,255,.12);margin-right:0}
+.archived-note.v4 .an-season::before,.archived-note.v4 .an-season::after{display:none}
+.archived-note.v4 .an-facts{display:flex;align-items:center;gap:0;flex:1;justify-content:space-around}
+.archived-note.v4 .an-fact{display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:0 16px;border-right:1px solid rgba(255,255,255,.1)}
+.archived-note.v4 .an-fact:last-child{border-right:none}
+.archived-note.v4 .an-fact b{font-family:'Playfair Display',serif;font-size:22px;
+  font-weight:700;color:#fff;font-family:inherit;font-size:15px;font-weight:700}
+.archived-note.v4 .an-fact span{font-size:10.5px;color:rgba(255,255,255,.45)}
+
+/* ── V5 · Minimal prose — no borders, pure type ── */
+.archived-note.v5 .an-season{font-family:'Playfair Display',serif;font-size:15px;
+  font-style:italic;color:var(--ink);margin-bottom:8px;font-weight:400;
+  display:flex;justify-content:center}
+.archived-note.v5 .an-season::before,.archived-note.v5 .an-season::after{display:none}
+.archived-note.v5 .an-facts{display:flex;align-items:center;justify-content:center;gap:8px}
+.archived-note.v5 .an-fact{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+.archived-note.v5 .an-fact b{color:var(--ink);font-weight:600;font-family:inherit;font-size:12px}
+.archived-note.v5 .an-fact:not(:last-child)::after{content:'·';margin-left:8px;color:rgba(0,0,0,.2)}
+.archived-note.v5 .an-fact span{font-size:12px}
 
 /* ---------- stats ---------- */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
@@ -178,42 +268,46 @@ html::-webkit-scrollbar{display:none}
 .statustag[data-state="ended"] i{background:#C6BFB0}
 .statustag[data-state="ended"] i::after{display:none}
 
-.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:20px 20px 14px}
-.pcard{border:1px solid var(--line);border-radius:16px;overflow:hidden;
-  background:var(--paper);display:flex;flex-direction:column;position:relative}
-.pcard.first{border-color:#DFC97C;
-  background:linear-gradient(160deg,#FFFBEE 0%,#FFF5D0 100%);
-  box-shadow:0 6px 28px rgba(200,158,20,.16)}
-/* top accent stripe by position */
-.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--line);border-radius:16px 16px 0 0}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px 20px 16px}
+.pcard{border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  background:var(--paper);display:flex;flex-direction:column;position:relative;
+  padding:18px 20px 20px}
+.pcard.first{border-color:rgba(223,201,124,.7);
+  background:linear-gradient(160deg,#FFFEF9,#FFFBEF);
+  box-shadow:0 4px 18px rgba(200,158,20,.10)}
+/* top accent stripe */
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--line)}
 .pcard.first::before{background:linear-gradient(90deg,#C9960A,#F0BD5E,#C9960A)}
 .podium .pcard:nth-child(2)::before{background:linear-gradient(90deg,#8A9099,#BCC4CC,#8A9099)}
 .podium .pcard:nth-child(3)::before{background:linear-gradient(90deg,#8B6040,#C49070,#8B6040)}
-/* rank badge top-left */
-.pcard .rank{padding:20px 0 0 20px;
-  font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--muted);line-height:1;font-weight:700}
+/* rank label */
+.pcard .rank{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;
+  letter-spacing:.09em;color:var(--muted);line-height:1;margin-bottom:14px}
 .pcard.first .rank{color:#A07800}
-/* content area */
-.pcard .who{padding:10px 20px 0;display:flex;align-items:center;gap:10px;
-  font-weight:700;font-size:16px;color:var(--ink)}
-.pcard .xp{padding:8px 20px 20px;
-  font-family:'Playfair Display',serif;font-size:28px;font-weight:700;
-  color:var(--navy);line-height:1.1}
-.pcard.first .xp{font-size:34px}
-.pcard .xp small{font-family:Inter,sans-serif;font-size:11.5px;color:var(--muted);
+/* who row */
+.pcard .who{display:flex;align-items:center;gap:10px;padding:0;
+  font-weight:700;font-size:15px;color:var(--ink)}
+/* xp number */
+.pcard .xp{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;
+  color:var(--navy);line-height:1;margin-top:auto;padding:16px 0 0}
+.pcard.first .xp{font-size:31px}
+.pcard .xp small{font-family:Inter,sans-serif;font-size:11px;color:var(--muted);
   font-weight:400;margin-left:4px;letter-spacing:.02em}
 
 .av{width:28px;height:28px;border-radius:50%;flex:none;
   background:linear-gradient(140deg,var(--gold-lt),var(--gold-dp));
   display:grid;place-items:center;font-size:11px;font-weight:700;color:#2A2004}
 .pcard .av{width:34px;height:34px;font-size:12px}
-.tierbadge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);
-  border:1px solid var(--line);border-radius:6px;padding:4px 9px;margin-top:12px}
-.tierbadge i{width:8px;height:8px;border-radius:2px;display:block}
+.tierbadge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;
+  color:var(--muted);margin-top:10px}
+.tierbadge i{width:7px;height:7px;border-radius:50%;display:block;flex:none}
 .t-Bronze i{background:var(--bronze)}.t-Silver i{background:var(--silver)}
 .t-Gold i{background:var(--gold)}.t-Platinum i{background:var(--plat)}
+/* in podium cards, tier label uses tier color */
+.pcard .tierbadge{padding:0;margin-top:10px}
+.pcard .t-Gold{color:var(--gold-dp)}
+.pcard .t-Silver{color:var(--silver)}
+.pcard .t-Bronze{color:var(--bronze)}
 
 table{width:100%;border-collapse:collapse;font-size:14px}
 thead th{font-size:11.5px;color:var(--muted);font-weight:500;text-align:left;padding:10px 20px;
@@ -262,11 +356,24 @@ tr.you td:first-child{padding-left:22px}
 .how h2{font-family:'Playfair Display',serif;font-size:33px;font-weight:700;margin:0 0 6px}
 .how h2 em{font-style:italic;color:var(--gold)}
 .how p.lede{color:var(--muted);margin:0 0 24px;max-width:58ch}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.step{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:21px}
-.step .n{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold-dp);margin-bottom:11px}
-.step h3{font-size:16px;margin:0 0 6px}
-.step p{margin:0;font-size:13.5px;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
+.step{background:var(--paper);border:1px solid var(--line);border-radius:16px;
+  padding:26px 24px 24px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:box-shadow .2s,border-color .2s}
+.step:hover{box-shadow:0 6px 24px rgba(20,16,4,.07);border-color:#cfc5b4}
+/* top accent strip — gold for step 1, subtle for rest */
+.step::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--line)}
+.step:first-child::before{background:linear-gradient(90deg,var(--gold-dp),var(--gold),var(--gold-dp))}
+/* step label */
+.step .n{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;
+  color:var(--gold-dp);letter-spacing:.1em;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.step .n::after{content:'';flex:1;height:1px;
+  background:linear-gradient(to right,var(--gold-pale),transparent)}
+.step h3{font-size:16px;font-weight:700;margin:0 0 10px;color:var(--ink);line-height:1.3}
+.step p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.65;flex:1}
 
 footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color:var(--muted)}
 
@@ -287,7 +394,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
 [data-theme="dark"] *{scrollbar-color:rgba(240,189,94,.3) transparent}
 [data-theme="dark"] .pill{background:rgba(255,255,255,.07);box-shadow:0 1px 2px rgba(0,0,0,.3)}
 [data-theme="dark"] .pill .live{color:#4ade80}
-[data-theme="dark"] .halftone{background-image:radial-gradient(circle at center,rgba(240,189,94,.4) 1.15px,transparent 1.25px);opacity:.3}
+/* halftone canvas dot color is set via JS from data-theme */
 [data-theme="dark"] .partners{background:var(--navy);border-color:var(--line)}
 [data-theme="dark"] .partners .logo{filter:brightness(0) invert(1);opacity:.4}
 [data-theme="dark"] .partners .logo:hover{filter:brightness(0) invert(1);opacity:.85}
@@ -310,7 +417,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
 [data-theme="dark"] .stat dd{color:#fff}
 [data-theme="dark"] .stat.me dd{color:var(--gold)}
 [data-theme="dark"] .pcard{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03))}
-[data-theme="dark"] .pcard.first{border-color:rgba(240,189,94,.45);background:linear-gradient(180deg,rgba(240,189,94,.12),rgba(240,189,94,.05));box-shadow:0 2px 24px rgba(240,189,94,.12)}
+[data-theme="dark"] .pcard.first{border-color:rgba(240,189,94,.35);background:linear-gradient(160deg,rgba(240,189,94,.08),rgba(240,189,94,.03));box-shadow:0 4px 18px rgba(240,189,94,.10)}
 [data-theme="dark"] .pcard .rank{color:var(--gold)}
 [data-theme="dark"] .pcard .xp{color:#fff}
 [data-theme="dark"] thead th{background:rgba(255,255,255,.03)}
@@ -368,6 +475,11 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
 .sp-arrow{display:flex;align-items:center;justify-content:center;gap:6px;
   color:rgba(255,255,255,.25);font-size:18px;letter-spacing:4px;padding:2px 0}
 
+.nv-btn{appearance:none;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);
+  color:rgba(255,255,255,.55);font:inherit;font-size:11px;font-weight:600;padding:6px 4px;
+  border-radius:6px;cursor:pointer;transition:.15s;letter-spacing:.04em}
+.nv-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.nv-btn.active{background:rgba(240,189,94,.18);border-color:rgba(240,189,94,.5);color:#f0bd5e}
 .sp-copy{appearance:none;border:1px solid rgba(240,189,94,.4);background:rgba(240,189,94,.12);
   color:#f0bd5e;font:inherit;font-size:13px;font-weight:600;padding:11px 16px;border-radius:10px;
   cursor:pointer;transition:background .18s;text-align:center;flex:none;margin:4px 0 8px}
@@ -391,6 +503,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
 .sp-hex.invalid{border-color:rgba(200,60,60,.5);color:rgba(220,100,100,.8)}
 .sp-opacity{width:100%;accent-color:#f0bd5e;height:4px;cursor:pointer;margin-top:2px}
 
+/* ── Tablet (≤900px) ───────────────────────────────────────── */
 @media (max-width:900px){
   .stats{grid-template-columns:repeat(2,1fr)}
   .steps{grid-template-columns:1fr}
@@ -399,13 +512,51 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
   .brand span{display:none}
   th.hide-sm,td.hide-sm{display:none}
   .refer .link{margin-left:0;width:100%}
-  .hero{padding-bottom:150px}
-  .hand{width:190px;opacity:.7}
-  .spark{bottom:82px;width:130px;height:130px}
+  .hero{padding:80px 0 120px}
+  .hand{width:clamp(140px,20vw,220px)}
+  .hand-haze{width:clamp(130px,24vw,260px);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .spark{bottom:72px;width:120px;height:120px}
+  .archived-note.v1 .an-facts{flex-wrap:wrap;gap:6px 28px}
 }
-@media (max-width:560px){
+/* ── Mobile (≤640px) ───────────────────────────────────────── */
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .seasonbar .wrap{padding:0 18px}
+  .hero{padding:60px 0 56px}
+  .hand{width:clamp(90px,26vw,140px)}
+  .hand-haze{display:none}
+  .spark{bottom:44px;width:96px;height:96px}
+  .tagline{font-size:14.5px;max-width:28ch;margin-left:auto;margin-right:auto}
+  .archived-note.v1 .an-facts{flex-wrap:wrap;justify-content:center;gap:4px 24px}
+  .archived-note.v1 .an-fact{text-align:center;min-width:72px}
   .stats{grid-template-columns:1fr}
+  .stat{padding:16px 16px 14px}
+  .how{margin:36px 0 52px}
+  .how h2{font-size:26px}
+  .how p.lede{font-size:14px}
+  .step{padding:20px 18px 18px}
+  .board-head{padding:10px 14px;gap:8px}
+  .podium{padding:14px 14px 10px;gap:8px}
+  .pcard{padding:15px 16px 17px}
+  .pcard .xp{font-size:22px}
+  .pcard.first .xp{font-size:26px}
+  .board-foot{padding:12px 14px;font-size:13px}
+  tbody td{padding:11px 14px;font-size:13.5px}
+  thead th{padding:8px 14px;font-size:11px}
+  .refer{padding:20px 18px;gap:14px;border-radius:14px}
+  .refer h3{font-size:19px}
+  .refer code{font-size:11.5px;padding:8px 12px;word-break:break-all}
   .btns{margin-left:0;width:100%}.btn{flex:1}
+  footer{padding:20px 0 max(20px,env(safe-area-inset-bottom))}
+  footer .wrap{padding:0 18px}
+}
+/* ── Small mobile (≤420px) ─────────────────────────────────── */
+@media (max-width:420px){
+  .wrap{padding:0 14px}
+  .hero{padding:52px 0 48px}
+  .archived-note.v1 .an-facts{flex-direction:column;align-items:center;gap:8px}
+  .how h2{font-size:24px}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;scroll-behavior:auto}
@@ -428,7 +579,9 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
 <div class="partners" aria-label="Partners"><div class="track" id="ptrack"></div></div>
 
 <section class="hero">
-  <div class="halftone" aria-hidden="true"></div>
+  <canvas class="halftone" id="htCanvas" aria-hidden="true"></canvas>
+  <div class="hand-haze hand-haze-l" aria-hidden="true"></div>
+  <div class="hand-haze hand-haze-r" aria-hidden="true"></div>
   <img class="hand hand-l" alt="" aria-hidden="true" src="assets/images/hand-l.png">
   <img class="hand hand-r" alt="" aria-hidden="true" src="assets/images/hand-r.png">
   <span class="spark" aria-hidden="true"></span>
@@ -437,10 +590,13 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
     <div class="pill" id="heroPill"></div>
     <h1 class="wordmark" id="wordmark"></h1>
     <p class="tagline">Points don't convert — they stand here until TGE.</p>
-    <div class="archived-note" id="archNote" hidden>
-      <span class="k">◆</span>
-      <div>SMG Run a Reserve has ended with 191 participants and 522.7K XP earned. Every point is held
-      on record and counts toward your key award — nothing was reset when Epoch One opened.</div>
+    <div class="archived-note v1" id="archNote" hidden>
+      <div class="an-season">SMG Run a Reserve — closed</div>
+      <div class="an-facts">
+        <div class="an-fact"><b>191</b><span>participants</span></div>
+        <div class="an-fact"><b>522.7K</b><span>XP earned</span></div>
+        <div class="an-fact"><b>Preserved</b><span>XP carries into Epoch One</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -597,19 +753,9 @@ function renderWordmark(text){
   el.style.fontSize=''; // use CSS clamp — same size for all seasons
   let delay=0;
   text.split(' ').forEach((word,wi)=>{
-    if(wi>0){
-      // space span keeps visible gap; wbr allows line break between words
-      const sp=document.createElement('span');
-      sp.textContent='\u00A0';
-      sp.style.animationDelay=(delay*34)+'ms';
-      delay++;
-      el.appendChild(sp);
-      el.appendChild(document.createElement('wbr'));
-    }
-    // <b> wrapper not targeted by `.wordmark.animate span` so only char spans animate;
-    // display:inline-block + white-space:nowrap prevents mid-word line breaks
+    // each word is block so the wordmark always breaks across lines regardless of font size
     const wordEl=document.createElement('b');
-    wordEl.style.cssText='display:inline-block;white-space:nowrap;font:inherit;font-weight:inherit';
+    wordEl.style.cssText='display:block;white-space:nowrap;font:inherit;font-weight:inherit;text-align:center';
     [...word].forEach(ch=>{
       const s=document.createElement('span');
       s.textContent=ch;
@@ -759,6 +905,82 @@ render();
   size(); requestAnimationFrame(draw);
 })();
 
+/* ---------- halftone canvas — cursor-reactive dot grid ---------- */
+(function(){
+  const ht=document.getElementById('htCanvas');
+  if(!ht) return;
+  const ctx=ht.getContext('2d');
+  let W,H,dpr;
+  let tx=-9999,ty=-9999; // target (actual cursor)
+  let cmx=-9999,cmy=-9999; // lerped (slow-follow)
+  const GRID=9;
+  let DOT_BASE=1.15,DOT_MAX=4,CR=90,LERP=0.14;
+  window.__htDots={get base(){return DOT_BASE},set base(v){DOT_BASE=v},
+    get max(){return DOT_MAX},set max(v){DOT_MAX=v},
+    get radius(){return CR},set radius(v){CR=v},
+    get speed(){return LERP},set speed(v){LERP=v}};
+
+  // gold color [240,189,94] used for cursor-proximity tint
+  const GOLD=[240,189,94];
+  function dotBaseRGB(){
+    return document.documentElement.dataset.theme==='dark'?[240,189,94]:[14,23,41];
+  }
+  function dotOpacity(x,y){
+    const yf=y/H;
+    const lAlpha=yf<.55?1:(yf>.92?0:1-(yf-.55)/.37);
+    return lAlpha*(document.documentElement.dataset.theme==='dark'?.3:.5);
+  }
+  function draw(){
+    if(!W) return requestAnimationFrame(draw);
+    // slow lerp — dots drag behind the cursor
+    if(tx>-999){ cmx+=(tx-cmx)*LERP; cmy+=(ty-cmy)*LERP; }
+    ctx.clearRect(0,0,W,H);
+    const [br,bg,bb]=dotBaseRGB();
+    const isDark=document.documentElement.dataset.theme==='dark';
+    const cols=Math.ceil(W/GRID)+1, rows=Math.ceil(H/GRID)+1;
+    for(let r=0;r<=rows;r++){
+      for(let c=0;c<=cols;c++){
+        const x=c*GRID, y=r*GRID;
+        const a=dotOpacity(x,y);
+        if(a<=.008) continue;
+        const dx=x-cmx, dy=y-cmy;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        const inf=Math.max(0,1-dist/CR);
+        const inf2=inf*inf;
+        const rad=DOT_BASE+(DOT_MAX-DOT_BASE)*inf2;
+        const finalA=Math.min(.55, a + inf2*.48);
+        // near cursor: lerp base color toward gold
+        const t=isDark?0:inf2;  // in dark mode dots are already gold; in light, lerp to gold
+        const rr=Math.round(br+(GOLD[0]-br)*t);
+        const gg=Math.round(bg+(GOLD[1]-bg)*t);
+        const bb2=Math.round(bb+(GOLD[2]-bb)*t);
+        ctx.globalAlpha=finalA;
+        ctx.fillStyle=`rgb(${rr},${gg},${bb2})`;
+        ctx.beginPath();
+        ctx.arc(x,y,rad,0,Math.PI*2);
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  function resize(){
+    dpr=Math.min(devicePixelRatio||1,2);
+    const r=ht.getBoundingClientRect();
+    W=r.width; H=r.height;
+    ht.width=W*dpr; ht.height=H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  const hero=document.querySelector('.hero');
+  hero.addEventListener('mousemove',e=>{
+    // use hero rect — canvas is inset:0 inside hero
+    const r=hero.getBoundingClientRect();
+    tx=e.clientX-r.left; ty=e.clientY-r.top;
+  });
+  hero.addEventListener('mouseleave',()=>{tx=-9999;ty=-9999;cmx=-9999;cmy=-9999;});
+  window.addEventListener('resize',resize);
+  resize(); requestAnimationFrame(draw);
+})();
+
 /* ---------- settings panel — runs after aside is added to DOM ---------- */
 function initSettingsPanel(){
   const panel  = document.getElementById('spPanel');
@@ -769,15 +991,15 @@ function initSettingsPanel(){
   const wm     = document.getElementById('wordmark');
 
   const DEFAULTS = {
-    lhx:-9,lhy:401,lhs:113, rhx:-27,rhy:241,rhs:113,
+    lhx:-6,lhy:404,lhs:112, rhx:-19,rhy:202,rhs:106,
     wmFace:'#dcad56',wmFaceOp:100,
     wmNear:'#eabc66',wmNearOp:100,
     wmFar:'#FFF8D6', wmFarOp:59,
-    wmSize:180, wmLs:-23, wmSx:100,
+    wmSize:148, wmLs:5, wmSx:107,
     wmNoiseAmt:37, wmNoiseFreq:87,
     gmMetallic:52, gmSpecular:59, gmRoughness:75, gmHighlight:52, gmContrast:62, gmWarmth:43,
     lgGlow:0,   lgGlowRadius:0,  lgEdgeShine:50, lgReflection:50, lgBounce:0,
-    dpBevel:0, dpExtrusion:28,  dpContact:0
+    dpBevel:12, dpExtrusion:28,  dpContact:0
   };
   const S = {...DEFAULTS};
 
@@ -819,51 +1041,72 @@ function initSettingsPanel(){
      #9A6A0A → #D8A91D → #FFE17A → #FFF4C4 → #D3A019 → #8A5B05              */
   function buildGoldGradient(){
     const cl=v=>Math.max(0,Math.min(255,Math.round(v)));
-    // reference anchor colors at default slider values
-    const REF={dk:[154,106,10],ri:[216,169,29],br:[255,225,122],hl:[255,244,196]};
-    const REF_S={met:0.92,spe:0.78,rou:0.22,hlt:0.68,con:0.58,wrm:0.38};
-    // deltas from reference
-    const dMet=(S.gmMetallic/100-REF_S.met);
-    const dSpe=(S.gmSpecular/100-REF_S.spe);
-    const dRou=(S.gmRoughness/100-REF_S.rou);
-    const dHlt=(S.gmHighlight/100-REF_S.hlt);
-    const dCon=(S.gmContrast/100-REF_S.con);
-    const dWrm=(S.gmWarmth/100-REF_S.wrm);
-    // warmth: shifts all stops (warm = more R, less G, much less B)
-    const wR=dWrm*28, wG=dWrm*(-16), wB=dWrm*(-52);
-    // contrast: drives dark deeper, pushes bright lighter
-    const conBoost=dCon*0.4;
-    // specular × metallic: drives bright and highlight toward white
-    const spLift=(S.gmSpecular/100*S.gmMetallic/100 - REF_S.spe*REF_S.met);
-    // build palette
-    const dk=[cl(REF.dk[0]+wR*0.80-conBoost*28), cl(REF.dk[1]+wG*0.75-conBoost*18), cl(REF.dk[2]+wB*0.55-conBoost*8)];
-    const ri=[cl(REF.ri[0]+wR),                   cl(REF.ri[1]+wG),                   cl(REF.ri[2]+wB)];
-    const br=[cl(REF.br[0]+wR*0.45+spLift*32),   cl(REF.br[1]+wG*0.45+spLift*18),   cl(REF.br[2]+wB*0.25+spLift*6)];
-    const hl=[cl(REF.hl[0]+wR*0.18+dHlt*24+spLift*16), cl(REF.hl[1]+wG*0.18+dHlt*22+spLift*10), cl(REF.hl[2]+wB*0.10+dHlt*20+spLift*5)];
-    // highlight position: roughness 0=polished tight high, 1=rough wide low
-    const hlCenter=Math.round(lerp(28,47,S.gmRoughness/100));
-    const hlHalf  =Math.round(lerp(3,14,S.gmRoughness/100));
-    const rHalf   =Math.round(hlHalf+S.lgReflection/100*14);
-    const p0=Math.max(1,hlCenter-rHalf-8), p1=Math.max(2,hlCenter-rHalf);
-    const p3=Math.min(98,hlCenter+rHalf),  p4=Math.min(99,hlCenter+rHalf+14);
-    return`linear-gradient(to bottom,rgb(${dk}) 0%,rgb(${ri}) ${p0}%,rgb(${br}) ${p1}%,rgb(${hl}) ${hlCenter}%,rgb(${br}) ${p3}%,rgb(${ri}) ${p4}%,rgb(${dk}) 100%)`;
+    // Radial "hot foil" model — bright core, gold mid, deep amber edge
+    // Reference defaults: met:52, spe:59, rou:75, hlt:52, con:62, wrm:43
+    const str_m=S.gmMetallic/100;
+    const str_s=S.gmSpecular/100;
+    const str_r=S.gmRoughness/100;   // 0=tight polished spot, 1=wide diffuse
+    const str_h=S.gmHighlight/100;
+    const dWrm=(S.gmWarmth/100-0.43);
+    const dCon=(S.gmContrast/100-0.62);
+    const wR=dWrm*30, wG=dWrm*(-10), wB=dWrm*(-52);
+    const conBoost=dCon*0.38;
+    const spLift=str_s*str_m*20;
+    // 5-stop radial palette
+    const core=[cl(255+wR*.04+spLift*.7), cl(250+wG*.04+spLift*.5), cl(218+wB*.04+spLift*.25)];
+    const hot =[cl(242+wR*.28+str_h*10+spLift*.35), cl(196+wG*.28+str_h*8), cl(72+wB*.18)];
+    const mid =[cl(204+wR+conBoost*10), cl(152+wG+conBoost*6), cl(18+wB)];
+    const deep=[cl(150+wR*.75-conBoost*24), cl(100+wG*.75-conBoost*15), cl(8+wB*.4-conBoost*4)];
+    const dk  =[cl(82-conBoost*20), cl(48-conBoost*13), cl(2)];
+    // Roughness controls hotspot size and falloff
+    const coreStop=Math.round(lerp(3, 12, str_r));
+    const hotStop =Math.round(lerp(14, 36, str_r));
+    const midStop =Math.round(lerp(42, 60, str_r));
+    const deepStop=Math.round(lerp(68, 80, str_r));
+    // Ellipse size: polished=tighter circle, matte=wider spread
+    const rx=Math.round(lerp(42, 72, str_r));
+    const ry=Math.round(lerp(48, 78, str_r));
+    // Light source: slightly above-left (matching reference vibe)
+    const cx=Math.round(lerp(40, 50, str_r));
+    const cy=Math.round(lerp(32, 44, str_r));
+    return`radial-gradient(ellipse ${rx}% ${ry}% at ${cx}% ${cy}%,`
+      +`rgb(${core}) 0%,rgb(${core}) ${coreStop}%,`
+      +`rgb(${hot}) ${hotStop}%,`
+      +`rgb(${mid}) ${midStop}%,`
+      +`rgb(${deep}) ${deepStop}%,`
+      +`rgb(${dk}) 100%)`;
   }
 
-  /* edge shine: bright top-left facet on each letterform */
+  /* edge shine: bright facet facing the light source (cursor-reactive) */
   function buildEdgeShine(){
     if(S.lgEdgeShine<=0) return [];
-    const op=(S.lgEdgeShine/100).toFixed(3);
-    const op2=(S.lgEdgeShine/100*0.48).toFixed(3);
-    return[`-0.013em -0.013em 0 rgba(255,248,210,${op})`,`-0.007em -0.007em 0 rgba(255,242,185,${op2})`];
+    const str=S.lgEdgeShine/100;
+    // 4 steps, exponential opacity falloff — gradient from edge inward
+    const OPAC=[0.92,0.58,0.30,0.12];
+    const DIST=[0.004,0.008,0.013,0.018];
+    return DIST.map((d,i)=>{
+      const op=(str*OPAC[i]).toFixed(3);
+      // highlight goes toward the light source
+      const ex=(_ltx*d).toFixed(4);
+      const ey=(_lty*d).toFixed(4);
+      return `${ex}em ${ey}em 0 rgba(255,248,210,${op})`;
+    });
   }
-  /* bevel: paired bright/dark 1px edges */
+  /* bevel: dark shadow on the side away from light (cursor-reactive) */
   function buildBevel(){
     if(S.dpBevel<=0) return [];
     const[r,g,b]=hex2rgb(S.wmFace);
-    const dR=Math.max(0,Math.round(r*0.33)), dG=Math.max(0,Math.round(g*0.28)), dB=Math.max(0,Math.round(b*0.18));
-    const op=(S.dpBevel/100*0.88).toFixed(3);
-    const op2=(S.dpBevel/100*0.42).toFixed(3);
-    return[`0.013em 0.013em 0 rgba(${dR},${dG},${dB},${op})`,`0.007em 0.007em 0 rgba(${dR},${dG},${dB},${op2})`];
+    const dR=Math.max(0,Math.round(r*.33)), dG=Math.max(0,Math.round(g*.28)), dB=Math.max(0,Math.round(b*.18));
+    const str=S.dpBevel/100;
+    const OPAC=[0.88,0.55,0.28,0.10];
+    const DIST=[0.004,0.009,0.014,0.019];
+    return DIST.map((d,i)=>{
+      const op=(str*OPAC[i]).toFixed(3);
+      // shadow goes away from the light (same direction as extrusion)
+      const ex=(-_ltx*d).toFixed(4);
+      const ey=(-_lty*d).toFixed(4);
+      return `${ex}em ${ey}em 0 rgba(${dR},${dG},${dB},${op})`;
+    });
   }
   /* bottom bounce: warm underlight */
   function buildBottomBounce(){
@@ -881,11 +1124,26 @@ function initSettingsPanel(){
     return[`0 ${y}em ${blur}em rgba(75,45,0,${op})`];
   }
 
+  // cursor-reactive light: tracks mouse, smoothly lerped
+  let _ltx=0.25, _lty=0.35; // current smooth light position (normalized -0.5..+0.5)
+  let _ltTx=0.25, _ltTy=0.35; // target
+  function buildInnerGlow(){
+    // Subtle radiant halo that emanates from the gold letterforms
+    const str=Math.max(S.gmMetallic,S.gmSpecular)/100*0.9;
+    if(str<0.05) return [];
+    return[
+      `0 0 0.05em rgba(255,244,160,${(str*.42).toFixed(3)})`,
+      `0 0 0.14em rgba(240,192,48,${(str*.22).toFixed(3)})`,
+      `0 0 0.30em rgba(212,160,20,${(str*.10).toFixed(3)})`
+    ];
+  }
   function buildShadow(){
-    const xBase=0.0044, yBase=0.0065, steps=26;
-    // dpExtrusion=35 → 1.0× original; 70 → 2×; 0 → no shadow
+    // shadow direction = opposite of light source (cursor)
+    const xBase = -_ltx * 0.009;
+    const yBase = -_lty * 0.013;
+    const steps=26;
     const extMult=S.dpExtrusion/35;
-    const parts=[...buildEdgeShine(), ...buildBevel()];
+    const parts=[...buildInnerGlow(), ...buildEdgeShine(), ...buildBevel()];
     for(let i=0;i<steps;i++){
       const t=i/(steps-1);
       const x=((i+1)*xBase*extMult).toFixed(4);
@@ -895,10 +1153,41 @@ function initSettingsPanel(){
     parts.push(...buildBottomBounce(), ...buildContactShadow());
     return parts.join(',');
   }
+  // smooth shadow update loop
+  (function shadowLoop(){
+    const dx=_ltTx-_ltx, dy=_ltTy-_lty;
+    if(Math.abs(dx)>.0003||Math.abs(dy)>.0003){
+      _ltx+=dx*.09; _lty+=dy*.09;
+      wm.style.textShadow=buildShadow();
+    }
+    requestAnimationFrame(shadowLoop);
+  })();
+  document.addEventListener('mousemove',e=>{
+    _ltTx=(e.clientX/innerWidth)-.5;
+    _ltTy=(e.clientY/innerHeight)-.5;
+  });
 
+  // Settings-panel mode: freeze animations for precise positioning
   function applyHands(){
     handL.style.cssText=`left:${S.lhx}px;bottom:${S.lhy}px;transform:scale(${S.lhs/100});transform-origin:bottom left;animation:none;opacity:.88`;
     handR.style.cssText=`right:${S.rhx}px;bottom:${S.rhy}px;transform:scale(${S.rhs/100});transform-origin:bottom right;animation:none;opacity:.88`;
+  }
+  // Initial responsive positioning — lets CSS animations play
+  function initHands(){
+    [handL,handR].forEach(h=>{h.style.animation='';h.style.transform='';});
+    const vw=window.innerWidth;
+    if(vw<=640){
+      handL.style.left='-10px'; handL.style.bottom='0';
+      handR.style.right='-10px'; handR.style.bottom='0';
+    } else if(vw<=900){
+      handL.style.left=S.lhx+'px'; handL.style.bottom=Math.round(S.lhy*.38)+'px';
+      handR.style.right=S.rhx+'px'; handR.style.bottom=Math.round(S.rhy*.42)+'px';
+    } else {
+      handL.style.left=S.lhx+'px'; handL.style.bottom=S.lhy+'px';
+      handR.style.right=S.rhx+'px'; handR.style.bottom=S.rhy+'px';
+    }
+    handL.style.transformOrigin='bottom left';
+    handR.style.transformOrigin='bottom right';
   }
 
   function buildFilter(){
@@ -925,18 +1214,19 @@ function initSettingsPanel(){
 
   function applyWordmark(){
     if(S.gmMetallic>0){
-      // set gradient directly on each span so background-clip:text works (inline-block)
-      // setting it on the h1 parent causes a gold rectangle blob, not text clip
       const grad=buildGoldGradient();
-      wm.style.background='';
-      wm.style.color='';
+      wm.style.backgroundImage='';
+      wm.style.backgroundSize='';
       wm.style.webkitBackgroundClip='';
       wm.style.backgroundClip='';
       wm.style.webkitTextFillColor='';
+      wm.style.color='';
       wm.classList.add('gm-active');
       wm.querySelectorAll('span').forEach(s=>{
         s.style.backgroundImage=grad;
-        s.style.backgroundSize='100% 100%';
+        // 400% zoom: each character sees only the bright central zone of the radial
+        s.style.backgroundSize='400% 400%';
+        s.style.backgroundPosition='50% 40%';
         s.style.webkitBackgroundClip='text';
         s.style.backgroundClip='text';
         s.style.webkitTextFillColor='transparent';
@@ -944,7 +1234,8 @@ function initSettingsPanel(){
       });
     } else {
       const[fr,fg,fb]=hex2rgb(S.wmFace);
-      wm.style.background='';
+      wm.style.backgroundImage='';
+      wm.style.backgroundSize='';
       wm.style.webkitBackgroundClip='';
       wm.style.backgroundClip='';
       wm.style.webkitTextFillColor='';
@@ -953,6 +1244,7 @@ function initSettingsPanel(){
       wm.querySelectorAll('span').forEach(s=>{
         s.style.backgroundImage='';
         s.style.backgroundSize='';
+        s.style.backgroundPosition='';
         s.style.webkitBackgroundClip='';
         s.style.backgroundClip='';
         s.style.webkitTextFillColor='';
@@ -960,9 +1252,11 @@ function initSettingsPanel(){
       });
     }
     wm.style.textShadow=buildShadow();
-    wm.style.fontSize=S.wmSize+'px';
+    // Fluid size: clamp scales smoothly; S.wmSize is the desktop cap
+    wm.style.fontSize=`clamp(42px, 10.8vw, ${S.wmSize}px)`;
     wm.style.letterSpacing=(S.wmLs/1000).toFixed(3)+'em';
-    wm.style.transform=`scaleX(${S.wmSx/100})`;
+    // Skip horizontal stretch on small screens (overflow risk)
+    wm.style.transform=window.innerWidth>=640?`scaleX(${S.wmSx/100})`:'scaleX(1)';
     wm.style.transformOrigin='center center';
     applyNoise();
   }
@@ -1086,10 +1380,8 @@ function initSettingsPanel(){
   document.getElementById('spReset').addEventListener('click',()=>{
     Object.assign(S,DEFAULTS);
     syncInputs();
-    applyHands();
+    initHands();
     applyWordmark();
-    handL.style.animation=''; handL.style.opacity='';
-    handR.style.animation=''; handR.style.opacity='';
   });
 
   /* copy */
@@ -1108,10 +1400,51 @@ function initSettingsPanel(){
       setTimeout(()=>{this.textContent='Copy settings';this.classList.remove('copied');},2000);
     });
   });
-  window.__smgApplyWm=applyWordmark; // expose so renderWordmark can re-apply after new spans
-  applyHands();
-  applyWordmark(); // apply new defaults on init
-} // end initSettingsPanel — called after <aside> is in DOM
+  window.__smgApplyWm=applyWordmark;
+  initHands();
+  applyWordmark();
+  /* Re-layout on resize (debounced) */
+  let _rszT;
+  window.addEventListener('resize',()=>{
+    clearTimeout(_rszT);
+    _rszT=setTimeout(()=>{
+      const panelOpen=document.querySelector('.sp-panel.open');
+      if(!panelOpen) initHands();
+      applyWordmark();
+    },120);
+  },{passive:true});
+
+  /* archive note variant switcher */
+  const archNote=document.getElementById('archNote');
+  document.querySelectorAll('.nv-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.nv-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      ['v1','v2','v3','v4','v5'].forEach(c=>archNote.classList.remove(c));
+      archNote.classList.add(btn.dataset.v);
+    });
+  });
+  /* dot field sliders */
+  const dotSliders=[
+    {id:'spDotSpeed', vid:'spDotSpeedV', scale:100, fmt:v=>`${Math.round(v*100)}`,
+      get:()=>window.__htDots?.speed??0.14, set:v=>{if(window.__htDots)window.__htDots.speed=v;}},
+    {id:'spDotRadius',vid:'spDotRadiusV',scale:1,  fmt:v=>`${Math.round(v)}`,
+      get:()=>window.__htDots?.radius??90,  set:v=>{if(window.__htDots)window.__htDots.radius=v;}},
+    {id:'spDotMax',   vid:'spDotMaxV',   scale:10,  fmt:v=>`${v.toFixed(1)}`,
+      get:()=>window.__htDots?.max??4,      set:v=>{if(window.__htDots)window.__htDots.max=v;}},
+  ];
+  dotSliders.forEach(({id,vid,scale,fmt,get,set})=>{
+    const el=document.getElementById(id);
+    const vl=document.getElementById(vid);
+    if(!el||!vl) return;
+    el.value=Math.round(get()*scale);
+    vl.textContent=fmt(get());
+    el.addEventListener('input',()=>{
+      const v=el.value/scale;
+      set(v); vl.textContent=fmt(v);
+    });
+  });
+} // end initSettingsPanel
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute" aria-hidden="true">
@@ -1273,6 +1606,32 @@ function initSettingsPanel(){
         <input type="range" id="spDpExtrusion" min="0" max="100" value="35"></div>
       <div class="sp-row"><label>Contact Shadow <span id="spDpContactV">24%</span></label>
         <input type="range" id="spDpContact" min="0" max="100" value="24"></div>
+    </div>
+
+    <div class="sp-section">
+      <div class="sp-section-title">Dot Field</div>
+      <div class="sp-row">
+        <label>Speed <span id="spDotSpeedV">14</span>%</label>
+        <input type="range" id="spDotSpeed" min="1" max="40" value="14">
+      </div>
+      <div class="sp-row">
+        <label>Radius <span id="spDotRadiusV">90</span>px</label>
+        <input type="range" id="spDotRadius" min="20" max="200" value="90">
+      </div>
+      <div class="sp-row">
+        <label>Max size <span id="spDotMaxV">4.0</span>px</label>
+        <input type="range" id="spDotMax" min="10" max="80" value="40">
+      </div>
+    </div>
+    <div class="sp-section">
+      <div class="sp-section-title">Archive note style</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
+        <button class="nv-btn active" data-v="v1" title="Editorial">V1</button>
+        <button class="nv-btn" data-v="v2" title="Pill ticker">V2</button>
+        <button class="nv-btn" data-v="v3" title="Floating cards">V3</button>
+        <button class="nv-btn" data-v="v4" title="Dark compact">V4</button>
+        <button class="nv-btn" data-v="v5" title="Minimal prose">V5</button>
+      </div>
     </div>
 
     <div style="display:flex;gap:8px;margin:4px 0 8px">
