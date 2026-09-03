@@ -53,7 +53,7 @@ html::-webkit-scrollbar{display:none}
 .connect-btn.connected:hover{filter:none}
 .connect-btn.connected svg{flex:none}
 /* connected state on light bg (profile page) */
-.profile-empty .connect-btn.connected{border-color:rgba(195,157,64,.35);color:var(--gold)}
+.profile-empty .connect-btn.connected{border-color:rgba(154,106,10,.28);background:rgba(154,106,10,.06);color:var(--gold-dp)}
 /* burger */
 .burger{display:none;appearance:none;background:transparent;border:0;
   padding:6px;margin-left:10px;cursor:pointer;flex:none;
@@ -371,6 +371,9 @@ html::-webkit-scrollbar{display:none}
 /* page transitions */
 .page-view{animation:fadeUp .22s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes row-flash{0%{background:#FFE566}to{background:#FFF9E8}}
+tr.you.row-flash td{animation:row-flash 1.3s ease-out}
+[data-theme=dark] tr.you.row-flash td{animation:none}
 @media (max-width:900px){.squads-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:640px){.squads-grid{grid-template-columns:1fr}}
 .tierbadge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;
@@ -960,7 +963,8 @@ const SEASONS={
       ['INDIAN_GIRL','Bronze',[9023,2480,0],38,0],
       ['Brownson','Bronze',[8566,2260,0],36,0],
       ['monkey.D.luffy Zetarium $XAGE','Bronze',[8551,2110,0],34,0],
-      ['Einstein','Bronze',[8286,1980,0],33,0],
+      ['you','Silver',[8420,1780,0],33,0],
+      ['Einstein','Bronze',[8286,1980,0],32,0],
       ['Emmytex King','Bronze',[8217,1840,0],31,0],
       ['OlaLee','Bronze',[8186,1520,0],29,0]
     ]
@@ -1162,8 +1166,8 @@ function render(){
   document.getElementById('boardFoot').innerHTML =
     s.foot.map(f=>`<div>${f}</div>`).join('') +
     `<div class="btns">
-      <button class="btn" onclick="document.querySelector('tr.you')?.scrollIntoView({block:'center'})">Jump to my row</button>
-      ${s.state==='live'?'<button class="btn gold">Go to quests</button>':''}</div>`;
+      <button class="btn" onclick="jumpToMyRow()">Jump to my row</button>
+      ${s.state==='live'?`<button class="btn gold" onclick="window.open('https://stakemygold.onsend.xyz/quests','_blank')">Go to quests</button>`:''}</div>`;
 }
 
 function switchSeason(newSeason){
@@ -1252,7 +1256,8 @@ function renderSquads(){
   });
 }
 
-function navigate(page){
+function navigate(page,opts){
+  opts=opts||{};
   const pages={home:'seasonContent',squads:'pageSquads',profile:'pageProfile','squad-detail':'pageSquadDetail',participant:'pageParticipant'};
   Object.entries(pages).forEach(([k,id])=>{
     const el=document.getElementById(id);
@@ -1279,7 +1284,7 @@ function navigate(page){
     burger.setAttribute('aria-expanded','false');
     mobNav.setAttribute('aria-hidden','true');
   }
-  window.scrollTo({top:0,behavior:'instant'});
+  if(!opts.keepScroll) window.scrollTo({top:0,behavior:'instant'});
 }
 
 document.querySelectorAll('.season').forEach(b=>b.addEventListener('click',()=>{
@@ -1303,6 +1308,10 @@ document.fonts.ready.then(()=>{ renderWordmark(activeSeason.name); });
 
 render();
 
+/* ---------- gold dust global controls ---------- */
+window.__dust={count:1,speed:1,size:1,opacity:1,shimmer:1,sideW:160,_builders:[],
+  rebuild(){this._builders.forEach(fn=>fn());}};
+
 /* ---------- gold dust ---------- */
 (function(){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -1322,9 +1331,11 @@ render();
       ph:Math.random()*Math.PI*2,a:depth===0?.32:depth===1?.30:.20};
   }
   function build(){
-    const total=W<640?60:W<1000?95:140; parts=[];
+    const base=W<640?60:W<1000?95:140;
+    const total=Math.round(base*window.__dust.count); parts=[];
     for(let i=0;i<total;i++) parts.push(shard(i<total*.58?0:i<total*.88?1:2));
   }
+  window.__dust._builders.push(build);
   function size(){
     dpr=Math.min(devicePixelRatio||1,2);
     const r=c.parentElement.getBoundingClientRect();
@@ -1335,24 +1346,27 @@ render();
     return Math.min(1,.08+Math.pow(Math.max(cx,cy*1.15),1.95)*1.5);
   }
   function draw(t){
+    const D=window.__dust;
     x.clearRect(0,0,W,H);
     for(const p of parts){
-      p.rot+=p.vr; p.y+=p.vy; p.x+=p.vx+Math.sin(t*0.0004+p.ph)*0.11;
+      p.rot+=p.vr*D.speed; p.y+=p.vy*D.speed;
+      p.x+=(p.vx+Math.sin(t*0.0004+p.ph)*0.11)*D.speed;
       if(p.y<-40){p.y=H+30;p.x=Math.random()*W}
       if(p.x>W+40)p.x=-30;
       const px=p.x+(mx-.5)*(p.d+1)*-12, py=p.y+(my-.5)*(p.d+1)*-8;
       const wob=Math.abs(Math.cos(p.rot));
-      const shimmer=0.22+wob*0.78; // bright when face-on, nearly invisible when edge-on
-      const alpha=p.a*centreFade(p)*shimmer;
+      const shimmer=(0.22+wob*0.78)*D.shimmer;
+      const alpha=p.a*centreFade(p)*shimmer*D.opacity;
       if(alpha<=.015) continue;
-      x.save(); x.translate(px,py); x.rotate(p.rot); x.scale(1,.3+wob*.7);
-      x.globalAlpha=alpha;
-      const g=x.createLinearGradient(-p.s,-p.s,p.s,p.s);
+      const s=p.s*D.size;
+      x.save(); x.translate(px,py); x.rotate(p.rot); x.scale(D.size,.3*D.size+wob*.7*D.size);
+      x.globalAlpha=Math.min(1,alpha);
+      const g=x.createLinearGradient(-s,-s,s,s);
       g.addColorStop(0,'#6B4A0E'); g.addColorStop(.28,'#C9A227');
       g.addColorStop(.50,'#FFF4C4'); g.addColorStop(.72,'#C9A227');
       g.addColorStop(1,'#7A5810');
       x.fillStyle=g; x.beginPath();
-      p.pts.forEach(([a,b],i)=> i?x.lineTo(a*p.s,b*p.s):x.moveTo(a*p.s,b*p.s));
+      p.pts.forEach(([a,b],i)=> i?x.lineTo(a*s,b*s):x.moveTo(a*s,b*s));
       x.closePath(); x.fill();
       if(p.d===2){x.strokeStyle='rgba(80,58,12,.25)';x.lineWidth=.5;x.stroke()}
       x.restore();
@@ -1388,32 +1402,36 @@ render();
         ph:Math.random()*Math.PI*2,a:depth===0?.38:depth===1?.34:.24};
     }
     function build(){
-      const total=48; parts=[];
+      const total=Math.round(48*window.__dust.count); parts=[];
       for(let i=0;i<total;i++) parts.push(shard(i<total*.58?0:i<total*.88?1:2));
     }
+    window.__dust._builders.push(build);
     function size(){
       dpr=Math.min(devicePixelRatio||1,2);
       const r=c.getBoundingClientRect();
       W=r.width;H=r.height;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);build();
     }
     function draw(t){
+      const D=window.__dust;
       x.clearRect(0,0,W,H);
       for(const p of parts){
-        p.rot+=p.vr; p.y+=p.vy; p.x+=p.vx+Math.sin(t*0.0004+p.ph)*0.11;
+        p.rot+=p.vr*D.speed; p.y+=p.vy*D.speed;
+        p.x+=(p.vx+Math.sin(t*0.0004+p.ph)*0.11)*D.speed;
         if(p.y<-40){p.y=H+30;p.x=Math.random()*W}
         if(p.x<-40)p.x=W+30; if(p.x>W+40)p.x=-30;
         const wob=Math.abs(Math.cos(p.rot));
-        const shimmer=0.22+wob*0.78;
-        const alpha=p.a*shimmer;
+        const shimmer=(0.22+wob*0.78)*D.shimmer;
+        const alpha=p.a*shimmer*D.opacity;
         if(alpha<=.015) continue;
-        x.save(); x.translate(p.x,p.y); x.rotate(p.rot); x.scale(1,.3+wob*.7);
-        x.globalAlpha=alpha;
-        const g=x.createLinearGradient(-p.s,-p.s,p.s,p.s);
+        const s=p.s*D.size;
+        x.save(); x.translate(p.x,p.y); x.rotate(p.rot); x.scale(D.size,D.size*(.3+wob*.7));
+        x.globalAlpha=Math.min(1,alpha);
+        const g=x.createLinearGradient(-s,-s,s,s);
         g.addColorStop(0,'#6B4A0E'); g.addColorStop(.28,'#C9A227');
         g.addColorStop(.50,'#FFF4C4'); g.addColorStop(.72,'#C9A227');
         g.addColorStop(1,'#7A5810');
         x.fillStyle=g; x.beginPath();
-        p.pts.forEach(([a,b],i)=> i?x.lineTo(a*p.s,b*p.s):x.moveTo(a*p.s,b*p.s));
+        p.pts.forEach(([a,b],i)=> i?x.lineTo(a*s,b*s):x.moveTo(a*s,b*s));
         x.closePath(); x.fill();
         if(p.d===2){x.strokeStyle='rgba(80,58,12,.25)';x.lineWidth=.5;x.stroke()}
         x.restore();
@@ -1944,6 +1962,33 @@ function initSettingsPanel(){
       archNote.classList.add(btn.dataset.v);
     });
   });
+  /* gold dust sliders */
+  const dustSliders=[
+    {id:'spDustCount',  vid:'spDustCountV',  scale:100, fmt:v=>`${Math.round(v*100)}%`,
+      get:()=>window.__dust?.count??1,   set:v=>{if(window.__dust){window.__dust.count=v;window.__dust.rebuild();}}},
+    {id:'spDustSpeed',  vid:'spDustSpeedV',  scale:100, fmt:v=>`${Math.round(v*100)}%`,
+      get:()=>window.__dust?.speed??1,   set:v=>{if(window.__dust)window.__dust.speed=v;}},
+    {id:'spDustSize',   vid:'spDustSizeV',   scale:100, fmt:v=>`${v.toFixed(1)}×`,
+      get:()=>window.__dust?.size??1,    set:v=>{if(window.__dust)window.__dust.size=v;}},
+    {id:'spDustOpacity',vid:'spDustOpacityV',scale:100, fmt:v=>`${Math.round(v*100)}%`,
+      get:()=>window.__dust?.opacity??1, set:v=>{if(window.__dust)window.__dust.opacity=v;}},
+    {id:'spDustShimmer',vid:'spDustShimmerV',scale:100, fmt:v=>`${Math.round(v*100)}%`,
+      get:()=>window.__dust?.shimmer??1, set:v=>{if(window.__dust)window.__dust.shimmer=v;}},
+    {id:'spDustSideW',  vid:'spDustSideWV',  scale:1,   fmt:v=>`${Math.round(v)}px`,
+      get:()=>window.__dust?.sideW??160, set:v=>{if(window.__dust){window.__dust.sideW=v;
+        document.querySelectorAll('.side-dust').forEach(c=>c.style.width=v+'px');}}},
+  ];
+  dustSliders.forEach(({id,vid,scale,fmt,get,set})=>{
+    const el=document.getElementById(id);
+    const vl=document.getElementById(vid);
+    if(!el||!vl) return;
+    el.value=Math.round(get()*scale);
+    vl.textContent=fmt(get());
+    el.addEventListener('input',()=>{
+      const v=el.value/scale;
+      set(v); vl.textContent=fmt(v);
+    });
+  });
   /* dot field sliders */
   const dotSliders=[
     {id:'spDotSpeed', vid:'spDotSpeedV', scale:100, fmt:v=>`${Math.round(v*100)}`,
@@ -1968,6 +2013,17 @@ function initSettingsPanel(){
 
 /* connect wallet */
 const CHECK_SVG=`<svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 7 5.5 10.5 11 3.5"/></svg>`;
+function jumpToMyRow(){
+  const row=document.querySelector('tr.you');
+  if(!row) return;
+  const headerH=document.querySelector('.seasonbar')?.offsetHeight??56;
+  const y=row.getBoundingClientRect().top+window.scrollY-headerH-24;
+  window.scrollTo({top:Math.max(0,y),behavior:'smooth'});
+  row.classList.remove('row-flash');
+  void row.offsetWidth;
+  row.classList.add('row-flash');
+  setTimeout(()=>row.classList.remove('row-flash'),1400);
+}
 function connectWallet(btn){
   btn.innerHTML=CHECK_SVG+'Connected';
   btn.classList.add('connected');
@@ -1977,15 +2033,14 @@ function connectWallet(btn){
 /* back buttons */
 document.getElementById('backToSquads').addEventListener('click',()=>navigate('squads'));
 document.getElementById('backToBoard').addEventListener('click',()=>{
-  navigate('home');
+  const savedY=window.__boardScrollY;
+  window.__boardScrollY=null;
+  navigate('home',{keepScroll:true});
   const pg=document.getElementById('seasonContent');
   pg.classList.remove('slide-from-right','slide-from-left');
   void pg.offsetWidth;
   pg.classList.add('slide-from-left');
-  if(window.__boardScrollY!=null){
-    requestAnimationFrame(()=>window.scrollTo({top:window.__boardScrollY,behavior:'instant'}));
-    window.__boardScrollY=null;
-  }
+  window.scrollTo({top:savedY!=null?savedY:0,behavior:'instant'});
 });
 
 /* burger menu */
@@ -2171,6 +2226,34 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
         <input type="range" id="spDpExtrusion" min="0" max="100" value="35"></div>
       <div class="sp-row"><label>Contact Shadow <span id="spDpContactV">24%</span></label>
         <input type="range" id="spDpContact" min="0" max="100" value="24"></div>
+    </div>
+
+    <div class="sp-section">
+      <div class="sp-section-title">Gold Dust</div>
+      <div class="sp-row">
+        <label>Density <span id="spDustCountV">100%</span></label>
+        <input type="range" id="spDustCount" min="10" max="300" value="100">
+      </div>
+      <div class="sp-row">
+        <label>Speed <span id="spDustSpeedV">100%</span></label>
+        <input type="range" id="spDustSpeed" min="10" max="300" value="100">
+      </div>
+      <div class="sp-row">
+        <label>Size <span id="spDustSizeV">1.0×</span></label>
+        <input type="range" id="spDustSize" min="30" max="300" value="100">
+      </div>
+      <div class="sp-row">
+        <label>Opacity <span id="spDustOpacityV">100%</span></label>
+        <input type="range" id="spDustOpacity" min="0" max="250" value="100">
+      </div>
+      <div class="sp-row">
+        <label>Shimmer <span id="spDustShimmerV">100%</span></label>
+        <input type="range" id="spDustShimmer" min="0" max="200" value="100">
+      </div>
+      <div class="sp-row">
+        <label>Side width <span id="spDustSideWV">160px</span></label>
+        <input type="range" id="spDustSideW" min="0" max="300" value="160">
+      </div>
     </div>
 
     <div class="sp-section">
