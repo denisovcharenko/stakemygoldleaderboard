@@ -314,10 +314,48 @@ html::-webkit-scrollbar{display:none}
 .pcard .xp small{font-family:Inter,sans-serif;font-size:11px;color:var(--muted);
   font-weight:400;margin-left:4px;letter-spacing:.02em}
 
-.av{width:28px;height:28px;border-radius:50%;flex:none;
+.av{width:28px;height:28px;border-radius:50%;flex:none;overflow:hidden;
   background:linear-gradient(140deg,var(--gold-lt),var(--gold-dp));
   display:grid;place-items:center;font-size:11px;font-weight:700;color:#2A2004}
+.av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 .pcard .av{width:34px;height:34px;font-size:12px}
+/* squads */
+.squads-head{padding:32px 0 20px}
+.squads-head h2{font-size:28px;font-weight:700;color:var(--navy);margin:0 0 8px;letter-spacing:-.025em}
+.squads-head .lede{color:var(--muted);font-size:15px;margin:0}
+.squads-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-bottom:56px}
+.squad-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;
+  transition:box-shadow .18s,border-color .18s}
+.squad-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.07);border-color:rgba(0,0,0,.12)}
+.squad-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.squad-name{font-weight:700;font-size:14.5px;color:var(--navy);line-height:1.3}
+.sq-status{font-size:9.5px;font-weight:600;letter-spacing:.08em;padding:3px 8px;
+  border-radius:999px;border:1px solid;white-space:nowrap;flex:none;margin-top:1px}
+.sq-status.active{color:#15803D;border-color:#BBF7D0;background:#F0FDF4}
+.sq-status.forming{color:#92400E;border-color:#FDE68A;background:#FFFBEB}
+.squad-desc{font-size:13px;color:var(--muted);line-height:1.55;margin:0;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.squad-meta{display:flex;align-items:center;justify-content:space-between;
+  font-size:12.5px;color:var(--muted);margin-top:auto;padding-top:4px}
+.squad-meta b{color:var(--navy);font-weight:600}
+.squad-tags{display:flex;gap:5px;flex-wrap:wrap}
+.sq-tag{font-size:10px;font-weight:500;letter-spacing:.06em;
+  padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.sq-tag.elite{border-color:rgba(200,158,20,.3);color:var(--gold-dp);background:rgba(200,158,20,.06)}
+.sq-tag.veteran{border-color:rgba(100,80,40,.2);color:#7A5C20;background:rgba(160,120,60,.06)}
+/* profile */
+.profile-empty{display:flex;flex-direction:column;align-items:center;text-align:center;
+  padding:80px 0 120px;gap:14px}
+.profile-empty svg{opacity:.25}
+.profile-empty h2{font-size:28px;font-weight:700;color:var(--navy);margin:0;letter-spacing:-.025em}
+.profile-empty p{color:var(--muted);font-size:15.5px;max-width:34ch;margin:0;line-height:1.6}
+.profile-empty .connect-btn{margin-top:6px}
+/* page transitions */
+.page-view{animation:fadeUp .22s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media (max-width:900px){.squads-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.squads-grid{grid-template-columns:1fr}}
 .tierbadge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;
   color:var(--muted);margin-top:10px}
 .tierbadge i{width:7px;height:7px;border-radius:50%;display:block;flex:none}
@@ -591,7 +629,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
   <div class="wrap">
     <div class="brand"><span class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 44 44" fill="none"><path d="M44 22C44 34.1503 34.1503 44 22 44C9.84974 44 0 34.1503 0 22C0 9.84974 9.84974 0 22 0C34.1503 0 44 9.84974 44 22ZM2.74528 22C2.74528 32.6341 11.3659 41.2547 22 41.2547C32.6341 41.2547 41.2547 32.6341 41.2547 22C41.2547 11.3659 32.6341 2.74528 22 2.74528C11.3659 2.74528 2.74528 11.3659 2.74528 22Z" fill="white"/><path d="M30.2451 23.9742L15.3634 38.9024C27.1136 42.9052 34.9018 35.5906 37.489 30.9364C37.6146 30.7105 37.5682 30.4319 37.3851 30.2492L31.0917 23.973C30.8578 23.7396 30.4783 23.7402 30.2451 23.9742Z" fill="white"/><path d="M25.0183 27.2178L20.3442 31.7778L15.8249 27.314C15.5876 27.0797 15.5888 26.697 15.8275 26.4642L19.6186 22.7656C19.851 22.5389 20.2224 22.5389 20.4547 22.7656L25.0183 27.2178Z" fill="white"/><path d="M18.6814 33.3577L12.8487 27.626C12.6852 27.4654 12.4226 27.4659 12.2599 27.6272L7.88849 31.961C7.66432 32.1833 7.6291 32.5341 7.81718 32.7875C9.79038 35.4455 12.7336 37.3785 14.0183 38.0379L18.6814 33.3577Z" fill="white"/><path d="M13.5699 11.3577C8.14166 16.5566 7.223 21.9106 7.44221 23.9377C9.71393 19.8835 13.1315 16.2267 14.5564 14.9051C15.483 15.2033 15.3933 15.2629 16.3498 14.3686C17.3064 13.4743 17.4259 13.1762 17.0075 12.4905C20.1401 9.10406 24.8888 6.78681 26.8716 6.05149C24.6995 5.65402 18.9982 6.15881 13.5699 11.3577Z" fill="white"/><path d="M11.8607 11.3204L26.4232 25.6667L27.858 24.1762L13.7662 9.47436C13.6745 9.3787 13.5222 9.37578 13.4269 9.46786L11.8624 10.9794C11.766 11.0725 11.7653 11.2264 11.8607 11.3204Z" fill="white"/></svg></span><span>StakeMyGold</span></div>
     <nav class="nav">
-      <a href="#" aria-current="page">Home</a><a href="#">Squads</a><a href="#">Profile</a>
+      <a href="#" data-page="home" aria-current="page" onclick="navigate('home');return false">Home</a><a href="#" data-page="squads" onclick="navigate('squads');return false">Squads</a><a href="#" data-page="profile" onclick="navigate('profile');return false">Profile</a>
     </nav>
     <button class="connect-btn" onclick="this.textContent='Connected ✓';this.style.background='var(--navy)';this.style.color='var(--gold-lt)';this.style.border='1px solid var(--navy)'">Connect</button>
     <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
@@ -599,9 +637,9 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
     </button>
   </div>
   <nav class="mob-nav" id="mobNav" aria-hidden="true">
-    <a href="#" aria-current="page">Home</a>
-    <a href="#">Squads</a>
-    <a href="#">Profile</a>
+    <a href="#" data-page="home" aria-current="page" onclick="navigate('home');return false">Home</a>
+    <a href="#" data-page="squads" onclick="navigate('squads');return false">Squads</a>
+    <a href="#" data-page="profile" onclick="navigate('profile');return false">Profile</a>
   </nav>
 </header>
 
@@ -691,6 +729,25 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
     </div>
   </section>
   </div><!-- /season-content -->
+
+  <!-- Squads page -->
+  <div class="page-view" id="pageSquads" hidden>
+    <div class="squads-head">
+      <h2>Squads</h2>
+      <p class="lede">Join a squad to multiply your XP and compete for squad-level prizes.</p>
+    </div>
+    <div class="squads-grid" id="squadsGrid"></div>
+  </div>
+
+  <!-- Profile page -->
+  <div class="page-view" id="pageProfile" hidden>
+    <div class="profile-empty">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      <h2>Connect your wallet</h2>
+      <p>Link your wallet to see your rank, XP history, referral stats, and tier progress.</p>
+      <button class="connect-btn" onclick="this.textContent='Connected ✓';this.style.background='var(--navy)';this.style.color='var(--gold-lt)';this.style.border='1px solid var(--navy)'">Connect wallet</button>
+    </div>
+  </div>
 </main>
 
 <footer><div class="wrap">Showing <span id="footCount">203</span> ranked participants.
@@ -724,21 +781,21 @@ const SEASONS={
            ['Active quests','6','3 rotate weekly'],['Your rank','#8','Silver']],
     foot:['Your rank: <b>#8</b> of 203 · <b>Silver</b>','Next tier: <b>Gold</b> at 12,000 XP'],
     rows:[
-      ['ABAB','Gold',[14820,5210,1340],38,0],
-      ['GIGian','Gold',[13960,4870,1180],36,1],
+      ['AB','Gold',[14820,5210,1340],38,0],
+      ['Gian','Gold',[13960,4870,1180],36,1],
       ['Maki Mura','Gold',[12740,5640,1520],34,-1],
-      ['solsticecap','Silver',[11380,3920,910],31,4],
-      ['heatwave','Silver',[10640,4180,1260],29,-1],
-      ['tesseraonchain','Silver',[9870,3410,780],27,0],
-      ['northwind52','Silver',[9120,3860,1090],26,2],
+      ['Shah','Silver',[11380,3920,910],31,4],
+      ['Boo (✱,✱)','Silver',[10640,4180,1260],29,-1],
+      ['AlphaFarmer','Silver',[9870,3410,780],27,0],
+      ['DropScout','Silver',[9120,3860,1090],26,2],
       ['you','Silver',[8640,4020,1310],25,1],
-      ['earlybird','Silver',[8190,2740,620],23,0],
-      ['yield65','Bronze',[7460,3180,940],21,-2],
-      ['petal546','Bronze',[6980,2510,710],19,4],
-      ['goldrun','Bronze',[6420,2890,860],18,-2],
-      ['smgmaxi','Bronze',[5870,1940,480],16,3],
-      ['carrotop','Bronze',[5310,2260,690],15,-1],
-      ['vaultkeeper','Bronze',[4930,1780,520],14,-1]
+      ['Jarmiu⊙','Silver',[8190,2740,620],23,0],
+      ['INDIAN_GIRL','Bronze',[7460,3180,940],21,-2],
+      ['Brownson','Bronze',[6980,2510,710],19,4],
+      ['monkey.D.luffy Zetarium $XAGE','Bronze',[6420,2890,860],18,-2],
+      ['Einstein','Bronze',[5870,1940,480],16,3],
+      ['Emmytex King','Bronze',[5310,2260,690],15,-1],
+      ['OlaLee','Bronze',[4930,1780,520],14,-1]
     ]
   },
   runner:{
@@ -747,24 +804,54 @@ const SEASONS={
            ['Active quests','0','season closed'],['Your rank','#12','Silver']],
     foot:['Final rank: <b>#12</b> of 191 · <b>Silver</b>','Key award: <b>Silver key</b> · claimable at TGE'],
     rows:[
-      ['ABAB','Silver',[11539,3980,0],52,0],
-      ['GIGian','Silver',[11217,4120,0],51,0],
+      ['AB','Silver',[11539,3980,0],52,0],
+      ['Gian','Silver',[11217,4120,0],51,0],
       ['Maki Mura','Silver',[11037,3760,0],50,0],
-      ['solsticecap','Silver',[10480,3510,0],48,0],
-      ['heatwave','Silver',[9960,3240,0],46,0],
-      ['tesseraonchain','Silver',[9410,3080,0],44,0],
-      ['northwind52','Bronze',[8870,2910,0],42,0],
-      ['earlybird','Bronze',[8340,2640,0],40,0],
-      ['yield65','Bronze',[7920,2480,0],38,0],
-      ['petal546','Bronze',[7510,2260,0],36,0],
-      ['goldrun','Bronze',[7080,2110,0],34,0],
-      ['you','Bronze',[6740,1980,0],33,0],
-      ['smgmaxi','Bronze',[6310,1840,0],31,0],
-      ['carrotop','Bronze',[5890,1690,0],29,0],
-      ['vaultkeeper','Bronze',[5460,1520,0],27,0]
+      ['Shah','Silver',[10972,3510,0],48,0],
+      ['Boo (✱,✱)','Silver',[10902,3240,0],46,0],
+      ['AlphaFarmer','Silver',[10819,3080,0],44,0],
+      ['DropScout','Silver',[10816,2910,0],42,0],
+      ['Jarmiu⊙','Silver',[10111,2640,0],40,0],
+      ['INDIAN_GIRL','Bronze',[9023,2480,0],38,0],
+      ['Brownson','Bronze',[8566,2260,0],36,0],
+      ['monkey.D.luffy Zetarium $XAGE','Bronze',[8551,2110,0],34,0],
+      ['Einstein','Bronze',[8286,1980,0],33,0],
+      ['Emmytex King','Bronze',[8217,1840,0],31,0],
+      ['OlaLee','Bronze',[8186,1520,0],29,0]
     ]
   }
 };
+const AVATARS={
+  'AB':          'https://pbs.twimg.com/profile_images/1796560887970430976/Q6HrtExk_normal.jpg',
+  'Gian':        'https://pbs.twimg.com/profile_images/2044447661231910912/2N9p7NX-_normal.jpg',
+  'Maki Mura':   'https://pbs.twimg.com/profile_images/2054453207179640832/emhe_YDi_normal.jpg',
+  'Shah':        'https://pbs.twimg.com/profile_images/2045662138828464128/MhntmMeD_normal.jpg',
+  'Boo (✱,✱)':  'https://pbs.twimg.com/profile_images/2008398382373433344/utRUdC-l_normal.jpg',
+  'AlphaFarmer': 'https://pbs.twimg.com/profile_images/2022642814090391552/mYviMbrJ_normal.jpg',
+  'DropScout':   'https://pbs.twimg.com/profile_images/2022912693418737664/UBQzDz61_normal.jpg',
+  'INDIAN_GIRL': 'https://pbs.twimg.com/profile_images/2034725699861585920/u2qqJeTb_normal.jpg',
+  'Brownson':    'https://pbs.twimg.com/profile_images/1499668686633943042/tw0mEU-P_normal.jpg',
+  'Emmytex King':'https://pbs.twimg.com/profile_images/2013649459268194309/qlqS0L0Z_normal.jpg',
+  'OlaLee':      'https://pbs.twimg.com/profile_images/1942515195001131008/it2NEgnL_normal.jpg',
+  'Cakky':       'https://pbs.twimg.com/profile_images/1945579152091877376/QF0_Bpzb_normal.jpg',
+  'Kotaro 🥷':  'https://pbs.twimg.com/profile_images/2012559180847063040/YHhcT8Gj_normal.jpg',
+  'Bennie boom': 'https://cdn.discordapp.com/avatars/941042422601883669/da88d6b4d9d8f466931fde9c9d302b1a.png?size=256',
+};
+
+const SQUADS=[
+  {name:'Muddy Crabs',    members:44,max:50,xp:147105,access:'OPEN',  tier:'ELITE',   status:'active'},
+  {name:'The Goldiggers', members:5, max:50,xp:38508, access:'OPEN',  tier:'ELITE',   status:'active'},
+  {name:'Monarchs of Gold',members:6,max:25,xp:37540, access:'OPEN',  tier:'ELITE',   status:'active'},
+  {name:'Goldfish',       members:3, max:50,xp:16713, access:'OPEN',  tier:'ELITE',   status:'active'},
+  {name:'Monkey D Luffy', members:3, max:20,xp:8539,  access:'OPEN',  tier:'ELITE',   status:'active'},
+  {name:'Gold Squad',     members:5, max:20,xp:3392,  access:'OPEN',  tier:'VETERAN', status:'active'},
+  {name:'Royal Gold',     members:1, max:25,xp:10842, access:'INVITE',tier:'ELITE',   status:'forming'},
+  {name:'The Goldiggers', members:1, max:20,xp:7999,  access:'INVITE',tier:'ELITE',   status:'forming'},
+  {name:'Captain web3',   members:1, max:20,xp:7456,  access:'INVITE',tier:'ELITE',   status:'forming'},
+  {name:'Gold princess',  members:1, max:20,xp:7446,  access:'INVITE',tier:'ELITE',   status:'forming'},
+  {name:'Dynamic',        members:1, max:20,xp:7446,  access:'INVITE',tier:'ELITE',   status:'forming'},
+];
+
 const PIDX={all:0,d30:1,d7:2};
 let current='epoch', period='all';
 
@@ -774,6 +861,12 @@ document.getElementById('ptrack').innerHTML=[...PARTNERS,...PARTNERS]
 const fmt=n=>n.toLocaleString('en-US');
 const initials=n=>n.replace(/[^A-Za-z ]/g,'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
 const avColor=n=>{let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))&0xffff;return`hsl(${h%360},32%,42%)`;};
+const avHTML=(name,cls='')=>{
+  const url=AVATARS[name];
+  const extra=cls?` ${cls}`:'';
+  if(url) return `<span class="av${extra}" style="background:${avColor(name)}"><img src="${url}" alt="" loading="lazy"></span>`;
+  return `<span class="av${extra}" style="background:${avColor(name)}">${initials(name)}</span>`;
+};
 
 function renderWordmark(text){
   const el=document.getElementById('wordmark');
@@ -816,7 +909,7 @@ function render(){
   document.getElementById('podium').innerHTML=sorted.slice(0,3).map((r,n)=>`
     <div class="pcard${n===0?' first':''}">
       <div class="rank">0${n+1}</div>
-      <div class="who"><span class="av" style="background:${avColor(r[0])}">${initials(r[0])}</span>${r[0]}</div>
+      <div class="who">${avHTML(r[0])}${r[0]}</div>
       <div class="xp">${fmt(r[2][i])} <small>XP</small></div>
       <div class="tierbadge t-${r[1]}"><i></i>${r[1]}</div>
     </div>`).join('');
@@ -824,9 +917,10 @@ function render(){
   document.getElementById('rows').innerHTML=sorted.slice(3).map((r,n)=>{
     const rank=n+4, d=r[4], me=r[0]==='you';
     const dc=d>0?'up':d<0?'down':'flat', dt=d>0?`▲${d}`:d<0?`▼${Math.abs(d)}`:'–';
+    const meAv=`<span class="av" style="background:var(--gold)">★</span>`;
     return `<tr class="${me?'you':''}">
       <td class="rk">${String(rank).padStart(2,'0')}</td>
-      <td><div class="who"><span class="av" style="background:${me?'var(--gold)':avColor(r[0])}">${me?'★':initials(r[0])}</span>${r[0]}</div></td>
+      <td><div class="who">${me?meAv:avHTML(r[0])}${r[0]}</div></td>
       <td class="hide-sm"><span class="tiercell t-${r[1]}"><i></i>${r[1]}</span></td>
       <td class="num xp">${fmt(r[2][i])}</td>
       <td class="num hide-sm">${r[3]}</td>
@@ -847,6 +941,53 @@ function switchSeason(newSeason){
     current = newSeason; render();
     sc.classList.remove('switching');
   }, 180);
+}
+
+function renderSquads(){
+  const active=SQUADS.filter(s=>s.status==='active');
+  const forming=SQUADS.filter(s=>s.status==='forming');
+  const card=s=>`<div class="squad-card">
+    <div class="squad-top">
+      <div class="squad-name">${s.name}</div>
+      <span class="sq-status ${s.status}">${s.status==='active'?'Active':'Forming'}</span>
+    </div>
+    <div class="squad-meta">
+      <span><b>${s.members}</b>/${s.max} members</span>
+      <span><b>${fmt(s.xp)}</b> XP</span>
+    </div>
+    <div class="squad-tags">
+      <span class="sq-tag">${s.access}</span>
+      <span class="sq-tag ${s.tier.toLowerCase()}">${s.tier}</span>
+    </div>
+  </div>`;
+  document.getElementById('squadsGrid').innerHTML=
+    `<div style="grid-column:1/-1;font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding-bottom:2px">Active</div>`+
+    active.map(card).join('')+
+    `<div style="grid-column:1/-1;font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;padding-top:12px;padding-bottom:2px">Forming</div>`+
+    forming.map(card).join('');
+}
+
+function navigate(page){
+  const pages={home:'seasonContent',squads:'pageSquads',profile:'pageProfile'};
+  Object.entries(pages).forEach(([k,id])=>{
+    const el=document.getElementById(id);
+    if(el) el.hidden=(k!==page);
+  });
+  document.querySelectorAll('[data-page]').forEach(a=>{
+    const isCurrent=a.dataset.page===page;
+    if(isCurrent) a.setAttribute('aria-current','page');
+    else a.removeAttribute('aria-current');
+  });
+  if(page==='squads') renderSquads();
+  // close mob-nav
+  const mobNav=document.getElementById('mobNav');
+  const burger=document.getElementById('burger');
+  if(mobNav&&burger){
+    mobNav.classList.remove('open');
+    burger.setAttribute('aria-expanded','false');
+    mobNav.setAttribute('aria-hidden','true');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 document.querySelectorAll('.season').forEach(b=>b.addEventListener('click',()=>{
