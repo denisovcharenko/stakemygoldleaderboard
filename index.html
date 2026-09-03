@@ -8,16 +8,16 @@
 
 <style>
 :root{
-  --cream:#FAF7F0; --paper:#FFFFFF;
+  --cream:#F8F6F2; --paper:#FFFFFF; --bg:#FDFCFA;
   --navy:#0E1729; --navy-2:#1B2942;
-  --gold:#C9A227; --gold-lt:#E9CE7E; --gold-pale:#F5E7BE; --gold-dp:#8A6A24;
+  --gold:#F0BD5E; --gold-lt:#F9DDA0; --gold-pale:#FDF0CC; --gold-dp:#9A6A0A;
   --ink:#12161F; --muted:#7C7768; --line:#E7E0D2;
   --bronze:#A9763F; --silver:#98A2B0; --plat:#6E7B8B;
   --max:1180px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--cream);color:var(--ink);
+body{margin:0;background:var(--bg);color:var(--ink);
   font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
 
@@ -26,39 +26,39 @@ body{margin:0;background:var(--cream);color:var(--ink);
 
 /* browser surface theming */
 ::selection{background:rgba(201,162,39,.18);color:var(--ink)}
-::-webkit-scrollbar{width:7px;height:7px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--gold-pale);border-radius:99px}
-::-webkit-scrollbar-thumb:hover{background:var(--gold)}
-*{scrollbar-width:thin;scrollbar-color:var(--gold-pale) transparent}
+html{scrollbar-width:none}
+html::-webkit-scrollbar{display:none}
+.sp-body{scrollbar-width:thin;scrollbar-color:var(--gold-pale) transparent}
+.sp-body::-webkit-scrollbar{width:5px}
+.sp-body::-webkit-scrollbar-track{background:transparent}
+.sp-body::-webkit-scrollbar-thumb{background:var(--gold-pale);border-radius:99px}
 
 /* ---------- nav + seasons ---------- */
 .seasonbar{background:var(--navy);color:#fff;position:sticky;top:0;z-index:40}
-.seasonbar .wrap{display:flex;align-items:center;gap:26px;height:64px}
+.seasonbar .wrap{display:flex;align-items:center;height:56px;padding:0 30px;max-width:none;margin:0}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;white-space:nowrap}
-.brand .mark{width:26px;height:26px;border-radius:50%;
-  background:conic-gradient(from 210deg,var(--gold-dp),var(--gold),var(--gold-pale),var(--gold));
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.15)}
-.nav{display:flex;gap:20px;font-size:14px;color:rgba(255,255,255,.6)}
-.nav a{text-decoration:none}
+.brand .mark{width:28px;height:28px;flex:none;display:flex;align-items:center;justify-content:center}
+.brand .mark svg{width:28px;height:28px;display:block}
+.nav{display:flex;gap:20px;font-size:14px;color:rgba(255,255,255,.6);margin:0 auto;letter-spacing:-0.025em}
+.nav a{text-decoration:none;color:inherit}
 .nav a[aria-current]{color:#fff;font-weight:600}
 .nav a:hover{color:#fff}
 .connect-btn{appearance:none;border:1px solid var(--gold);background:var(--gold);
   color:#2A2004;font:inherit;font-size:13.5px;font-weight:700;padding:8px 18px;border-radius:999px;
-  cursor:pointer;white-space:nowrap;transition:filter .16s,opacity .16s;margin-left:auto}
+  cursor:pointer;white-space:nowrap;transition:filter .16s,opacity .16s;min-width:118px;text-align:center}
 .connect-btn:hover{filter:brightness(1.06)}
 .connect-btn:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
-.seasons{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.seasons{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .seasons::-webkit-scrollbar{display:none}
-.season{appearance:none;border:1px solid rgba(255,255,255,.16);background:transparent;
-  color:rgba(255,255,255,.62);font:inherit;font-size:13.5px;padding:8px 15px;border-radius:999px;
-  cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:8px;
-  transition:background .18s,color .18s,border-color .18s}
-.season:hover{color:#fff;border-color:rgba(255,255,255,.34)}
-.season[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#231A05;font-weight:600}
-.season .dot{width:6px;height:6px;border-radius:50%;background:#4ADE80;box-shadow:0 0 0 3px rgba(74,222,128,.22)}
-.season[data-state="ended"] .dot{background:rgba(255,255,255,.38);box-shadow:none}
-.season[aria-selected="true"][data-state="ended"] .dot{background:rgba(35,26,5,.38)}
+.season{appearance:none;border:1px solid transparent;background:transparent;
+  color:var(--muted);font:inherit;font-size:12.5px;padding:5px 12px;border-radius:999px;
+  cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;
+  transition:color .15s,border-color .15s}
+.season:hover{color:var(--ink);border-color:var(--line)}
+.season[aria-selected="true"]{color:var(--ink);font-weight:600;border-color:var(--navy);border-width:1.5px}
+.bh-sep{width:1px;height:20px;background:var(--line);flex-shrink:0;margin:0 6px}
+.season .dot{display:none}
+@keyframes live-ping{0%{transform:scale(1);opacity:.65}65%{transform:scale(3.2);opacity:0}100%{transform:scale(3.2);opacity:0}}
 .season:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
 
 /* ---------- partners ---------- */
@@ -82,12 +82,12 @@ body{margin:0;background:var(--cream);color:var(--ink);
 @keyframes reach{from{opacity:0;transform:translateX(var(--from,-40px))}
   to{opacity:.88;transform:translateX(0)}}
 .hand-l{--from:-56px}.hand-r{--from:56px}
-.spark{position:absolute;z-index:1;left:50%;bottom:118px;width:190px;height:190px;
+.spark{position:absolute;z-index:1;left:50%;bottom:100px;width:320px;height:320px;
   transform:translate(-50%,50%);pointer-events:none;
-  background:radial-gradient(circle,rgba(245,231,190,.85) 0%,rgba(201,162,39,.35) 32%,transparent 68%);
-  opacity:0;animation:glow 2.6s ease-in-out 1.5s infinite}
-@keyframes glow{0%,100%{opacity:.25;transform:translate(-50%,50%) scale(.9)}
-  50%{opacity:.75;transform:translate(-50%,50%) scale(1.06)}}
+  background:radial-gradient(circle,rgba(245,231,190,.28) 0%,rgba(201,162,39,.07) 38%,transparent 65%);
+  opacity:0;animation:glow 3.2s ease-in-out 1.8s infinite}
+@keyframes glow{0%,100%{opacity:0;transform:translate(-50%,50%) scale(.88)}
+  50%{opacity:1;transform:translate(-50%,50%) scale(1.0)}}
 #dust{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
 /* halftone engraving field — the X-post texture, kept to the corners */
 .halftone{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
@@ -109,7 +109,7 @@ body{margin:0;background:var(--cream);color:var(--ink);
 
 .wordmark{font-family:'Archivo Black',sans-serif;letter-spacing:-.035em;line-height:.86;
   font-size:clamp(50px,11vw,132px);margin:24px 0 0;
-  color:#C9A227;
+  color:#dcad56;
   text-shadow:
     0.0044em 0.0065em 0 rgb(203,165,45),
     0.0088em 0.0131em 0 rgb(205,167,51),
@@ -138,10 +138,13 @@ body{margin:0;background:var(--cream);color:var(--ink);
     0.1106em 0.1635em 0 rgb(247,232,193),
     0.1150em 0.1700em 0 rgb(248,234,199)}
 .wordmark span{display:inline-block;transform:translateY(0);opacity:1}
+/* gm-active: spans handle their own background-clip so no gold blob on parent h1 */
+.wordmark.gm-active span{-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
 .wordmark.animate span{transform:translateY(.36em);opacity:0;
   animation:rise .78s cubic-bezier(.19,1.02,.32,1) forwards}
 @keyframes rise{to{transform:translateY(0);opacity:1}}
 .tagline{max-width:40ch;margin:18px auto 0;color:var(--muted);font-size:16px}
+
 
 .archived-note{max-width:660px;margin:24px auto 0;background:#FFF9E8;border:1px solid #F0E0B0;
   border-radius:12px;padding:14px 18px;font-size:14px;color:#5C4B18;text-align:left;
@@ -162,33 +165,50 @@ body{margin:0;background:var(--cream);color:var(--ink);
 .board{background:var(--paper);border:1px solid var(--line);border-radius:18px;margin-top:22px;overflow:hidden}
 .board-head{display:flex;align-items:center;gap:14px;padding:15px 20px;
   border-bottom:1px solid var(--line);flex-wrap:wrap}
-.segmented{display:flex;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:3px}
-.segmented button{appearance:none;border:0;background:transparent;font:inherit;font-size:13.5px;
-  padding:7px 14px;border-radius:7px;cursor:pointer;color:var(--muted)}
-.segmented button[aria-pressed="true"]{background:var(--navy);color:#fff;font-weight:600}
-.segmented button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
-.statustag{margin-left:auto;font-size:12.5px;color:var(--muted);border:1px solid var(--line);
-  border-radius:999px;padding:6px 13px;display:flex;align-items:center;gap:8px}
-.statustag i{width:6px;height:6px;border-radius:50%;background:#22C55E;display:block}
+.segmented{display:flex;gap:2px}
+.segmented button{appearance:none;border:1px solid transparent;background:transparent;font:inherit;font-size:12.5px;
+  padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--muted);transition:color .15s,border-color .15s}
+.segmented button:hover{color:var(--ink);border-color:var(--line)}
+.segmented button[aria-pressed="true"]{color:var(--ink);font-weight:600;border-color:var(--navy);border-width:1.5px}
+.segmented button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.statustag{margin-left:auto;font-size:12px;color:var(--muted);border:1px solid var(--line);
+  border-radius:999px;padding:5px 12px;display:flex;align-items:center;gap:7px}
+.statustag i{width:6px;height:6px;border-radius:50%;background:#22C55E;display:block;position:relative;flex:none}
+.statustag i::after{content:'';position:absolute;inset:-3px;border-radius:50%;background:#22C55E;animation:live-ping 1.8s ease-out infinite}
 .statustag[data-state="ended"] i{background:#C6BFB0}
+.statustag[data-state="ended"] i::after{display:none}
 
-.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:20px}
-.pcard{border:1px solid var(--line);border-radius:14px;padding:18px;position:relative;
-  background:linear-gradient(180deg,#FFFDF7,#FFFFFF)}
-.pcard.first{border-color:#E8D28C;background:linear-gradient(180deg,#FFF8E4,#FFFDF6);
-  box-shadow:0 2px 14px rgba(201,162,39,.16),0 1px 0 rgba(201,162,39,.10)}
-.pcard .rank{font-family:'Archivo Black',sans-serif;font-size:26px;letter-spacing:-.03em;
-  color:var(--gold-dp);line-height:1}
-.pcard.first .rank{font-size:32px}
-.pcard .who{margin-top:14px;display:flex;align-items:center;gap:9px;font-weight:600;font-size:15px}
-.pcard .xp{font-family:'Playfair Display',serif;font-size:29px;font-weight:700;color:var(--navy);margin-top:4px}
-.pcard .xp small{font-family:Inter,sans-serif;font-size:13px;color:var(--muted);font-weight:400}
-.pcard .medal{position:absolute;top:16px;right:16px;width:26px;height:26px;border-radius:50%;
-  background:conic-gradient(from 200deg,var(--gold-dp),var(--gold-lt),var(--gold));opacity:.9}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:20px 20px 14px}
+.pcard{border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  background:var(--paper);display:flex;flex-direction:column;position:relative}
+.pcard.first{border-color:#DFC97C;
+  background:linear-gradient(160deg,#FFFBEE 0%,#FFF5D0 100%);
+  box-shadow:0 6px 28px rgba(200,158,20,.16)}
+/* top accent stripe by position */
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--line);border-radius:16px 16px 0 0}
+.pcard.first::before{background:linear-gradient(90deg,#C9960A,#F0BD5E,#C9960A)}
+.podium .pcard:nth-child(2)::before{background:linear-gradient(90deg,#8A9099,#BCC4CC,#8A9099)}
+.podium .pcard:nth-child(3)::before{background:linear-gradient(90deg,#8B6040,#C49070,#8B6040)}
+/* rank badge top-left */
+.pcard .rank{padding:20px 0 0 20px;
+  font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);line-height:1;font-weight:700}
+.pcard.first .rank{color:#A07800}
+/* content area */
+.pcard .who{padding:10px 20px 0;display:flex;align-items:center;gap:10px;
+  font-weight:700;font-size:16px;color:var(--ink)}
+.pcard .xp{padding:8px 20px 20px;
+  font-family:'Playfair Display',serif;font-size:28px;font-weight:700;
+  color:var(--navy);line-height:1.1}
+.pcard.first .xp{font-size:34px}
+.pcard .xp small{font-family:Inter,sans-serif;font-size:11.5px;color:var(--muted);
+  font-weight:400;margin-left:4px;letter-spacing:.02em}
 
-.av{width:26px;height:26px;border-radius:50%;flex:none;
+.av{width:28px;height:28px;border-radius:50%;flex:none;
   background:linear-gradient(140deg,var(--gold-lt),var(--gold-dp));
   display:grid;place-items:center;font-size:11px;font-weight:700;color:#2A2004}
+.pcard .av{width:34px;height:34px;font-size:12px}
 .tierbadge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);
   border:1px solid var(--line);border-radius:6px;padding:4px 9px;margin-top:12px}
 .tierbadge i{width:8px;height:8px;border-radius:2px;display:block}
@@ -240,7 +260,7 @@ tr.you td:first-child{padding-left:22px}
 /* ---------- how it works ---------- */
 .how{margin:60px 0 88px}
 .how h2{font-family:'Playfair Display',serif;font-size:33px;font-weight:700;margin:0 0 6px}
-.how h2 em{font-style:italic;color:var(--gold-dp)}
+.how h2 em{font-style:italic;color:var(--gold)}
 .how p.lede{color:var(--muted);margin:0 0 24px;max-width:58ch}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .step{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:21px}
@@ -251,14 +271,14 @@ tr.you td:first-child{padding-left:22px}
 footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color:var(--muted)}
 
 /* season transition */
-.season-content{transition:opacity .22s ease,transform .22s ease}
-.season-content.switching{opacity:0;transform:translateY(6px);pointer-events:none}
+.season-content{transition:opacity .18s ease}
+.season-content.switching{opacity:0;pointer-events:none}
 
 /* ---------- dark theme overrides ---------- */
 [data-theme="dark"]{
   --cream:#0f1829; --paper:#162035;
   --navy:#080e1a; --navy-2:#0b1322;
-  --gold:#f0bd5e; --gold-lt:#f9dda0; --gold-pale:rgba(240,189,94,.15); --gold-dp:#c49320;
+  --gold:#f0bd5e; --gold-lt:#f9dda0; --gold-pale:rgba(240,189,94,.15); --gold-dp:#d4a520;
   --ink:#f0ead8; --muted:#8896b0; --line:rgba(255,255,255,.1);
   --bronze:#cd9b5a; --silver:#98a2b0; --plat:#7a8fa8;
 }
@@ -397,16 +417,10 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
 
 <header class="seasonbar">
   <div class="wrap">
-    <div class="brand"><span class="mark"></span><span>StakeMyGold</span></div>
+    <div class="brand"><span class="mark"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 44 44" fill="none"><path d="M44 22C44 34.1503 34.1503 44 22 44C9.84974 44 0 34.1503 0 22C0 9.84974 9.84974 0 22 0C34.1503 0 44 9.84974 44 22ZM2.74528 22C2.74528 32.6341 11.3659 41.2547 22 41.2547C32.6341 41.2547 41.2547 32.6341 41.2547 22C41.2547 11.3659 32.6341 2.74528 22 2.74528C11.3659 2.74528 2.74528 11.3659 2.74528 22Z" fill="white"/><path d="M30.2451 23.9742L15.3634 38.9024C27.1136 42.9052 34.9018 35.5906 37.489 30.9364C37.6146 30.7105 37.5682 30.4319 37.3851 30.2492L31.0917 23.973C30.8578 23.7396 30.4783 23.7402 30.2451 23.9742Z" fill="white"/><path d="M25.0183 27.2178L20.3442 31.7778L15.8249 27.314C15.5876 27.0797 15.5888 26.697 15.8275 26.4642L19.6186 22.7656C19.851 22.5389 20.2224 22.5389 20.4547 22.7656L25.0183 27.2178Z" fill="white"/><path d="M18.6814 33.3577L12.8487 27.626C12.6852 27.4654 12.4226 27.4659 12.2599 27.6272L7.88849 31.961C7.66432 32.1833 7.6291 32.5341 7.81718 32.7875C9.79038 35.4455 12.7336 37.3785 14.0183 38.0379L18.6814 33.3577Z" fill="white"/><path d="M13.5699 11.3577C8.14166 16.5566 7.223 21.9106 7.44221 23.9377C9.71393 19.8835 13.1315 16.2267 14.5564 14.9051C15.483 15.2033 15.3933 15.2629 16.3498 14.3686C17.3064 13.4743 17.4259 13.1762 17.0075 12.4905C20.1401 9.10406 24.8888 6.78681 26.8716 6.05149C24.6995 5.65402 18.9982 6.15881 13.5699 11.3577Z" fill="white"/><path d="M11.8607 11.3204L26.4232 25.6667L27.858 24.1762L13.7662 9.47436C13.6745 9.3787 13.5222 9.37578 13.4269 9.46786L11.8624 10.9794C11.766 11.0725 11.7653 11.2264 11.8607 11.3204Z" fill="white"/></svg></span><span>StakeMyGold</span></div>
     <nav class="nav">
       <a href="#" aria-current="page">Home</a><a href="#">Squads</a><a href="#">Profile</a>
     </nav>
-    <div class="seasons" role="tablist" aria-label="Season">
-      <button class="season" role="tab" aria-selected="true" data-state="live" data-season="epoch">
-        <span class="dot"></span>Epoch One</button>
-      <button class="season" role="tab" aria-selected="false" data-state="ended" data-season="runner">
-        <span class="dot"></span>SMG Run a Reserve</button>
-    </div>
     <button class="connect-btn" onclick="this.textContent='Connected ✓';this.style.background='var(--navy)';this.style.color='var(--gold-lt)';this.style.border='1px solid var(--navy)'">Connect</button>
   </div>
 </header>
@@ -443,6 +457,13 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
         <button aria-pressed="true" data-period="all">All-time</button>
       </div>
       <div class="statustag" id="statustag"><i></i><span>Live</span></div>
+      <div class="bh-sep"></div>
+      <div class="seasons" role="tablist" aria-label="Season">
+        <button class="season" role="tab" aria-selected="true" data-state="live" data-season="epoch">
+          <span class="dot"></span>Epoch One</button>
+        <button class="season" role="tab" aria-selected="false" data-state="ended" data-season="runner">
+          <span class="dot"></span>SMG Run a Reserve</button>
+      </div>
     </div>
 
     <div class="podium" id="podium"></div>
@@ -471,7 +492,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
   </section>
 
   <section class="how">
-    <h2>How it <em>works</em></h2>
+    <h2>How you <em>rise</em></h2>
     <p class="lede">Three ways to move up the board. Quests pay flat XP, referrals pay on your friend's
     activity, and tier thresholds unlock badges as you climb.</p>
     <div class="steps">
@@ -567,7 +588,7 @@ document.getElementById('ptrack').innerHTML=[...PARTNERS,...PARTNERS]
 
 const fmt=n=>n.toLocaleString('en-US');
 const initials=n=>n.replace(/[^A-Za-z ]/g,'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-const avColor=n=>{let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))&0xffff;return`hsl(${h%360},50%,50%)`;};
+const avColor=n=>{let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))&0xffff;return`hsl(${h%360},32%,42%)`;};
 
 function renderWordmark(text){
   const el=document.getElementById('wordmark');
@@ -598,20 +619,14 @@ function renderWordmark(text){
     });
     el.appendChild(wordEl);
   });
-  requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('animate')));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    el.classList.add('animate');
+    if(window.__smgApplyWm) window.__smgApplyWm();
+  }));
 }
 
 function render(){
   const s=SEASONS[current], i=PIDX[period];
-
-  document.getElementById('heroPill').innerHTML = s.state==='live'
-    ? `<span class="live"><i></i>Live</span> · <b>${s.prize}</b> · 203 participants`
-    : `<span class="ended"><i></i>Ended</span> · <b>191 participants</b> · 522.7K XP`;
-
-  renderWordmark(s.name);
-  /* show the "points preserved" note on the live (Epoch One) season —
-     it reassures SMG Run a Reserve participants their XP carries over */
-  document.getElementById('archNote').hidden = s.state !== 'live';
 
   document.getElementById('stats').innerHTML = s.stats.map(([k,v,sub],n)=>
     `<div class="stat${n===3?' me':''}"><dt>${k}</dt><dd>${v}</dd><div class="sub">${sub}</div></div>`).join('');
@@ -625,7 +640,7 @@ function render(){
 
   document.getElementById('podium').innerHTML=sorted.slice(0,3).map((r,n)=>`
     <div class="pcard${n===0?' first':''}">
-      <div class="rank">0${n+1}</div><div class="medal"></div>
+      <div class="rank">0${n+1}</div>
       <div class="who"><span class="av" style="background:${avColor(r[0])}">${initials(r[0])}</span>${r[0]}</div>
       <div class="xp">${fmt(r[2][i])} <small>XP</small></div>
       <div class="tierbadge t-${r[1]}"><i></i>${r[1]}</div>
@@ -670,8 +685,14 @@ document.querySelectorAll('.segmented button').forEach(b=>b.addEventListener('cl
   b.setAttribute('aria-pressed','true'); period=b.dataset.period; render();
 }));
 
-/* ensure wordmark renders even before fonts load */
-document.fonts.ready.then(()=>{ render(); });
+/* hero is fixed to the active season — init once, never re-render on season switch */
+const activeSeason = SEASONS.epoch;
+document.getElementById('heroPill').innerHTML =
+  `<span class="live"><i></i>Live</span> · <b>${activeSeason.prize}</b> · 203 participants`;
+document.getElementById('archNote').hidden = false;
+renderWordmark(activeSeason.name);
+document.fonts.ready.then(()=>{ renderWordmark(activeSeason.name); });
+
 render();
 
 /* ---------- gold dust ---------- */
@@ -681,20 +702,20 @@ render();
   let W,H,dpr,parts=[],mx=.5,my=.5;
 
   function shard(depth){
-    const pts=[],n=4+((Math.random()*3)|0);
+    const pts=[],n=5+((Math.random()*5)|0);
     for(let i=0;i<n;i++){
-      const a=(i/n)*Math.PI*2+Math.random()*.5, rr=.55+Math.random()*.45;
+      const a=(i/n)*Math.PI*2+Math.random()*.4, rr=.42+Math.random()*.58;
       pts.push([Math.cos(a)*rr,Math.sin(a)*rr]);
     }
-    const base=depth===0?2.4:depth===1?6.5:14;
-    return{x:Math.random()*W,y:Math.random()*H,d:depth,s:base*(.6+Math.random()*.9),pts,
-      rot:Math.random()*Math.PI*2,vr:(Math.random()-.5)*(depth===2?.011:.019),
-      vy:-(0.08+Math.random()*.12)*(depth+1)*.5,vx:(0.03+Math.random()*.05)*(depth+1)*.45,
-      ph:Math.random()*Math.PI*2,a:depth===0?.28:depth===1?.6:.48};
+    const base=depth===0?1.6:depth===1?4.2:8.5;
+    return{x:Math.random()*W,y:Math.random()*H,d:depth,s:base*(.55+Math.random()*.9),pts,
+      rot:Math.random()*Math.PI*2,vr:(Math.random()-.5)*(depth===2?.008:.016),
+      vy:-(0.06+Math.random()*.09)*(depth+1)*.44,vx:(0.02+Math.random()*.04)*(depth+1)*.38,
+      ph:Math.random()*Math.PI*2,a:depth===0?.32:depth===1?.30:.20};
   }
   function build(){
-    const total=W<640?38:W<1000?64:88; parts=[];
-    for(let i=0;i<total;i++) parts.push(shard(i<total*.42?0:i<total*.82?1:2));
+    const total=W<640?36:W<1000?58:82; parts=[];
+    for(let i=0;i<total;i++) parts.push(shard(i<total*.58?0:i<total*.88?1:2));
   }
   function size(){
     dpr=Math.min(devicePixelRatio||1,2);
@@ -711,18 +732,21 @@ render();
       p.rot+=p.vr; p.y+=p.vy; p.x+=p.vx+Math.sin(t*0.0004+p.ph)*0.11;
       if(p.y<-40){p.y=H+30;p.x=Math.random()*W}
       if(p.x>W+40)p.x=-30;
-      const px=p.x+(mx-.5)*(p.d+1)*-14, py=p.y+(my-.5)*(p.d+1)*-9;
-      const wob=Math.abs(Math.cos(p.rot)), alpha=p.a*centreFade(p);
-      if(alpha<=.02) continue;
-      x.save(); x.translate(px,py); x.rotate(p.rot); x.scale(1,.35+wob*.65);
-      x.globalAlpha=p.d===0?alpha*.8:alpha;
+      const px=p.x+(mx-.5)*(p.d+1)*-12, py=p.y+(my-.5)*(p.d+1)*-8;
+      const wob=Math.abs(Math.cos(p.rot));
+      const shimmer=0.22+wob*0.78; // bright when face-on, nearly invisible when edge-on
+      const alpha=p.a*centreFade(p)*shimmer;
+      if(alpha<=.015) continue;
+      x.save(); x.translate(px,py); x.rotate(p.rot); x.scale(1,.3+wob*.7);
+      x.globalAlpha=alpha;
       const g=x.createLinearGradient(-p.s,-p.s,p.s,p.s);
-      g.addColorStop(0,'#8A6A24'); g.addColorStop(.42,'#C9A227');
-      g.addColorStop(.58,'#F5E7BE'); g.addColorStop(1,'#A67F26');
+      g.addColorStop(0,'#6B4A0E'); g.addColorStop(.28,'#C9A227');
+      g.addColorStop(.50,'#FFF4C4'); g.addColorStop(.72,'#C9A227');
+      g.addColorStop(1,'#7A5810');
       x.fillStyle=g; x.beginPath();
       p.pts.forEach(([a,b],i)=> i?x.lineTo(a*p.s,b*p.s):x.moveTo(a*p.s,b*p.s));
       x.closePath(); x.fill();
-      if(p.d===2){x.strokeStyle='rgba(90,68,18,.35)';x.lineWidth=.6;x.stroke()}
+      if(p.d===2){x.strokeStyle='rgba(80,58,12,.25)';x.lineWidth=.5;x.stroke()}
       x.restore();
     }
     requestAnimationFrame(draw);
@@ -745,11 +769,15 @@ function initSettingsPanel(){
   const wm     = document.getElementById('wordmark');
 
   const DEFAULTS = {
-    lhx:-42,lhy:-6,lhs:100, rhx:-42,rhy:-6,rhs:100,
-    wmFace:'#C9A227',wmFaceOp:100,
-    wmNear:'#CBA52D',wmNearOp:100,
-    wmFar:'#F8EAAC', wmFarOp:100,
-    wmSize:132, wmLs:-35, wmSx:100
+    lhx:-9,lhy:401,lhs:113, rhx:-27,rhy:241,rhs:113,
+    wmFace:'#dcad56',wmFaceOp:100,
+    wmNear:'#eabc66',wmNearOp:100,
+    wmFar:'#FFF8D6', wmFarOp:59,
+    wmSize:180, wmLs:-23, wmSx:100,
+    wmNoiseAmt:37, wmNoiseFreq:87,
+    gmMetallic:52, gmSpecular:59, gmRoughness:75, gmHighlight:52, gmContrast:62, gmWarmth:43,
+    lgGlow:0,   lgGlowRadius:0,  lgEdgeShine:50, lgReflection:50, lgBounce:0,
+    dpBevel:0, dpExtrusion:28,  dpContact:0
   };
   const S = {...DEFAULTS};
 
@@ -786,13 +814,85 @@ function initSettingsPanel(){
   };
   const isValidHex=h=>/^[0-9A-Fa-f]{6}$/.test(h);
 
+  /* metallic gradient anchored to reference palette; sliders modulate delta from defaults.
+     At default values (92/78/22/68/58/38) the gradient matches the user's reference:
+     #9A6A0A → #D8A91D → #FFE17A → #FFF4C4 → #D3A019 → #8A5B05              */
+  function buildGoldGradient(){
+    const cl=v=>Math.max(0,Math.min(255,Math.round(v)));
+    // reference anchor colors at default slider values
+    const REF={dk:[154,106,10],ri:[216,169,29],br:[255,225,122],hl:[255,244,196]};
+    const REF_S={met:0.92,spe:0.78,rou:0.22,hlt:0.68,con:0.58,wrm:0.38};
+    // deltas from reference
+    const dMet=(S.gmMetallic/100-REF_S.met);
+    const dSpe=(S.gmSpecular/100-REF_S.spe);
+    const dRou=(S.gmRoughness/100-REF_S.rou);
+    const dHlt=(S.gmHighlight/100-REF_S.hlt);
+    const dCon=(S.gmContrast/100-REF_S.con);
+    const dWrm=(S.gmWarmth/100-REF_S.wrm);
+    // warmth: shifts all stops (warm = more R, less G, much less B)
+    const wR=dWrm*28, wG=dWrm*(-16), wB=dWrm*(-52);
+    // contrast: drives dark deeper, pushes bright lighter
+    const conBoost=dCon*0.4;
+    // specular × metallic: drives bright and highlight toward white
+    const spLift=(S.gmSpecular/100*S.gmMetallic/100 - REF_S.spe*REF_S.met);
+    // build palette
+    const dk=[cl(REF.dk[0]+wR*0.80-conBoost*28), cl(REF.dk[1]+wG*0.75-conBoost*18), cl(REF.dk[2]+wB*0.55-conBoost*8)];
+    const ri=[cl(REF.ri[0]+wR),                   cl(REF.ri[1]+wG),                   cl(REF.ri[2]+wB)];
+    const br=[cl(REF.br[0]+wR*0.45+spLift*32),   cl(REF.br[1]+wG*0.45+spLift*18),   cl(REF.br[2]+wB*0.25+spLift*6)];
+    const hl=[cl(REF.hl[0]+wR*0.18+dHlt*24+spLift*16), cl(REF.hl[1]+wG*0.18+dHlt*22+spLift*10), cl(REF.hl[2]+wB*0.10+dHlt*20+spLift*5)];
+    // highlight position: roughness 0=polished tight high, 1=rough wide low
+    const hlCenter=Math.round(lerp(28,47,S.gmRoughness/100));
+    const hlHalf  =Math.round(lerp(3,14,S.gmRoughness/100));
+    const rHalf   =Math.round(hlHalf+S.lgReflection/100*14);
+    const p0=Math.max(1,hlCenter-rHalf-8), p1=Math.max(2,hlCenter-rHalf);
+    const p3=Math.min(98,hlCenter+rHalf),  p4=Math.min(99,hlCenter+rHalf+14);
+    return`linear-gradient(to bottom,rgb(${dk}) 0%,rgb(${ri}) ${p0}%,rgb(${br}) ${p1}%,rgb(${hl}) ${hlCenter}%,rgb(${br}) ${p3}%,rgb(${ri}) ${p4}%,rgb(${dk}) 100%)`;
+  }
+
+  /* edge shine: bright top-left facet on each letterform */
+  function buildEdgeShine(){
+    if(S.lgEdgeShine<=0) return [];
+    const op=(S.lgEdgeShine/100).toFixed(3);
+    const op2=(S.lgEdgeShine/100*0.48).toFixed(3);
+    return[`-0.013em -0.013em 0 rgba(255,248,210,${op})`,`-0.007em -0.007em 0 rgba(255,242,185,${op2})`];
+  }
+  /* bevel: paired bright/dark 1px edges */
+  function buildBevel(){
+    if(S.dpBevel<=0) return [];
+    const[r,g,b]=hex2rgb(S.wmFace);
+    const dR=Math.max(0,Math.round(r*0.33)), dG=Math.max(0,Math.round(g*0.28)), dB=Math.max(0,Math.round(b*0.18));
+    const op=(S.dpBevel/100*0.88).toFixed(3);
+    const op2=(S.dpBevel/100*0.42).toFixed(3);
+    return[`0.013em 0.013em 0 rgba(${dR},${dG},${dB},${op})`,`0.007em 0.007em 0 rgba(${dR},${dG},${dB},${op2})`];
+  }
+  /* bottom bounce: warm underlight */
+  function buildBottomBounce(){
+    if(S.lgBounce<=0) return [];
+    const[r,g,b]=hex2rgb(S.wmNear);
+    const op=(S.lgBounce/100*0.48).toFixed(3);
+    return[`0 0.10em 0.20em rgba(${r},${g},${b},${op})`];
+  }
+  /* contact shadow: subtle cast shadow below */
+  function buildContactShadow(){
+    if(S.dpContact<=0) return [];
+    const blur=(0.04+S.dpContact/100*0.22).toFixed(3);
+    const y=(0.14+S.dpContact/100*0.07).toFixed(3);
+    const op=(S.dpContact/100*0.48).toFixed(3);
+    return[`0 ${y}em ${blur}em rgba(75,45,0,${op})`];
+  }
+
   function buildShadow(){
-    const xBase=0.0044,yBase=0.0065,steps=26;
-    const parts=[];
+    const xBase=0.0044, yBase=0.0065, steps=26;
+    // dpExtrusion=35 → 1.0× original; 70 → 2×; 0 → no shadow
+    const extMult=S.dpExtrusion/35;
+    const parts=[...buildEdgeShine(), ...buildBevel()];
     for(let i=0;i<steps;i++){
       const t=i/(steps-1);
-      parts.push(`${((i+1)*xBase).toFixed(4)}em ${((i+1)*yBase).toFixed(4)}em 0 ${lerpRGBA(S.wmNear,S.wmNearOp,S.wmFar,S.wmFarOp,t)}`);
+      const x=((i+1)*xBase*extMult).toFixed(4);
+      const y=((i+1)*yBase*extMult).toFixed(4);
+      parts.push(`${x}em ${y}em 0 ${lerpRGBA(S.wmNear,S.wmNearOp,S.wmFar,S.wmFarOp,t)}`);
     }
+    parts.push(...buildBottomBounce(), ...buildContactShadow());
     return parts.join(',');
   }
 
@@ -801,14 +901,70 @@ function initSettingsPanel(){
     handR.style.cssText=`right:${S.rhx}px;bottom:${S.rhy}px;transform:scale(${S.rhs/100});transform-origin:bottom right;animation:none;opacity:.88`;
   }
 
+  function buildFilter(){
+    const parts=[];
+    if(S.wmNoiseAmt>0) parts.push('url(#wmNoise)');
+    if(S.lgGlow>0&&S.lgGlowRadius>0){
+      const[r,g,b]=hex2rgb(S.wmNear);
+      const op=(S.lgGlow/100).toFixed(3);
+      const op2=(S.lgGlow/100*0.36).toFixed(3);
+      parts.push(`drop-shadow(0 0 ${S.lgGlowRadius}px rgba(${r},${g},${b},${op}))`);
+      parts.push(`drop-shadow(0 0 ${Math.round(S.lgGlowRadius*2.6)}px rgba(${r},${g},${b},${op2}))`);
+    }
+    return parts.join(' ');
+  }
+  function applyNoise(){
+    const turb=document.getElementById('wmNoiseTurb');
+    const mat=document.getElementById('wmNoiseMatrix');
+    if(!turb||!mat) return;
+    turb.setAttribute('baseFrequency',(S.wmNoiseFreq/100).toFixed(2));
+    const a=(S.wmNoiseAmt/100).toFixed(3);
+    mat.setAttribute('values',`0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.6  0 0 0 ${a} 0`);
+    wm.style.filter=buildFilter();
+  }
+
   function applyWordmark(){
-    const[fr,fg,fb]=hex2rgb(S.wmFace);
-    wm.style.color=`rgba(${fr},${fg},${fb},${(S.wmFaceOp/100).toFixed(3)})`;
+    if(S.gmMetallic>0){
+      // set gradient directly on each span so background-clip:text works (inline-block)
+      // setting it on the h1 parent causes a gold rectangle blob, not text clip
+      const grad=buildGoldGradient();
+      wm.style.background='';
+      wm.style.color='';
+      wm.style.webkitBackgroundClip='';
+      wm.style.backgroundClip='';
+      wm.style.webkitTextFillColor='';
+      wm.classList.add('gm-active');
+      wm.querySelectorAll('span').forEach(s=>{
+        s.style.backgroundImage=grad;
+        s.style.backgroundSize='100% 100%';
+        s.style.webkitBackgroundClip='text';
+        s.style.backgroundClip='text';
+        s.style.webkitTextFillColor='transparent';
+        s.style.color='transparent';
+      });
+    } else {
+      const[fr,fg,fb]=hex2rgb(S.wmFace);
+      wm.style.background='';
+      wm.style.webkitBackgroundClip='';
+      wm.style.backgroundClip='';
+      wm.style.webkitTextFillColor='';
+      wm.style.color=`rgba(${fr},${fg},${fb},${(S.wmFaceOp/100).toFixed(3)})`;
+      wm.classList.remove('gm-active');
+      wm.querySelectorAll('span').forEach(s=>{
+        s.style.backgroundImage='';
+        s.style.backgroundSize='';
+        s.style.webkitBackgroundClip='';
+        s.style.backgroundClip='';
+        s.style.webkitTextFillColor='';
+        s.style.color='';
+      });
+    }
     wm.style.textShadow=buildShadow();
     wm.style.fontSize=S.wmSize+'px';
     wm.style.letterSpacing=(S.wmLs/1000).toFixed(3)+'em';
     wm.style.transform=`scaleX(${S.wmSx/100})`;
     wm.style.transformOrigin='center center';
+    applyNoise();
   }
 
   /* wire range slider */
@@ -861,6 +1017,25 @@ function initSettingsPanel(){
   wireColor('spWmFace','spWmFaceHex','spWmFaceOp','spWmFaceOpV','wmFace','wmFaceOp');
   wireColor('spWmNear','spWmNearHex','spWmNearOp','spWmNearOpV','wmNear','wmNearOp');
   wireColor('spWmFar','spWmFarHex','spWmFarOp','spWmFarOpV','wmFar','wmFarOp');
+  wire('spWmNoiseAmt','wmNoiseAmt','spWmNoiseAmtV','%');
+  wire('spWmNoiseFreq','wmNoiseFreq','spWmNoiseFreqV','',v=>(v/100).toFixed(2));
+  /* gold material */
+  wire('spGmMetallic','gmMetallic','spGmMetallicV','%');
+  wire('spGmSpecular','gmSpecular','spGmSpecularV','%');
+  wire('spGmRoughness','gmRoughness','spGmRoughnessV','%');
+  wire('spGmHighlight','gmHighlight','spGmHighlightV','%');
+  wire('spGmContrast','gmContrast','spGmContrastV','%');
+  wire('spGmWarmth','gmWarmth','spGmWarmthV','%');
+  /* light & glow */
+  wire('spLgGlow','lgGlow','spLgGlowV','%');
+  wire('spLgGlowRadius','lgGlowRadius','spLgGlowRadiusV','px');
+  wire('spLgEdgeShine','lgEdgeShine','spLgEdgeShineV','%');
+  wire('spLgReflection','lgReflection','spLgReflectionV','%');
+  wire('spLgBounce','lgBounce','spLgBounceV','%');
+  /* depth */
+  wire('spDpBevel','dpBevel','spDpBevelV','%');
+  wire('spDpExtrusion','dpExtrusion','spDpExtrusionV','%');
+  wire('spDpContact','dpContact','spDpContactV','%');
 
   /* sync all inputs → S */
   function syncInputs(){
@@ -886,6 +1061,18 @@ function initSettingsPanel(){
     document.getElementById('spWmSizeV').textContent=S.wmSize+'px';
     document.getElementById('spWmLsV').textContent=(S.wmLs/1000).toFixed(3)+'em';
     document.getElementById('spWmSxV').textContent=S.wmSx+'%';
+    document.getElementById('spWmNoiseAmt').value=S.wmNoiseAmt;
+    document.getElementById('spWmNoiseAmtV').textContent=S.wmNoiseAmt+'%';
+    document.getElementById('spWmNoiseFreq').value=S.wmNoiseFreq;
+    document.getElementById('spWmNoiseFreqV').textContent=(S.wmNoiseFreq/100).toFixed(2);
+    [['gmMetallic','%'],['gmSpecular','%'],['gmRoughness','%'],['gmHighlight','%'],['gmContrast','%'],['gmWarmth','%'],
+     ['lgGlow','%'],['lgGlowRadius','px'],['lgEdgeShine','%'],['lgReflection','%'],['lgBounce','%'],
+     ['dpBevel','%'],['dpExtrusion','%'],['dpContact','%']
+    ].forEach(([k,sfx])=>{
+      const idBase='sp'+k.charAt(0).toUpperCase()+k.slice(1);
+      const el=document.getElementById(idBase); if(el) el.value=S[k];
+      const vl=document.getElementById(idBase+'V'); if(vl) vl.textContent=S[k]+sfx;
+    });
     ['Face','Near','Far'].forEach(n=>{
       const ck='wm'+n, ok='wm'+n+'Op';
       document.getElementById('spWm'+n).value=S[ck];
@@ -910,15 +1097,35 @@ function initSettingsPanel(){
     const out=JSON.stringify({
       hands:{leftX:S.lhx,leftY:S.lhy,leftScale:S.lhs,rightX:S.rhx,rightY:S.rhy,rightScale:S.rhs},
       text:{size:S.wmSize,letterSpacing:(S.wmLs/1000).toFixed(3)+'em',scaleX:S.wmSx+'%'},
-      wordmark:{face:S.wmFace,faceOp:S.wmFaceOp,shadowNear:S.wmNear,nearOp:S.wmNearOp,shadowFar:S.wmFar,farOp:S.wmFarOp}
+      wordmark:{face:S.wmFace,faceOp:S.wmFaceOp,shadowNear:S.wmNear,nearOp:S.wmNearOp,shadowFar:S.wmFar,farOp:S.wmFarOp},
+      goldMaterial:{metallic:S.gmMetallic,specular:S.gmSpecular,roughness:S.gmRoughness,highlight:S.gmHighlight,contrast:S.gmContrast,warmth:S.gmWarmth},
+      lightGlow:{glow:S.lgGlow,glowRadius:S.lgGlowRadius,edgeShine:S.lgEdgeShine,reflection:S.lgReflection,bounce:S.lgBounce},
+      depth:{bevel:S.dpBevel,extrusion:S.dpExtrusion,contact:S.dpContact},
+      noise:{amount:S.wmNoiseAmt,grain:S.wmNoiseFreq}
     },null,2);
     navigator.clipboard.writeText(out).then(()=>{
       this.textContent='✓ Copied!';this.classList.add('copied');
       setTimeout(()=>{this.textContent='Copy settings';this.classList.remove('copied');},2000);
     });
   });
+  window.__smgApplyWm=applyWordmark; // expose so renderWordmark can re-apply after new spans
+  applyHands();
+  applyWordmark(); // apply new defaults on init
 } // end initSettingsPanel — called after <aside> is in DOM
 </script>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="wmNoise" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence id="wmNoiseTurb" type="fractalNoise" baseFrequency="0.65" numOctaves="4" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix id="wmNoiseMatrix" in="noise" type="matrix"
+        values="0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.6  0 0 0 0 0"
+        result="tintedNoise"/>
+      <feBlend in="SourceGraphic" in2="tintedNoise" mode="overlay" result="blended"/>
+      <feComposite in="blended" in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+</svg>
 
 <button class="sp-fab" id="spToggle" aria-label="Settings">
   <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -992,28 +1199,80 @@ function initSettingsPanel(){
       <div class="sp-section-title">Wordmark Color</div>
       <div class="sp-colors">
         <div class="sp-color-input-wrap">
-          <input type="color" id="spWmFace" value="#C9A227">
-          <input type="text" class="sp-hex" id="spWmFaceHex" value="C9A227" maxlength="6" spellcheck="false">
+          <input type="color" id="spWmFace" value="#dcad56">
+          <input type="text" class="sp-hex" id="spWmFaceHex" value="DCAD56" maxlength="6" spellcheck="false">
           <span>Face</span>
           <input type="range" class="sp-opacity" id="spWmFaceOp" min="0" max="100" value="100">
           <span id="spWmFaceOpV" style="font-size:10px;color:rgba(255,255,255,.4)">100%</span>
         </div>
         <div class="sp-color-input-wrap">
-          <input type="color" id="spWmNear" value="#CBA52D">
-          <input type="text" class="sp-hex" id="spWmNearHex" value="CBA52D" maxlength="6" spellcheck="false">
+          <input type="color" id="spWmNear" value="#eabc66">
+          <input type="text" class="sp-hex" id="spWmNearHex" value="EABC66" maxlength="6" spellcheck="false">
           <span>Near</span>
           <input type="range" class="sp-opacity" id="spWmNearOp" min="0" max="100" value="100">
           <span id="spWmNearOpV" style="font-size:10px;color:rgba(255,255,255,.4)">100%</span>
         </div>
         <div class="sp-color-input-wrap">
-          <input type="color" id="spWmFar" value="#F8EAAC">
-          <input type="text" class="sp-hex" id="spWmFarHex" value="F8EAAC" maxlength="6" spellcheck="false">
+          <input type="color" id="spWmFar" value="#FFF8D6">
+          <input type="text" class="sp-hex" id="spWmFarHex" value="FFF8D6" maxlength="6" spellcheck="false">
           <span>Far</span>
-          <input type="range" class="sp-opacity" id="spWmFarOp" min="0" max="100" value="100">
-          <span id="spWmFarOpV" style="font-size:10px;color:rgba(255,255,255,.4)">100%</span>
+          <input type="range" class="sp-opacity" id="spWmFarOp" min="0" max="100" value="25">
+          <span id="spWmFarOpV" style="font-size:10px;color:rgba(255,255,255,.4)">25%</span>
         </div>
       </div>
       <div class="sp-arrow">● ──────→ ●</div>
+    </div>
+
+    <div class="sp-section">
+      <div class="sp-section-title">Text Noise</div>
+      <div class="sp-row">
+        <label>Amount <span id="spWmNoiseAmtV">0%</span></label>
+        <input type="range" id="spWmNoiseAmt" min="0" max="100" value="0">
+      </div>
+      <div class="sp-row">
+        <label>Grain <span id="spWmNoiseFreqV">0.65</span></label>
+        <input type="range" id="spWmNoiseFreq" min="10" max="200" value="65">
+      </div>
+    </div>
+
+    <div class="sp-section">
+      <div class="sp-section-title">Gold Material</div>
+      <div class="sp-row"><label>Metallic <span id="spGmMetallicV">92%</span></label>
+        <input type="range" id="spGmMetallic" min="0" max="100" value="92"></div>
+      <div class="sp-row"><label>Specular <span id="spGmSpecularV">78%</span></label>
+        <input type="range" id="spGmSpecular" min="0" max="100" value="78"></div>
+      <div class="sp-row"><label>Roughness <span id="spGmRoughnessV">22%</span></label>
+        <input type="range" id="spGmRoughness" min="0" max="100" value="22"></div>
+      <div class="sp-row"><label>Highlight <span id="spGmHighlightV">68%</span></label>
+        <input type="range" id="spGmHighlight" min="0" max="100" value="68"></div>
+      <div class="sp-row"><label>Contrast <span id="spGmContrastV">58%</span></label>
+        <input type="range" id="spGmContrast" min="0" max="100" value="58"></div>
+      <div class="sp-row"><label>Warmth <span id="spGmWarmthV">38%</span></label>
+        <input type="range" id="spGmWarmth" min="0" max="100" value="38"></div>
+    </div>
+
+    <div class="sp-section">
+      <div class="sp-section-title">Light &amp; Glow</div>
+      <div class="sp-row"><label>Glow <span id="spLgGlowV">17%</span></label>
+        <input type="range" id="spLgGlow" min="0" max="100" value="17"></div>
+      <div class="sp-row"><label>Glow Radius <span id="spLgGlowRadiusV">40px</span></label>
+        <input type="range" id="spLgGlowRadius" min="0" max="80" value="40"></div>
+      <div class="sp-row"><label>Edge Shine <span id="spLgEdgeShineV">62%</span></label>
+        <input type="range" id="spLgEdgeShine" min="0" max="100" value="62"></div>
+      <div class="sp-row"><label>Reflection <span id="spLgReflectionV">38%</span></label>
+        <input type="range" id="spLgReflection" min="0" max="100" value="38"></div>
+      <div class="sp-row"><label>Bottom Bounce <span id="spLgBounceV">18%</span></label>
+        <input type="range" id="spLgBounce" min="0" max="100" value="18"></div>
+    </div>
+
+    <div class="sp-section">
+      <div class="sp-section-title">Depth</div>
+      <div class="sp-row"><label>Bevel <span id="spDpBevelV">12%</span></label>
+        <input type="range" id="spDpBevel" min="0" max="100" value="12"></div>
+      <div class="sp-row"><label>Extrusion <span id="spDpExtrusionV">35%</span></label>
+        <input type="range" id="spDpExtrusion" min="0" max="100" value="35"></div>
+      <div class="sp-row"><label>Contact Shadow <span id="spDpContactV">24%</span></label>
+        <input type="range" id="spDpContact" min="0" max="100" value="24"></div>
     </div>
 
     <div style="display:flex;gap:8px;margin:4px 0 8px">
