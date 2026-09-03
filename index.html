@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/ZalandoSans-Variable.ttf" as="font" type="font/truetype" crossorigin>
 <style>
 @font-face{font-family:'ZalandoSans';src:url('assets/fonts/ZalandoSans-Variable.ttf') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:'ZalandoSans';src:url('assets/fonts/ZalandoSans-Italic-Variable.ttf') format('truetype');font-weight:100 900;font-style:italic;font-display:swap}
@@ -52,13 +53,14 @@ html::-webkit-scrollbar{display:none}
 .brand .mark{width:28px;height:28px;flex:none;display:flex;align-items:center;justify-content:center}
 .brand .mark svg{width:28px;height:28px;display:block}
 .nav{display:flex;gap:20px;font-size:14px;color:rgba(255,255,255,.6);margin:0 auto;letter-spacing:-0.03em}
-.nav a{text-decoration:none;color:inherit}
+.nav a{text-decoration:none;color:inherit;border-radius:4px}
 .nav a[aria-current]{color:#fff;font-weight:600}
 .nav a:hover{color:#fff}
+.nav a:focus-visible{outline:2px solid var(--gold-lt);outline-offset:4px}
 .connect-btn{appearance:none;border:1px solid var(--gold);background:var(--gold);
   color:#2A2004;font:inherit;font-size:14px;font-weight:700;letter-spacing:-0.02em;padding:8px 18px;border-radius:999px;
   cursor:pointer;white-space:nowrap;transition:filter .16s,background .2s,color .2s,border-color .2s;
-  width:126px;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+  width:126px;min-height:44px;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:7px}
 .connect-btn:hover{filter:brightness(1.06)}
 .connect-btn:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
 .connect-btn.connected{background:transparent;border-color:rgba(255,255,255,.18);color:var(--gold-lt);filter:none;cursor:default}
@@ -95,7 +97,7 @@ html::-webkit-scrollbar{display:none}
 .seasons{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 .seasons::-webkit-scrollbar{display:none}
 .season{appearance:none;border:1px solid transparent;background:transparent;
-  color:var(--muted);font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;
+  color:var(--muted);font:inherit;font-size:12px;padding:8px 12px;border-radius:999px;
   cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px;
   transition:color .15s,border-color .15s}
 .season:hover{color:var(--ink);border-color:var(--line)}
@@ -334,6 +336,7 @@ tr.you td:first-child{padding-left:22px}
 .board-foot{display:flex;align-items:center;gap:18px;padding:15px 20px;border-top:1px solid var(--line);
   background:#FDFBF6;flex-wrap:wrap;font-size:14px;color:var(--muted)}
 .board-foot b{color:var(--ink)}
+.board-foot .board-foot-next b{color:var(--gold-dp);font-weight:700}
 .btns{margin-left:auto;display:flex;gap:10px}
 .btn{appearance:none;font:inherit;font-size:14px;font-weight:600;letter-spacing:-0.02em;border-radius:10px;padding:10px 16px;
   cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
@@ -359,7 +362,7 @@ tr.you td:first-child{padding-left:22px}
 
 /* ---------- how it works ---------- */
 .how{margin:60px 0 88px}
-.how h2{font-family:'ZalandoSans',sans-serif;font-size:33px;font-weight:500;letter-spacing:-0.025em;margin:0 0 6px;line-height:1.15}
+.how h2{font-family:'ZalandoSans',sans-serif;font-size:33px;font-weight:600;letter-spacing:-0.025em;margin:0 0 6px;line-height:1.15}
 .how h2 em{font-style:italic;color:var(--gold)}
 .how p.lede{color:var(--muted);margin:0 0 24px;max-width:58ch}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
@@ -369,7 +372,7 @@ tr.you td:first-child{padding-left:22px}
   transition:box-shadow .2s,border-color .2s}
 .step:hover{box-shadow:0 6px 24px rgba(20,16,4,.07);border-color:#cfc5b4}
 /* top accent strip — gold / silver / bronze matching podium */
-.step::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+.step::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;
   background:linear-gradient(90deg,#8B6040,#C49070,#8B6040)}
 .step:first-child::before{background:linear-gradient(90deg,var(--gold-dp),var(--gold),var(--gold-dp))}
 .step:nth-child(2)::before{background:linear-gradient(90deg,#8A9099,#BCC4CC,#8A9099)}
@@ -731,8 +734,8 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
 <section class="hero">
   <div class="wm-cursor-glow" aria-hidden="true"></div>
   <canvas class="halftone" id="htCanvas" aria-hidden="true"></canvas>
-  <img class="nugget gold-l" alt="" aria-hidden="true" src="assets/images/gold 3.png">
-  <img class="nugget gold-r" alt="" aria-hidden="true" src="assets/images/gold 2.png">
+  <img class="nugget gold-l" alt="" aria-hidden="true" src="assets/images/gold 3.png" decoding="async">
+  <img class="nugget gold-r" alt="" aria-hidden="true" src="assets/images/gold 2.png" decoding="async">
   <span class="spark" aria-hidden="true"></span>
   <canvas id="dust" aria-hidden="true"></canvas>
   <div class="wrap">
@@ -993,7 +996,7 @@ const PIDX={all:0,d30:1,d7:2};
 let current='epoch', period='all';
 
 document.getElementById('ptrack').innerHTML=[...PARTNERS,...PARTNERS]
-  .map(p=>`<div class="item"><img class="logo" src="assets/partners/${p.file}" alt="${p.name}"></div>`).join('');
+  .map(p=>`<div class="item"><img class="logo" src="assets/partners/${p.file}" alt="${p.name}" loading="lazy" decoding="async"></div>`).join('');
 
 /* partners smooth speed control */
 (function(){
@@ -1152,7 +1155,7 @@ function render(){
   });
 
   document.getElementById('boardFoot').innerHTML =
-    s.foot.map(f=>`<div>${f}</div>`).join('') +
+    s.foot.map((f,i)=>`<div class="${i===0?'board-foot-rank':'board-foot-next'}">${f}</div>`).join('') +
     `<div class="btns">
       <button class="btn" onclick="jumpToMyRow()">Jump to my row</button></div>`;
 }
