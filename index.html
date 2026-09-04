@@ -124,20 +124,31 @@ html::-webkit-scrollbar{display:none}
 .nugget{position:absolute;bottom:-10px;z-index:3;width:clamp(200px,24vw,340px);height:auto;
   pointer-events:none}
 .gold-l{left:-20px;transform-origin:bottom left;
-  animation:gold-in 1.5s cubic-bezier(.16,.9,.3,1) .35s both, float-l 8s ease-in-out 1.9s infinite}
+  animation:gold-enter-l 1.6s cubic-bezier(.22,.82,.2,1) .15s both,
+            gold-float-l 9s ease-in-out 1.95s infinite}
 .gold-r{right:-20px;transform-origin:bottom right;
-  animation:gold-in 1.5s cubic-bezier(.16,.9,.3,1) .5s both, float-r 9s ease-in-out 2.1s infinite}
-@keyframes gold-in{
-  from{opacity:0;transform:translateY(28px) scale(.93)}
-  to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes float-l{
-  0%,100%{transform:translateY(0) rotate(0deg)}
-  40%{transform:translateY(-10px) rotate(-1.4deg)}
-  70%{transform:translateY(-4px) rotate(.4deg)}}
-@keyframes float-r{
-  0%,100%{transform:translateY(0) rotate(0deg)}
-  30%{transform:translateY(-5px) rotate(.6deg)}
-  62%{transform:translateY(-12px) rotate(-.9deg)}}
+  animation:gold-enter-r 1.6s cubic-bezier(.22,.82,.2,1) .4s both,
+            gold-float-r 11s ease-in-out 2.2s infinite}
+/* entrance: bars rise from vault floor using individual transform properties
+   (translate/rotate are separate from applyGold's transform shorthand — they compose, not conflict) */
+@keyframes gold-enter-l{
+  0%   {translate:-28px 95px;opacity:0}
+  52%  {opacity:1}
+  80%  {translate:4px -7px}
+  100% {translate:0 0;opacity:1}}
+@keyframes gold-enter-r{
+  0%   {translate:28px 95px;opacity:0}
+  52%  {opacity:1}
+  80%  {translate:-4px -7px}
+  100% {translate:0 0;opacity:1}}
+@keyframes gold-float-l{
+  0%,100%{translate:0 0}
+  38%    {translate:0 -15px;rotate:-1.4deg}
+  68%    {translate:0 -4px;rotate:.4deg}}
+@keyframes gold-float-r{
+  0%,100%{translate:0 0}
+  27%    {translate:0 -7px;rotate:.7deg}
+  60%    {translate:0 -20px;rotate:-1.1deg}}
 .spark{display:none}
 #dust{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:4}
 /* halftone engraving field — canvas-driven so dots respond to cursor */
@@ -615,7 +626,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .nugget{animation:none;transform:none}
+  .nugget{animation:none;transform:none;translate:none;rotate:none}
   .spark{animation:none;opacity:.45}
   .wordmark.animate span{animation:none;opacity:1;transform:none}
   .wordmark.gm-active::after{animation:none}
@@ -1933,10 +1944,10 @@ function initSettingsPanel(){
       if(!el) return;
       const origin=isLeft?'bottom left':'bottom right';
       if(isDesktop){
-        el.style.cssText=`${isLeft?'left':'right'}:${x}px;bottom:${y}px;transform:scale(${s/100}) rotate(${rot}deg);transform-origin:${origin};animation:none;filter:${filterStr};z-index:${z}`;
+        el.style.cssText=`${isLeft?'left':'right'}:${x}px;bottom:${y}px;transform:scale(${s/100}) rotate(${rot}deg);transform-origin:${origin};filter:${filterStr};z-index:${z}`;
       } else {
         el.style.left=el.style.right=el.style.bottom='';
-        el.style.animation='none';
+        el.style.animation='';
         el.style.transform=`scale(${s/100}) rotate(${rot}deg)`;
         el.style.transformOrigin=origin;
         el.style.filter=filterStr;
