@@ -184,7 +184,7 @@ html::-webkit-scrollbar{display:none}
     0.1062em 0.1569em 0 rgb(246,230,188),
     0.1106em 0.1635em 0 rgb(247,232,193),
     0.1150em 0.1700em 0 rgb(248,234,199)}
-.wordmark span{display:inline-block;transform:translateY(0);opacity:1}
+.wordmark span{display:inline-block;position:relative;transform:translateY(0);opacity:1}
 /* gm-active: gradient per-span with zoomed backgroundSize so each char shows the bright core zone */
 .wordmark.gm-active span{-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
 /* glint sweep: ::after overlay with mix-blend-mode, only when metallic gradient active */
@@ -1807,12 +1807,26 @@ function initSettingsPanel(){
     parts.push(...buildBottomBounce(), ...buildContactShadow());
     return parts.join(',');
   }
+  // update letter z-order so the shadow of each letter doesn't paint over the face of its neighbour
+  let _prevZSign=null;
+  function updateWmZOrder(){
+    const sign=_ltx>0.08?1:(_ltx<-0.08?-1:_prevZSign||0);
+    if(sign===_prevZSign) return;
+    _prevZSign=sign;
+    const reversed=sign>0; // cursor right → shadow goes left → left letters on top
+    wm.querySelectorAll('b').forEach(b=>{
+      const spans=[...b.querySelectorAll('span')];
+      const n=spans.length;
+      spans.forEach((s,i)=>{ s.style.zIndex=reversed?(n-i):(i+1); });
+    });
+  }
   // smooth shadow update loop
   (function shadowLoop(){
     const dx=_ltTx-_ltx, dy=_ltTy-_lty;
     if(Math.abs(dx)>.0003||Math.abs(dy)>.0003){
       _ltx+=dx*.09; _lty+=dy*.09;
       wm.style.textShadow=buildShadow();
+      updateWmZOrder();
     }
     requestAnimationFrame(shadowLoop);
   })();
@@ -1890,6 +1904,7 @@ function initSettingsPanel(){
     wm.style.transform=window.innerWidth>=900?`scaleX(${S.wmSx/100})`:'scaleX(1)';
     wm.style.transformOrigin='center center';
     applyNoise();
+    if(typeof updateWmZOrder==='function') updateWmZOrder();
   }
 
   let _pgCanvas=null;
