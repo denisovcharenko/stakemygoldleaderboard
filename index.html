@@ -572,7 +572,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
   th.hide-sm,td.hide-sm{display:none}
   .refer .link{margin-left:0;width:100%}
   .hero{padding:80px 0 120px}
-  .nugget{width:clamp(130px,18vw,200px)}
+  .nugget{width:clamp(150px,20vw,220px)}
   .spark{bottom:72px;width:120px;height:120px}
 }
 /* ── Mobile (≤640px) ───────────────────────────────────────── */
@@ -581,7 +581,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 42px;font-size:13px;color
   .seasonbar .wrap{padding:0 18px}
   .hero{padding:60px 0 56px}
   .pill{max-width:calc(100vw - 36px);overflow:hidden}
-  .nugget{width:clamp(80px,22vw,120px)}
+  .nugget{width:clamp(110px,28vw,150px)}
   .spark{bottom:44px;width:96px;height:96px}
   .tagline{font-size:14px;max-width:28ch;margin-left:auto;margin-right:auto}
   .stats{grid-template-columns:repeat(2,1fr)}
@@ -731,6 +731,24 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
 
 <div class="partners" aria-label="Partners"><div class="track" id="ptrack"></div></div>
 
+<svg id="goldSvgDefs" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none;overflow:visible">
+  <defs>
+    <filter id="goldFx" primitiveUnits="objectBoundingBox" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+      <feGaussianBlur id="pgBlurNode" in="SourceGraphic" stdDeviation="0" result="blr"/>
+      <feImage id="pgMaskNode" href="" x="0" y="0" width="1" height="1" preserveAspectRatio="none" result="mask"/>
+      <feComposite in="blr" in2="mask" operator="in" result="maskedBlr"/>
+      <feFlood flood-color="white" flood-opacity="1" result="fw"/>
+      <feComposite in="fw" in2="mask" operator="arithmetic" k1="0" k2="1" k3="-1" k4="0" result="invMask"/>
+      <feComposite in="SourceGraphic" in2="invMask" operator="in" result="maskedOrig"/>
+      <feMerge result="pgOut"><feMergeNode in="maskedOrig"/><feMergeNode in="maskedBlr"/></feMerge>
+      <feTurbulence type="fractalNoise" baseFrequency="60 60" numOctaves="3" stitchTiles="stitch" result="rawNoise"/>
+      <feColorMatrix id="noiseAlpha" type="matrix" values="0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.6  0 0 0 0 0" in="rawNoise" result="tinted"/>
+      <feBlend in="pgOut" in2="tinted" mode="soft-light" result="withNoise"/>
+      <feComposite in="withNoise" in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+</svg>
+
 <section class="hero">
   <div class="wm-cursor-glow" aria-hidden="true"></div>
   <canvas class="halftone" id="htCanvas" aria-hidden="true"></canvas>
@@ -757,7 +775,7 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
         <button class="season" role="tab" aria-selected="false" data-state="ended" data-season="runner">
           <span class="dot"></span>SMG Run a Reserve</button>
         <button class="season" role="tab" aria-selected="true" data-state="live" data-season="epoch">
-          <span class="dot"></span>Gold Carat</button>
+          <span class="dot"></span>Gold Karat</button>
       </div>
       <div class="statustag" id="statustag"><i></i><span>Live</span></div>
       <div class="bh-sep"></div>
@@ -894,7 +912,7 @@ const PARTNERS=[
 /* xp: [all-time, 30d, 7d] */
 const SEASONS={
   epoch:{
-    name:'GOLD CARAT', state:'live', prize:'Epoch One',
+    name:'GOLD KARAT', state:'live', prize:'Epoch One',
     stats:[['Participants','203','+16 this week'],['XP earned','214.6K','since 12 Aug'],
            ['Active quests','6','3 rotate weekly'],['Your rank','#8','Silver']],
     foot:['Your rank: <b>#8</b> of 203 · <b>Silver</b>','Next tier: <b>Gold</b> at 12,000 XP'],
@@ -1626,7 +1644,8 @@ function initSettingsPanel(){
   const goldR  = document.querySelector('.gold-r');
 
   const DEFAULTS = {
-    glX:-109, glY:311, glS:91, grX:-115, grY:-3, grS:92, goldBlur:1,
+    glX:-109, glY:311, glS:91, glRot:0, grX:-115, grY:-3, grS:92, grRot:0,
+    goldPgBlur:0, goldPgBlurAngle:180, goldPgBlurStart:20, goldNoise:0,
     wmFace:'#dcad56',wmFaceOp:100,
     wmNear:'#eabc66',wmNearOp:100,
     wmFar:'#FFF8D6', wmFarOp:59,
@@ -1873,9 +1892,45 @@ function initSettingsPanel(){
     applyNoise();
   }
 
+  let _pgCanvas=null;
+  function buildPgMaskURI(){
+    if(!_pgCanvas) _pgCanvas=Object.assign(document.createElement('canvas'),{width:64,height:64});
+    const ctx=_pgCanvas.getContext('2d');
+    ctx.clearRect(0,0,64,64);
+    const rad=S.goldPgBlurAngle*Math.PI/180;
+    const x2=(0.5+0.5*Math.sin(rad))*64;
+    const y2=(0.5-0.5*Math.cos(rad))*64;
+    const g=ctx.createLinearGradient(64-x2,64-y2,x2,y2);
+    g.addColorStop(Math.min(S.goldPgBlurStart/100,0.99),'rgba(255,255,255,0)');
+    g.addColorStop(1,'rgba(255,255,255,1)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,64,64);
+    return _pgCanvas.toDataURL();
+  }
   function applyGold(){
-    if(goldL) goldL.style.cssText=`left:${S.glX}px;bottom:${S.glY}px;transform:scale(${S.glS/100});transform-origin:bottom left;animation:none;filter:blur(${S.goldBlur}px)`;
-    if(goldR) goldR.style.cssText=`right:${S.grX}px;bottom:${S.grY}px;transform:scale(${S.grS/100});transform-origin:bottom right;animation:none;filter:blur(${S.goldBlur}px)`;
+    const isDesktop=window.innerWidth>=900;
+    const pgBlurNode=document.getElementById('pgBlurNode');
+    const pgMaskNode=document.getElementById('pgMaskNode');
+    const noiseAlphaEl=document.getElementById('noiseAlpha');
+    if(pgBlurNode) pgBlurNode.setAttribute('stdDeviation',(S.goldPgBlur/100*0.2).toFixed(4));
+    if(pgMaskNode) pgMaskNode.setAttribute('href',S.goldPgBlur>0?buildPgMaskURI():'');
+    if(noiseAlphaEl) noiseAlphaEl.setAttribute('values',
+      `0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.6  0 0 0 ${(S.goldNoise/100*0.65).toFixed(3)} 0`);
+    const filterStr=(S.goldPgBlur>0||S.goldNoise>0)?'url(#goldFx)':'';
+    function apply(el,x,y,s,rot,isLeft){
+      if(!el) return;
+      const origin=isLeft?'bottom left':'bottom right';
+      if(isDesktop){
+        el.style.cssText=`${isLeft?'left':'right'}:${x}px;bottom:${y}px;transform:scale(${s/100}) rotate(${rot}deg);transform-origin:${origin};animation:none;filter:${filterStr}`;
+      } else {
+        el.style.left=el.style.right=el.style.bottom='';
+        el.style.animation='none';
+        el.style.transform=`scale(${s/100}) rotate(${rot}deg)`;
+        el.style.transformOrigin=origin;
+        el.style.filter=filterStr;
+      }
+    }
+    apply(goldL,S.glX,S.glY,S.glS,S.glRot,true);
+    apply(goldR,S.grX,S.grY,S.grS,S.grRot,false);
   }
 
   /* wire range slider */
@@ -1886,7 +1941,7 @@ function initSettingsPanel(){
     el.addEventListener('input',()=>{
       S[key]=+el.value;
       vl.textContent=(fmt?fmt(+el.value):el.value)+suffix;
-      if(['glX','glY','glS','grX','grY','grS','goldBlur'].includes(key)) applyGold();
+      if(['glX','glY','glS','glRot','grX','grY','grS','grRot','goldPgBlur','goldPgBlurAngle','goldPgBlurStart','goldNoise'].includes(key)) applyGold();
       else applyWordmark();
     });
   }
@@ -1920,9 +1975,12 @@ function initSettingsPanel(){
   }
 
   /* wire all controls */
-  wire('spGlX','glX','spGlXV','px'); wire('spGlY','glY','spGlYV','px'); wire('spGlS','glS','spGlSV','%');
-  wire('spGrX','grX','spGrXV','px'); wire('spGrY','grY','spGrYV','px'); wire('spGrS','grS','spGrSV','%');
-  wire('spGoldBlur','goldBlur','spGoldBlurV','px');
+  wire('spGlX','glX','spGlXV','px'); wire('spGlY','glY','spGlYV','px'); wire('spGlS','glS','spGlSV','%'); wire('spGlRot','glRot','spGlRotV','°');
+  wire('spGrX','grX','spGrXV','px'); wire('spGrY','grY','spGrYV','px'); wire('spGrS','grS','spGrSV','%'); wire('spGrRot','grRot','spGrRotV','°');
+  wire('spGoldPgBlur','goldPgBlur','spGoldPgBlurV','');
+  wire('spGoldPgBlurAngle','goldPgBlurAngle','spGoldPgBlurAngleV','°');
+  wire('spGoldPgBlurStart','goldPgBlurStart','spGoldPgBlurStartV','%');
+  wire('spGoldNoise','goldNoise','spGoldNoiseV','%');
   wire('spWmSize','wmSize','spWmSizeV','px');
   wire('spWmLs','wmLs','spWmLsV','em',v=>(v/1000).toFixed(3));
   wire('spWmSx','wmSx','spWmSxV','%');
@@ -1951,17 +2009,22 @@ function initSettingsPanel(){
 
   /* sync all inputs → S */
   function syncInputs(){
-    const idKeyMap = {spGlX:'glX',spGlY:'glY',spGlS:'glS',spGrX:'grX',spGrY:'grY',spGrS:'grS',spGoldBlur:'goldBlur',spWmSize:'wmSize',spWmLs:'wmLs',spWmSx:'wmSx'};
+    const idKeyMap = {spGlX:'glX',spGlY:'glY',spGlS:'glS',spGlRot:'glRot',spGrX:'grX',spGrY:'grY',spGrS:'grS',spGrRot:'grRot',spGoldPgBlur:'goldPgBlur',spGoldPgBlurAngle:'goldPgBlurAngle',spGoldPgBlurStart:'goldPgBlurStart',spGoldNoise:'goldNoise',spWmSize:'wmSize',spWmLs:'wmLs',spWmSx:'wmSx'};
     Object.entries(idKeyMap).forEach(([id,key])=>{
       const el=document.getElementById(id); if(el) el.value=S[key];
     });
     document.getElementById('spGlXV').textContent=S.glX+'px';
     document.getElementById('spGlYV').textContent=S.glY+'px';
     document.getElementById('spGlSV').textContent=S.glS+'%';
+    document.getElementById('spGlRotV').textContent=S.glRot+'°';
     document.getElementById('spGrXV').textContent=S.grX+'px';
     document.getElementById('spGrYV').textContent=S.grY+'px';
     document.getElementById('spGrSV').textContent=S.grS+'%';
-    document.getElementById('spGoldBlurV').textContent=S.goldBlur+'px';
+    document.getElementById('spGrRotV').textContent=S.grRot+'°';
+    document.getElementById('spGoldPgBlurV').textContent=S.goldPgBlur;
+    document.getElementById('spGoldPgBlurAngleV').textContent=S.goldPgBlurAngle+'°';
+    document.getElementById('spGoldPgBlurStartV').textContent=S.goldPgBlurStart+'%';
+    document.getElementById('spGoldNoiseV').textContent=S.goldNoise+'%';
     document.getElementById('spWmSizeV').textContent=S.wmSize+'px';
     document.getElementById('spWmLsV').textContent=(S.wmLs/1000).toFixed(3)+'em';
     document.getElementById('spWmSxV').textContent=S.wmSx+'%';
@@ -1997,7 +2060,7 @@ function initSettingsPanel(){
   /* copy */
   document.getElementById('spCopy').addEventListener('click',function(){
     const out=JSON.stringify({
-      gold:{leftX:S.glX,leftY:S.glY,leftScale:S.glS,rightX:S.grX,rightY:S.grY,rightScale:S.grS,blur:S.goldBlur},
+      gold:{leftX:S.glX,leftY:S.glY,leftScale:S.glS,leftRot:S.glRot,rightX:S.grX,rightY:S.grY,rightScale:S.grS,rightRot:S.grRot,pgBlur:S.goldPgBlur,blurAngle:S.goldPgBlurAngle,blurStart:S.goldPgBlurStart,noise:S.goldNoise},
       text:{size:S.wmSize,letterSpacing:(S.wmLs/1000).toFixed(3)+'em',scaleX:S.wmSx+'%'},
       wordmark:{face:S.wmFace,faceOp:S.wmFaceOp,shadowNear:S.wmNear,nearOp:S.wmNearOp,shadowFar:S.wmFar,farOp:S.wmFarOp},
       goldMaterial:{metallic:S.gmMetallic,specular:S.gmSpecular,roughness:S.gmRoughness,highlight:S.gmHighlight,contrast:S.gmContrast,warmth:S.gmWarmth},
@@ -2017,7 +2080,7 @@ function initSettingsPanel(){
   let _rszT;
   window.addEventListener('resize',()=>{
     clearTimeout(_rszT);
-    _rszT=setTimeout(()=>{ applyWordmark(); },120);
+    _rszT=setTimeout(()=>{ applyGold(); applyWordmark(); },120);
   },{passive:true});
 
   /* gold dust sliders */
@@ -2183,6 +2246,10 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
         <label>Scale <span id="spGlSV">91%</span></label>
         <input type="range" id="spGlS" min="20" max="250" value="91">
       </div>
+      <div class="sp-row">
+        <label>Rotate <span id="spGlRotV">0°</span></label>
+        <input type="range" id="spGlRot" min="-180" max="180" value="0">
+      </div>
     </div>
 
     <div class="sp-section">
@@ -2199,13 +2266,29 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
         <label>Scale <span id="spGrSV">92%</span></label>
         <input type="range" id="spGrS" min="20" max="250" value="92">
       </div>
+      <div class="sp-row">
+        <label>Rotate <span id="spGrRotV">0°</span></label>
+        <input type="range" id="spGrRot" min="-180" max="180" value="0">
+      </div>
     </div>
 
     <div class="sp-section">
-      <div class="sp-section-title">Gold Blur</div>
+      <div class="sp-section-title">Gold Effects</div>
       <div class="sp-row">
-        <label>Blur <span id="spGoldBlurV">1px</span></label>
-        <input type="range" id="spGoldBlur" min="0" max="40" value="1">
+        <label>Prog. Blur <span id="spGoldPgBlurV">0</span></label>
+        <input type="range" id="spGoldPgBlur" min="0" max="100" value="0">
+      </div>
+      <div class="sp-row">
+        <label>Blur Angle <span id="spGoldPgBlurAngleV">180°</span></label>
+        <input type="range" id="spGoldPgBlurAngle" min="0" max="360" value="180">
+      </div>
+      <div class="sp-row">
+        <label>Blur From <span id="spGoldPgBlurStartV">20%</span></label>
+        <input type="range" id="spGoldPgBlurStart" min="0" max="95" value="20">
+      </div>
+      <div class="sp-row">
+        <label>Noise <span id="spGoldNoiseV">0%</span></label>
+        <input type="range" id="spGoldNoise" min="0" max="100" value="0">
       </div>
     </div>
 
