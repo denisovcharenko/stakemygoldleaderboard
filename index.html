@@ -1793,7 +1793,7 @@ function initSettingsPanel(){
   }
   function buildShadow(){
     // shadow direction = opposite of light source (cursor)
-    const xBase = -(Math.max(-0.15, _ltx)) * 0.009;
+    const xBase = -_ltx * 0.009;
     const yBase = -_lty * 0.013;
     const steps=26;
     const extMult=S.dpExtrusion/35;
@@ -1808,16 +1808,14 @@ function initSettingsPanel(){
     return parts.join(',');
   }
   // update letter z-order so the shadow of each letter doesn't paint over the face of its neighbour
-  let _prevZSign=null;
   function updateWmZOrder(){
-    const sign=_ltx>0.08?1:(_ltx<-0.08?-1:_prevZSign||0);
-    if(sign===_prevZSign) return;
-    _prevZSign=sign;
-    const reversed=sign>0; // cursor right → shadow goes left → left letters on top
+    // cursor right → _ltx > 0 → shadow goes left → left letters must be on top (index 0 = highest)
+    // cursor left  → _ltx < 0 → shadow goes right → right letters must be on top (index n-1 = highest)
+    const goesLeft = _ltx > 0;
     wm.querySelectorAll('b').forEach(b=>{
       const spans=[...b.querySelectorAll('span')];
       const n=spans.length;
-      spans.forEach((s,i)=>{ s.style.zIndex=reversed?(n-i):(i+1); });
+      spans.forEach((s,i)=>{ s.style.zIndex = goesLeft ? (n - i) : (i + 1); });
     });
   }
   // smooth shadow update loop
