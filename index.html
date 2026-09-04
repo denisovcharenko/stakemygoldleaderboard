@@ -108,7 +108,7 @@ html::-webkit-scrollbar{display:none}
 .season:focus-visible{outline:2px solid var(--gold-lt);outline-offset:2px}
 
 /* ---------- partners ---------- */
-.partners{background:var(--cream);overflow:hidden;
+.partners{position:relative;z-index:10;background:var(--cream);overflow:hidden;
   border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .partners .track{display:flex;gap:64px;align-items:center;padding:14px 0;
   width:max-content;will-change:transform}
@@ -1644,7 +1644,7 @@ function initSettingsPanel(){
   const goldR  = document.querySelector('.gold-r');
 
   const DEFAULTS = {
-    glX:-76, glY:162, glS:153, glRot:-26, grX:-300, grY:46, grS:154, grRot:-20,
+    glX:-76, glY:162, glS:153, glRot:-26, glZ:2, grX:-300, grY:46, grS:154, grRot:-20, grZ:3,
     goldPgBlur:2, goldPgBlurAngle:212, goldPgBlurStart:31, goldNoise:36,
     wmFace:'#dcad56',wmFaceOp:100,
     wmNear:'#eabc66',wmNearOp:100,
@@ -1793,7 +1793,7 @@ function initSettingsPanel(){
   }
   function buildShadow(){
     // shadow direction = opposite of light source (cursor)
-    const xBase = -_ltx * 0.009;
+    const xBase = -(Math.max(-0.15, _ltx)) * 0.009;
     const yBase = -_lty * 0.013;
     const steps=26;
     const extMult=S.dpExtrusion/35;
@@ -1916,21 +1916,22 @@ function initSettingsPanel(){
     if(noiseAlphaEl) noiseAlphaEl.setAttribute('values',
       `0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.6  0 0 0 ${(S.goldNoise/100*0.65).toFixed(3)} 0`);
     const filterStr=(S.goldPgBlur>0||S.goldNoise>0)?'url(#goldFx)':'';
-    function apply(el,x,y,s,rot,isLeft){
+    function apply(el,x,y,s,rot,isLeft,z){
       if(!el) return;
       const origin=isLeft?'bottom left':'bottom right';
       if(isDesktop){
-        el.style.cssText=`${isLeft?'left':'right'}:${x}px;bottom:${y}px;transform:scale(${s/100}) rotate(${rot}deg);transform-origin:${origin};animation:none;filter:${filterStr}`;
+        el.style.cssText=`${isLeft?'left':'right'}:${x}px;bottom:${y}px;transform:scale(${s/100}) rotate(${rot}deg);transform-origin:${origin};animation:none;filter:${filterStr};z-index:${z}`;
       } else {
         el.style.left=el.style.right=el.style.bottom='';
         el.style.animation='none';
         el.style.transform=`scale(${s/100}) rotate(${rot}deg)`;
         el.style.transformOrigin=origin;
         el.style.filter=filterStr;
+        el.style.zIndex=z;
       }
     }
-    apply(goldL,S.glX,S.glY,S.glS,S.glRot,true);
-    apply(goldR,S.grX,S.grY,S.grS,S.grRot,false);
+    apply(goldL,S.glX,S.glY,S.glS,S.glRot,true,S.glZ);
+    apply(goldR,S.grX,S.grY,S.grS,S.grRot,false,S.grZ);
   }
 
   /* wire range slider */
@@ -1941,7 +1942,7 @@ function initSettingsPanel(){
     el.addEventListener('input',()=>{
       S[key]=+el.value;
       vl.textContent=(fmt?fmt(+el.value):el.value)+suffix;
-      if(['glX','glY','glS','glRot','grX','grY','grS','grRot','goldPgBlur','goldPgBlurAngle','goldPgBlurStart','goldNoise'].includes(key)) applyGold();
+      if(['glX','glY','glS','glRot','glZ','grX','grY','grS','grRot','grZ','goldPgBlur','goldPgBlurAngle','goldPgBlurStart','goldNoise'].includes(key)) applyGold();
       else applyWordmark();
     });
   }
@@ -1975,8 +1976,8 @@ function initSettingsPanel(){
   }
 
   /* wire all controls */
-  wire('spGlX','glX','spGlXV','px'); wire('spGlY','glY','spGlYV','px'); wire('spGlS','glS','spGlSV','%'); wire('spGlRot','glRot','spGlRotV','°');
-  wire('spGrX','grX','spGrXV','px'); wire('spGrY','grY','spGrYV','px'); wire('spGrS','grS','spGrSV','%'); wire('spGrRot','grRot','spGrRotV','°');
+  wire('spGlX','glX','spGlXV','px'); wire('spGlY','glY','spGlYV','px'); wire('spGlS','glS','spGlSV','%'); wire('spGlRot','glRot','spGlRotV','°'); wire('spGlZ','glZ','spGlZV','');
+  wire('spGrX','grX','spGrXV','px'); wire('spGrY','grY','spGrYV','px'); wire('spGrS','grS','spGrSV','%'); wire('spGrRot','grRot','spGrRotV','°'); wire('spGrZ','grZ','spGrZV','');
   wire('spGoldPgBlur','goldPgBlur','spGoldPgBlurV','');
   wire('spGoldPgBlurAngle','goldPgBlurAngle','spGoldPgBlurAngleV','°');
   wire('spGoldPgBlurStart','goldPgBlurStart','spGoldPgBlurStartV','%');
@@ -2009,7 +2010,7 @@ function initSettingsPanel(){
 
   /* sync all inputs → S */
   function syncInputs(){
-    const idKeyMap = {spGlX:'glX',spGlY:'glY',spGlS:'glS',spGlRot:'glRot',spGrX:'grX',spGrY:'grY',spGrS:'grS',spGrRot:'grRot',spGoldPgBlur:'goldPgBlur',spGoldPgBlurAngle:'goldPgBlurAngle',spGoldPgBlurStart:'goldPgBlurStart',spGoldNoise:'goldNoise',spWmSize:'wmSize',spWmLs:'wmLs',spWmSx:'wmSx'};
+    const idKeyMap = {spGlX:'glX',spGlY:'glY',spGlS:'glS',spGlRot:'glRot',spGlZ:'glZ',spGrX:'grX',spGrY:'grY',spGrS:'grS',spGrRot:'grRot',spGrZ:'grZ',spGoldPgBlur:'goldPgBlur',spGoldPgBlurAngle:'goldPgBlurAngle',spGoldPgBlurStart:'goldPgBlurStart',spGoldNoise:'goldNoise',spWmSize:'wmSize',spWmLs:'wmLs',spWmSx:'wmSx'};
     Object.entries(idKeyMap).forEach(([id,key])=>{
       const el=document.getElementById(id); if(el) el.value=S[key];
     });
@@ -2017,10 +2018,12 @@ function initSettingsPanel(){
     document.getElementById('spGlYV').textContent=S.glY+'px';
     document.getElementById('spGlSV').textContent=S.glS+'%';
     document.getElementById('spGlRotV').textContent=S.glRot+'°';
+    document.getElementById('spGlZV').textContent=S.glZ;
     document.getElementById('spGrXV').textContent=S.grX+'px';
     document.getElementById('spGrYV').textContent=S.grY+'px';
     document.getElementById('spGrSV').textContent=S.grS+'%';
     document.getElementById('spGrRotV').textContent=S.grRot+'°';
+    document.getElementById('spGrZV').textContent=S.grZ;
     document.getElementById('spGoldPgBlurV').textContent=S.goldPgBlur;
     document.getElementById('spGoldPgBlurAngleV').textContent=S.goldPgBlurAngle+'°';
     document.getElementById('spGoldPgBlurStartV').textContent=S.goldPgBlurStart+'%';
@@ -2250,6 +2253,10 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
         <label>Rotate <span id="spGlRotV">-26°</span></label>
         <input type="range" id="spGlRot" min="-180" max="180" value="-26">
       </div>
+      <div class="sp-row">
+        <label>Layer (z-index) <span id="spGlZV">2</span></label>
+        <input type="range" id="spGlZ" min="0" max="10" step="1" value="2">
+      </div>
     </div>
 
     <div class="sp-section">
@@ -2269,6 +2276,10 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
       <div class="sp-row">
         <label>Rotate <span id="spGrRotV">-20°</span></label>
         <input type="range" id="spGrRot" min="-180" max="180" value="-20">
+      </div>
+      <div class="sp-row">
+        <label>Layer (z-index) <span id="spGrZV">3</span></label>
+        <input type="range" id="spGrZ" min="0" max="10" step="1" value="3">
       </div>
     </div>
 
