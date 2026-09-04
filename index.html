@@ -1644,8 +1644,8 @@ function initSettingsPanel(){
   const goldR  = document.querySelector('.gold-r');
 
   const DEFAULTS = {
-    glX:-109, glY:311, glS:91, glRot:0, grX:-115, grY:-3, grS:92, grRot:0,
-    goldPgBlur:0, goldPgBlurAngle:180, goldPgBlurStart:20, goldNoise:0,
+    glX:-76, glY:162, glS:153, glRot:-26, grX:-300, grY:72, grS:154, grRot:-20,
+    goldPgBlur:2, goldPgBlurAngle:212, goldPgBlurStart:49, goldNoise:45,
     wmFace:'#dcad56',wmFaceOp:100,
     wmNear:'#eabc66',wmNearOp:100,
     wmFar:'#FFF8D6', wmFarOp:59,
@@ -2235,60 +2235,60 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
     <div class="sp-section">
       <div class="sp-section-title">Left Gold</div>
       <div class="sp-row">
-        <label>Horizontal <span id="spGlXV">-109px</span></label>
-        <input type="range" id="spGlX" min="-300" max="200" value="-109">
+        <label>Horizontal <span id="spGlXV">-76px</span></label>
+        <input type="range" id="spGlX" min="-300" max="200" value="-76">
       </div>
       <div class="sp-row">
-        <label>Vertical (bottom) <span id="spGlYV">311px</span></label>
-        <input type="range" id="spGlY" min="-200" max="500" value="311">
+        <label>Vertical (bottom) <span id="spGlYV">162px</span></label>
+        <input type="range" id="spGlY" min="-200" max="500" value="162">
       </div>
       <div class="sp-row">
-        <label>Scale <span id="spGlSV">91%</span></label>
-        <input type="range" id="spGlS" min="20" max="250" value="91">
+        <label>Scale <span id="spGlSV">153%</span></label>
+        <input type="range" id="spGlS" min="20" max="250" value="153">
       </div>
       <div class="sp-row">
-        <label>Rotate <span id="spGlRotV">0°</span></label>
-        <input type="range" id="spGlRot" min="-180" max="180" value="0">
+        <label>Rotate <span id="spGlRotV">-26°</span></label>
+        <input type="range" id="spGlRot" min="-180" max="180" value="-26">
       </div>
     </div>
 
     <div class="sp-section">
       <div class="sp-section-title">Right Gold</div>
       <div class="sp-row">
-        <label>Horizontal <span id="spGrXV">-115px</span></label>
-        <input type="range" id="spGrX" min="-300" max="200" value="-115">
+        <label>Horizontal <span id="spGrXV">-300px</span></label>
+        <input type="range" id="spGrX" min="-300" max="200" value="-300">
       </div>
       <div class="sp-row">
-        <label>Vertical (bottom) <span id="spGrYV">-3px</span></label>
-        <input type="range" id="spGrY" min="-200" max="500" value="-3">
+        <label>Vertical (bottom) <span id="spGrYV">72px</span></label>
+        <input type="range" id="spGrY" min="-200" max="500" value="72">
       </div>
       <div class="sp-row">
-        <label>Scale <span id="spGrSV">92%</span></label>
-        <input type="range" id="spGrS" min="20" max="250" value="92">
+        <label>Scale <span id="spGrSV">154%</span></label>
+        <input type="range" id="spGrS" min="20" max="250" value="154">
       </div>
       <div class="sp-row">
-        <label>Rotate <span id="spGrRotV">0°</span></label>
-        <input type="range" id="spGrRot" min="-180" max="180" value="0">
+        <label>Rotate <span id="spGrRotV">-20°</span></label>
+        <input type="range" id="spGrRot" min="-180" max="180" value="-20">
       </div>
     </div>
 
     <div class="sp-section">
       <div class="sp-section-title">Gold Effects</div>
       <div class="sp-row">
-        <label>Prog. Blur <span id="spGoldPgBlurV">0</span></label>
-        <input type="range" id="spGoldPgBlur" min="0" max="100" value="0">
+        <label>Prog. Blur <span id="spGoldPgBlurV">2</span></label>
+        <input type="range" id="spGoldPgBlur" min="0" max="100" value="2">
       </div>
       <div class="sp-row">
-        <label>Blur Angle <span id="spGoldPgBlurAngleV">180°</span></label>
-        <input type="range" id="spGoldPgBlurAngle" min="0" max="360" value="180">
+        <label>Blur Angle <span id="spGoldPgBlurAngleV">212°</span></label>
+        <input type="range" id="spGoldPgBlurAngle" min="0" max="360" value="212">
       </div>
       <div class="sp-row">
-        <label>Blur From <span id="spGoldPgBlurStartV">20%</span></label>
-        <input type="range" id="spGoldPgBlurStart" min="0" max="95" value="20">
+        <label>Blur From <span id="spGoldPgBlurStartV">49%</span></label>
+        <input type="range" id="spGoldPgBlurStart" min="0" max="95" value="49">
       </div>
       <div class="sp-row">
-        <label>Noise <span id="spGoldNoiseV">0%</span></label>
-        <input type="range" id="spGoldNoise" min="0" max="100" value="0">
+        <label>Noise <span id="spGoldNoiseV">45%</span></label>
+        <input type="range" id="spGoldNoise" min="0" max="100" value="45">
       </div>
     </div>
 
