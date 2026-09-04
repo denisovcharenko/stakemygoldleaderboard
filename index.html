@@ -118,7 +118,7 @@ html::-webkit-scrollbar{display:none}
 .partners .logo:hover{filter:grayscale(0);opacity:1}
 
 /* ---------- hero ---------- */
-.hero{position:relative;padding:108px 0 70px;text-align:center;overflow:hidden}
+.hero{position:relative;padding:108px 0 70px;text-align:center;overflow-x:clip;overflow-y:visible}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:160px;
   background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:1}
 .nugget{position:absolute;bottom:-10px;z-index:3;width:clamp(200px,24vw,340px);height:auto;
@@ -2240,7 +2240,7 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
       </div>
       <div class="sp-row">
         <label>Vertical (bottom) <span id="spGlYV">162px</span></label>
-        <input type="range" id="spGlY" min="-200" max="500" value="162">
+        <input type="range" id="spGlY" min="-400" max="500" value="162">
       </div>
       <div class="sp-row">
         <label>Scale <span id="spGlSV">153%</span></label>
@@ -2260,7 +2260,7 @@ document.getElementById('backToBoard').addEventListener('click',()=>{
       </div>
       <div class="sp-row">
         <label>Vertical (bottom) <span id="spGrYV">72px</span></label>
-        <input type="range" id="spGrY" min="-200" max="500" value="72">
+        <input type="range" id="spGrY" min="-400" max="500" value="72">
       </div>
       <div class="sp-row">
         <label>Scale <span id="spGrSV">154%</span></label>
