@@ -2044,6 +2044,7 @@ document.getElementById('ptrack').innerHTML=[...PARTNERS,...PARTNERS]
   let x=0, speed=SPEED_NORMAL, hovered=false;
   function getHalfW(){return track.scrollWidth/2;}
   function tick(){
+    if(document.body.dataset.page!=='home'){setTimeout(()=>requestAnimationFrame(tick),500);return;}
     speed+=(( hovered?SPEED_SLOW:SPEED_NORMAL)-speed)*0.05;
     x-=speed;
     if(Math.abs(x)>=getHalfW()) x=0;
@@ -2444,6 +2445,7 @@ window.__dust={count:1.45,speed:3,size:1,opacity:2.5,shimmer:1.58,_builders:[],
     return Math.min(1,.08+Math.pow(Math.max(cx,cy*1.15),1.95)*1.5);
   }
   function draw(t){
+    if(document.body.dataset.page!=='home'){setTimeout(()=>requestAnimationFrame(draw),500);return;}
     const D=window.__dust;
     x.clearRect(0,0,W,H);
     for(const p of parts){
@@ -2511,6 +2513,7 @@ window.__dust={count:1.45,speed:3,size:1,opacity:2.5,shimmer:1.58,_builders:[],
     W=r.width;H=r.height;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);build();
   }
   function draw(t){
+    if(document.body.dataset.page!=='home'){setTimeout(()=>requestAnimationFrame(draw),500);return;}
     const D=window.__dust;
     x.clearRect(0,0,W,H);
     for(const p of parts){
@@ -2566,6 +2569,7 @@ window.__dust={count:1.45,speed:3,size:1,opacity:2.5,shimmer:1.58,_builders:[],
   }
   function draw(){
     if(!W) return requestAnimationFrame(draw);
+    if(document.body.dataset.page!=='home'){setTimeout(()=>requestAnimationFrame(draw),500);return;}
     if(tx>-999){ cmx+=(tx-cmx)*LERP; cmy+=(ty-cmy)*LERP; }
     ctx.clearRect(0,0,W,H);
     const cols=Math.ceil(W/GRID)+1, rows=Math.ceil(H/GRID)+1;
@@ -2620,6 +2624,7 @@ window.__dust={count:1.45,speed:3,size:1,opacity:2.5,shimmer:1.58,_builders:[],
   });
   hero.addEventListener('mouseleave',()=>{tx=0;ty=0;});
   (function tick(){
+    if(document.body.dataset.page!=='home'){setTimeout(()=>requestAnimationFrame(tick),500);return;}
     cx+=(tx-cx)*.072; cy+=(ty-cy)*.072;
     glow.style.transform=`translate(${cx.toFixed(1)}px,${cy.toFixed(1)}px)`;
     requestAnimationFrame(tick);
@@ -2838,6 +2843,7 @@ function initSettingsPanel(){
   }
   // smooth shadow update loop
   (function shadowLoop(){
+    if(document.body.dataset.page!=='home'){setTimeout(()=>requestAnimationFrame(shadowLoop),500);return;}
     const dx=_ltTx-_ltx, dy=_ltTy-_lty;
     if(Math.abs(dx)>.0003||Math.abs(dy)>.0003){
       _ltx+=dx*.09; _lty+=dy*.09;
