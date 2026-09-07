@@ -27,7 +27,7 @@ typography:
   headline:
     fontFamily: "'ZalandoSans', sans-serif"
     fontSize: "33px"
-    fontWeight: 500
+    fontWeight: 600
     lineHeight: 1.15
     letterSpacing: "-0.025em"
   subheading:
@@ -123,11 +123,11 @@ StakeMyGold is a leaderboard where participation is a bet on future value — XP
 
 The surface layer — cream, paper, near-white — keeps the day-to-day experience warm and legible. Navy is reserved for command surfaces (the header, the referral block, the mobile nav). Gold appears exactly as often as it should: to mark live status, to highlight the user's own rank, to crown the podium leader. Its restraint is its power.
 
-Typography operates in three registers: Archivo Black for the wordmark alone (a stamp, not a label), Playfair Display for editorial weight (section headings, large stat numbers — these feel cast, not typed), and IBM Plex Mono for data precision (rank positions, step labels, stat axis labels — this is the ledger typeface). Figtree handles everything else: approachable, neutral, fast to scan.
+Typography operates in two registers with a deliberate weight strategy: ZalandoSans Variable carries everything from the wordmark stamp (800 weight) through section headings (600) to body copy (400) — one variable axis doing the work of three separate fonts. Times New Roman steps in only where numbers need to feel cast rather than printed: stat figures, XP totals, podium scores. IBM Plex Mono is the ledger register — rank positions, step labels, column headers. The system has no dedicated display face separate from the UI font; weight is the differentiator, not family.
 
 **Key Characteristics:**
 - Navy + warm gold as the only authority pairing — not gradient-washed, not glassy
-- Three-typeface system with strict role assignment: stamped / cast / measured / readable
+- Two-family system: ZalandoSans Variable spans 100–900 weight; Times New Roman handles editorial-weight numbers; IBM Plex Mono owns precision data
 - Gold used as certification, not wallpaper — scarcity maintained across every surface
 - Flat-by-default depth with state-responsive shadows (hover, elevation, focus)
 - Podium ranking inherits real metal semantics: gold / silver / bronze, not arbitrary hues
@@ -166,24 +166,25 @@ A treasury palette: deep authority, warm precious metal, cream warmth — and no
 
 ## Typography
 
-**Display Font:** Archivo Black (sans-serif fallback)
-**Serif/Data Font:** Playfair Display (Georgia, serif fallback)
+**Variable UI Font:** ZalandoSans Variable (system-ui, sans-serif fallback) — weights 100–900, normal and italic axes
+**Serif/Data Font:** Times New Roman (Times, serif fallback)
 **Label/Mono Font:** IBM Plex Mono (monospace fallback)
-**Body Font:** Figtree (system-ui, sans-serif fallback)
 
-**Character:** A deliberate four-voice system where every role is non-negotiable. Archivo Black stamps identity; Playfair Display casts weight on numbers and headings that need to feel solid; IBM Plex Mono reads data as a ledger; Figtree keeps the copy fast and undecorated. No font is interchangeable with another.
+**Character:** A deliberate two-family system where weight — not typeface — signals hierarchy. ZalandoSans at 800 stamps the wordmark with the same authority another project would reach for a dedicated display face; at 600 it headings; at 400 it flows as body copy. Times New Roman does one thing: makes numbers feel cast rather than typeset. IBM Plex Mono does one other thing: makes data feel measured. Nothing else is needed.
 
 ### Hierarchy
-- **Display** (Black, clamp(50px–132px), line-height 0.86, tracking -0.035em): The wordmark only. Never used for section headings or body labels.
-- **Headline** (Playfair Display 700, 33px, line-height 1.2): Section headings in the "How it Works" block. The serif lends editorial authority — a heading that feels written, not generated.
-- **Title / Stat** (Playfair Display 700, 36px, line-height 1.0, tracking -0.02em): Large data numbers in stat cards. These numbers feel cast in metal, not printed on a screen.
-- **Body** (Figtree 400, 15px, line-height 1.5): All copy, metadata, table content, navigation labels. Measure: 65–75ch on prose; no max-width on tabular data.
-- **Label** (IBM Plex Mono 500, 9.5–11px, tracking +0.1em, uppercase): Stat axis labels (dt), step numbers, rank positions, leaderboard column headers. The ledger voice — always uppercase, always measured.
+- **Display** (ZalandoSans 800, clamp(50px–132px), line-height 0.86, tracking -0.035em): The wordmark only. Weight 800 is the stamp; it does not appear at smaller sizes.
+- **Headline** (ZalandoSans 600, 33px, line-height 1.15, tracking -0.025em): Section headings ("How it Works"). The tight tracking at this weight reads with authority without needing a serif.
+- **Subheading** (ZalandoSans 500, 25px, line-height 1.1, tracking -0.02em): Referral block heading, squad detail headings. One weight step below Headline — present, not dominant.
+- **Card Heading** (ZalandoSans 600, 18px, line-height 1.25, tracking -0.02em): Step card h3, component section titles.
+- **Title / Stat** (Times New Roman 700, 36px stat / 26–38px podium XP, line-height 1.0, tracking -0.02em): All large data figures. The only context where the serif appears — these numbers feel issued, not displayed.
+- **Body** (ZalandoSans 400, 16px, line-height 1.55): All copy, metadata, table rows, navigation labels. Slightly anti-aliased (`-webkit-font-smoothing: antialiased`).
+- **Label** (IBM Plex Mono 500, 11px, tracking +0.08em, uppercase): Stat axis labels (`dt`), step sequence numbers, rank column, leaderboard column headers. The ledger voice — always uppercase, always measured.
 
 ### Named Rules
-**The Three-Register Rule.** Playfair for editorial weight. IBM Plex Mono for data precision. Figtree for everything readable. Archivo Black for the wordmark alone. Mixing these — using Mono for headings, or Playfair for body copy — breaks the register system.
+**The Weight-Is-Voice Rule.** ZalandoSans Variable carries display through body in one family — 800 for stamps, 600 for authority, 500 for presence, 400 for reading. Do not reach for a different typeface when more weight solves it. Only cross to Times New Roman for data figures, and to IBM Plex Mono for precision labels.
 
-**The Tracking Inversion Rule.** Display and title type tracks tightly (negative). Label type tracks openly (positive). Body type tracks neutrally. This inversion is structural: tight tracking = large and present; open tracking = small and precise.
+**The Tracking Inversion Rule.** Display and card headings track tightly (negative: -0.02em to -0.04em). Label type tracks openly (positive: +0.08em). Body type is neutral. Tight tracking = large and present; open tracking = small and precise. This inversion is structural — reversing it reads as a mistake, not a style choice.
 
 ## Layout
 
@@ -244,7 +245,7 @@ The hero wordmark uses `overflow:hidden` to animate letter entrance. The page it
 
 ### Chips / Selectors
 
-Pill-shaped (`999px`), 12.5px Figtree, `--muted` text by default. Active: `1.5px solid --navy`, `--ink` text, 600 weight. Used for season selectors in the board header and view-mode segmented controls. The width change on active state (1px → 1.5px border) is the selection signal.
+Pill-shaped (`999px`), 12px ZalandoSans, `--muted` text by default. Active: `1.5px solid --navy`, `--ink` text, 600 weight. Used for season selectors in the board header and view-mode segmented controls. The border-width change on selection (1px → 1.5px) is the selection signal — no color change needed.
 
 ### Cards / Containers
 
@@ -274,39 +275,39 @@ Pill-shaped (`999px`), 12.5px Figtree, `--muted` text by default. Active: `1.5px
 
 ### Navigation
 
-**Desktop (>900px):** Inline flex row, centered, 14px Figtree, `rgba(255,255,255,.6)` default, white hover/active, letter-spacing -0.025em. No underlines, no indicators — purely weight and color shift.
+**Desktop (>900px):** Inline flex row, centered, 14px ZalandoSans, `rgba(255,255,255,.6)` default, white hover/active, letter-spacing -0.03em. No underlines, no indicators — purely weight and color shift.
 
-**Mobile (≤900px):** Full-height overlay below the 56px header. Navy background, 30px 700 Figtree links, centered. Burger morphs to × via CSS transform on three spans. The header remains visible (sticky) while the nav slides down from below it.
+**Mobile (≤900px):** Full-height overlay below the 56px header. Navy background, 30px ZalandoSans 500 links, centered. Burger morphs to × via CSS transform on three spans. The header remains visible (sticky) while the nav slides down from below it.
 
 **The Brand Block:** SVG logo mark + "StakeMyGold" wordmark. Brand text hides (not the logo) when the mobile menu is open, keeping the mark as spatial anchor while reducing visual competition.
 
 ### Leaderboard Table
 
-- `thead`: IBM Plex Mono 500, 11.5px, uppercase, `--muted` text, warm near-white background (`#FDFBF6`)
-- `tbody`: Figtree 13.5–14.5px, with rank column in IBM Plex Mono
-- `tr.you`: highlighted with gold-dp text on name, gold-pale left border (`3px`)
-- Hover: `rgba(248,246,242,.8)` row tint — cream wash, not a hard highlight
+- `thead`: IBM Plex Mono 500, 12px, uppercase, `--muted` text, warm near-white background (`#FDFBF6`)
+- `tbody`: ZalandoSans 14px, with rank column in IBM Plex Mono
+- `tr.you`: highlighted with `--gold-dp` text on name, `#FFF9E8` row background
+- Hover: `cursor:pointer` on non-"you" rows — no row tint, click is the feedback
 
 ### Signature: The Rank Podium
 
-The three-card podium is the visual centerpiece of the leaderboard. The first-place card is larger, has a warm gold gradient background, a gold ambient haze shadow, and a `3px ::before` stripe in the gold-dark-to-light direction. Second and third cards get silver and bronze stripe gradients respectively. XP numbers use Playfair Display at 32–38px (desktop), reinforcing the "cast in metal" data register. This is the system's maximum expression of visual weight.
+The three-card podium is the visual centerpiece of the leaderboard. The first-place card is larger, has a warm gold gradient background, a gold ambient haze shadow, and a `3px ::before` stripe in the gold-dark-to-light direction. Second and third cards get silver and bronze stripe gradients respectively. XP numbers use Times New Roman 700 at 26–38px, reinforcing the "cast in metal" data register. This is the one surface where the serif appears at maximum scale — the system's most concentrated expression of weight.
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** use gold (#F0BD5E) at ≤15% visible surface coverage. It is a signal, not a theme.
 - **Do** use IBM Plex Mono in uppercase with 0.1em letter-spacing for all data labels, rank positions, and axis labels.
-- **Do** use Playfair Display for section headings and large data numbers — this is the "weight" register, not Figtree Bold.
+- **Do** use Times New Roman for large data figures (stat numbers, XP totals, podium scores) — this is the "cast" register, not ZalandoSans at a large size.
 - **Do** keep all neutral colors warm-toned. If a gray doesn't have an ochre or amber undertone, it is out of palette.
 - **Do** use 999px radius for all interactive controls (buttons, chips, tags) and 14–18px radius for content containers. No middle ground.
 - **Do** let shadows appear only on hover, focus, or explicit structural elevation (podium first card, FAB). Surfaces are flat at rest.
 - **Do** reserve the navy (#0E1729) for command surfaces: header, referral CTA block, mobile nav. Never use it for content cards.
 
 ### Don't:
-- **Don't** use gradient text. Emphasis comes from size, weight, or the Playfair Display register — not a gradient fill on text.
-- **Don't** add a colored `border-left` above 1px on general content cards. The `.stat.me` left accent (3px) is the single permitted exception, because it signals "your own data" — a semantic distinction, not decoration.
-- **Don't** use Figtree Bold or Figtree Black for headings that should use Playfair Display. The serif register exists precisely to avoid Figtree at display sizes.
+- **Don't** use gradient text. Emphasis comes from size, weight, or switching to Times New Roman — not a gradient fill on text.
+- **Don't** add a colored `border-left` above 1px on general content cards. The `.stat.me` left accent (3px) is the single permitted exception — it signals "your own data", a semantic distinction, not decoration.
+- **Don't** reach for an additional typeface. ZalandoSans Variable covers the full weight range; Times New Roman handles cast numbers; IBM Plex Mono handles precision labels. A fourth family is a system leak, not an enhancement.
 - **Don't** use cool-toned grays. `#7C7768` (Warm Muted) is the floor for secondary text — anything cooler breaks the palette's thermal consistency.
 - **Don't** apply box shadows to surfaces at rest. A shadow at rest is a hierarchy claim that erodes the system's flat-by-default integrity.
-- **Don't** use Archivo Black for anything except the wordmark. It is the stamp; using it elsewhere dilutes it.
+- **Don't** use ZalandoSans at weight 800 for anything except the wordmark. That weight is the stamp — using it on headings or labels dilutes it.
 - **Don't** introduce a fourth neutral background color. The system has three: `--bg` (#FDFCFA), `--cream` (#F8F6F2), `--paper` (#FFFFFF). Adding another warm near-white creates ambiguity without distinction.
