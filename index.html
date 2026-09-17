@@ -865,7 +865,7 @@ tbody tr:not(.you):hover td{background:rgba(0,0,0,.025)}
     <table>
       <thead><tr>
         <th scope="col" class="rk">#</th><th scope="col">Participant</th><th scope="col" class="hide-sm">Tier</th>
-        <th scope="col" class="num">XP</th><th scope="col" class="num hide-sm">Quests</th><th scope="col" class="num">24h</th>
+        <th scope="col" class="num">XP</th><th scope="col" class="num hide-sm">Quests</th><th scope="col" class="num hide-sm">Bars</th><th scope="col" class="num hide-sm">Flakes</th><th scope="col" class="num">24h</th>
       </tr></thead>
       <tbody id="rows"></tbody>
     </table>
@@ -1935,21 +1935,21 @@ const SEASONS={
            ['Active quests','6','3 rotate weekly'],['Your rank','#8','Silver']],
     foot:['Your rank: <b>#8</b> of 203 · <b>Silver</b>','Next tier: <b>Gold</b> at 12,000 XP'],
     rows:[
-      ['AB','Gold',[14820,5210,1340],38,0],
-      ['Gian','Gold',[13960,4870,1180],36,1],
-      ['Maki Mura','Gold',[12740,5640,1520],34,-1],
-      ['Shah','Silver',[11380,3920,910],31,4],
-      ['Boo (✱,✱)','Silver',[10640,4180,1260],29,-1],
-      ['AlphaFarmer','Silver',[9870,3410,780],27,0],
-      ['DropScout','Silver',[9120,3860,1090],26,2],
-      ['you','Silver',[8640,4020,1310],25,1],
-      ['Jarmiu⊙','Silver',[8190,2740,620],23,0],
-      ['INDIAN_GIRL','Bronze',[7460,3180,940],21,-2],
-      ['Brownson','Bronze',[6980,2510,710],19,4],
-      ['monkey.D.luffy Zetarium $XAGE','Bronze',[6420,2890,860],18,-2],
-      ['Einstein','Bronze',[5870,1940,480],16,3],
-      ['Emmytex King','Bronze',[5310,2260,690],15,-1],
-      ['OlaLee','Bronze',[4930,1780,520],14,-1]
+      ['AB','Gold',[14820,5210,1340],38,0,7,82],
+      ['Gian','Gold',[13960,4870,1180],36,1,6,74],
+      ['Maki Mura','Gold',[12740,5640,1520],34,-1,5,91],
+      ['Shah','Silver',[11380,3920,910],31,4,4,61],
+      ['Boo (✱,✱)','Silver',[10640,4180,1260],29,-1,5,78],
+      ['AlphaFarmer','Silver',[9870,3410,780],27,0,3,54],
+      ['DropScout','Silver',[9120,3860,1090],26,2,4,67],
+      ['you','Silver',[8640,4020,1310],25,1,4,81],
+      ['Jarmiu⊙','Silver',[8190,2740,620],23,0,3,43],
+      ['INDIAN_GIRL','Bronze',[7460,3180,940],21,-2,2,59],
+      ['Brownson','Bronze',[6980,2510,710],19,4,2,39],
+      ['monkey.D.luffy Zetarium $XAGE','Bronze',[6420,2890,860],18,-2,2,45],
+      ['Einstein','Bronze',[5870,1940,480],16,3,1,30],
+      ['Emmytex King','Bronze',[5310,2260,690],15,-1,1,35],
+      ['OlaLee','Bronze',[4930,1780,520],14,-1,1,27]
     ]
   },
   runner:{
@@ -1958,21 +1958,21 @@ const SEASONS={
            ['Active quests','0','season closed'],['Your rank','#12','Silver']],
     foot:['Final rank: <b>#12</b> of 191 · <b>Silver</b>','Key award: <b>Silver key</b> · claimable at TGE'],
     rows:[
-      ['AB','Silver',[11539,3980,0],52,0],
-      ['Gian','Silver',[11217,4120,0],51,0],
-      ['Maki Mura','Silver',[11037,3760,0],50,0],
-      ['Shah','Silver',[10972,3510,0],48,0],
-      ['Boo (✱,✱)','Silver',[10902,3240,0],46,0],
-      ['AlphaFarmer','Silver',[10819,3080,0],44,0],
-      ['DropScout','Silver',[10816,2910,0],42,0],
-      ['Jarmiu⊙','Silver',[10111,2640,0],40,0],
-      ['INDIAN_GIRL','Bronze',[9023,2480,0],38,0],
-      ['Brownson','Bronze',[8566,2260,0],36,0],
-      ['monkey.D.luffy Zetarium $XAGE','Bronze',[8551,2110,0],34,0],
-      ['you','Silver',[8420,1780,0],33,0],
-      ['Einstein','Bronze',[8286,1980,0],32,0],
-      ['Emmytex King','Bronze',[8217,1840,0],31,0],
-      ['OlaLee','Bronze',[8186,1520,0],29,0]
+      ['AB','Silver',[11539,3980,0],52,0,12,148],
+      ['Gian','Silver',[11217,4120,0],51,0,11,143],
+      ['Maki Mura','Silver',[11037,3760,0],50,0,10,140],
+      ['Shah','Silver',[10972,3510,0],48,0,10,135],
+      ['Boo (✱,✱)','Silver',[10902,3240,0],46,0,9,128],
+      ['AlphaFarmer','Silver',[10819,3080,0],44,0,9,121],
+      ['DropScout','Silver',[10816,2910,0],42,0,8,119],
+      ['Jarmiu⊙','Silver',[10111,2640,0],40,0,8,107],
+      ['INDIAN_GIRL','Bronze',[9023,2480,0],38,0,7,98],
+      ['Brownson','Bronze',[8566,2260,0],36,0,6,87],
+      ['monkey.D.luffy Zetarium $XAGE','Bronze',[8551,2110,0],34,0,6,86],
+      ['you','Silver',[8420,1780,0],33,0,6,83],
+      ['Einstein','Bronze',[8286,1980,0],32,0,5,80],
+      ['Emmytex King','Bronze',[8217,1840,0],31,0,5,77],
+      ['OlaLee','Bronze',[8186,1520,0],29,0,5,74]
     ]
   }
 };
@@ -2092,7 +2092,7 @@ function renderWordmark(text){
 }
 
 function navigateToParticipant(row, rank){
-  const [name, tier, xp, quests, delta] = row;
+  const [name, tier, xp, quests, delta, bars, flakes] = row;
   const squadsIn = SQUADS.filter(s=>s.roster&&s.roster.some(m=>m.name===name||m.name.startsWith(name)));
   const url = AVATARS[name];
   const avLg = url
@@ -2117,6 +2117,8 @@ function navigateToParticipant(row, rank){
       <div class="p-stat"><dt>Last 30 days</dt><dd>${fmt(xp[1])}</dd></div>
       <div class="p-stat"><dt>Last 7 days</dt><dd>${fmt(xp[2])}</dd></div>
       <div class="p-stat"><dt>Quests</dt><dd>${quests}</dd></div>
+      <div class="p-stat"><dt>Bars</dt><dd>${bars??'—'}</dd></div>
+      <div class="p-stat"><dt>Flakes</dt><dd>${flakes??'—'}</dd></div>
       <div class="p-stat ${dc==='up'?'delta-up':dc==='dn'?'delta-dn':''}"><dt>Rank change</dt><dd>${dt}</dd></div>
       <div class="p-stat"><dt>Tier</dt><dd><small style="font-size:15px;font-weight:600;color:var(--navy)">${tier}</small></dd></div>
     </dl>
@@ -2176,6 +2178,8 @@ function render(){
       <td class="hide-sm"><span class="tiercell t-${r[1]}"><i></i>${r[1]}</span></td>
       <td class="num xp">${fmt(r[2][i])}</td>
       <td class="num hide-sm">${r[3]}</td>
+      <td class="num hide-sm">${r[5]??'—'}</td>
+      <td class="num hide-sm">${r[6]??'—'}</td>
       <td class="num delta ${dc}">${dt}</td></tr>`;
   }).join('');
 
